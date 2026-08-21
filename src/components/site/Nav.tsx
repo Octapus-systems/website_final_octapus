@@ -47,7 +47,6 @@ const COMPANY_ITEMS: SubItem[] = [
 const PRODUCTS_ITEMS: SubItem[] = [
   { id: "all-products", label: "All Products",              to: "/products" },
   { id: "obms-erp",     label: PM.get("obms-erp")?.name  ?? "O.B.M.S ERP", to: "/products/obms-erp" },
-  { id: "mr-crm",       label: PM.get("mr-crm")?.name    ?? "MR. CRM",     to: "/products/mr-crm" },
   { id: "custom-ai",    label: PM.get("custom-ai")?.name ?? "Custom AI",   to: "/products/custom-ai" },
   { id: "ois",          label: "OIS",                       to: "/ois" },
 ];

@@ -64,7 +64,7 @@ function ServicesPage() {
 
       <OisConnection
         title="AI & Data runs on OIS."
-        body="AI development at Octapus is not a set of disconnected experiments. It is delivered on the OIS platform, which turns AI agents into authorized participants in your operation — Hermes AI is simply the first coworker inside it."
+        body="AI development at Octapus is not a set of disconnected experiments. It is delivered on the OIS platform, which turns AI agents into authorized participants in your operation — Horus AI is simply the first coworker inside it."
         chain={["AI development", "OIS platform", "AI agents", "Business automation"]}
       />
 

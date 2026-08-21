@@ -45,7 +45,7 @@ export function DisciplinesSection({ className }: { className?: string }) {
         <Link to="/ois" className="text-primary underline underline-offset-4">
           OIS
         </Link>{" "}
-        adds the intelligence layer — and Hermes AI is the first AI coworker inside it.
+        adds the intelligence layer — and Horus AI is the first AI coworker inside it.
       </p>
     </Section>
   );

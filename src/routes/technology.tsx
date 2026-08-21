@@ -56,7 +56,7 @@ function TechnologyPage() {
           "Custom software",
           "Architecture and integration",
           "OIS intelligence layer",
-          "AI agents (Hermes AI first)",
+          "AI agents (Horus AI first)",
           "Smarter business systems",
         ]}
         approach={[
