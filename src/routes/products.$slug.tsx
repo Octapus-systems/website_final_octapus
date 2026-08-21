@@ -139,9 +139,7 @@ function ProductPage() {
             </div>
           ))}
         </div>
-        <div className="mx-auto max-w-4xl mt-10 text-sm text-muted-foreground rounded-2xl border hairline p-6 bg-[var(--color-surface)]">
-          [OCTAPUS TO PROVIDE VERIFIED PROOF: real case study, metrics or customer reference for {p.name}.]
-        </div>
+
       </Section>
 
       {productOisNotes[p.slug] ? (
