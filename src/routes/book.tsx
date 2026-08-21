@@ -9,7 +9,7 @@ import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 export const Route = createFileRoute("/book")({
   head: () => buildMeta({
     title: "Book a Strategy Call — Talk to the Octapus Team",
-    description: "Book a focused 30-minute strategy call with Octapus. We listen, ask precise questions and share what we would recommend for your systems.",
+    description: "Book a focused 30-minute strategy call with Octapus. Octapus listen, ask precise questions and share what Octapus would recommend for your systems.",
     path: "/book",
     ogType: "website",
     keywords: ["book strategy call", "software consultation UAE", "ERP consultation", "AI strategy call", "Octapus contact"],
@@ -32,7 +32,7 @@ function BookPage() {
       }} />
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Book a Strategy Call", path: "/book" }])} />
 
-      <Section titleAs="h1" eyebrow="Strategy call" title="Thirty Focused Minutes With the Octapus Team." intro="30 minutes. No obligation. We listen, ask precise questions and share what we'd recommend.">
+      <Section titleAs="h1" eyebrow="Strategy call" title="Thirty Focused Minutes With the Octapus Team." intro="30 minutes. No obligation. Octapus listen, ask precise questions and share what Octapus'd recommend.">
         <div className="mx-auto max-w-2xl rounded-2xl border hairline bg-[var(--color-surface)] p-8 text-center">
           <p className="text-sm text-muted-foreground">
             [OCTAPUS TO PROVIDE VERIFIED PROOF: embed the actual scheduling tool (Cal.com, Calendly, HubSpot) here once selected.]
@@ -49,7 +49,7 @@ function BookPage() {
       </Section>
 
       <RelatedLinks
-        title="Before the call, browse what we build."
+        title="Before the call, browse what Octapus build."
         items={[
           { to: "/services", label: "Services", detail: "Six connected capabilities delivered by one team." },
           { to: "/products", label: "Products", detail: "ERP, CRM, AI and custom systems already in production." },

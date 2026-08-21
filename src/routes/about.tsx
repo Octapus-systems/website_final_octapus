@@ -55,7 +55,7 @@ function AboutPage() {
         <div className="mx-auto max-w-3xl space-y-6 text-lg leading-relaxed text-muted-foreground">
           <p>Octapus exists to take complicated technology, remove the noise, and arrange it into one controlled business system.</p>
           <p>
-            We partner with founders and operators who have outgrown disconnected tools. Instead of adding another SaaS to the stack, we design the operating layer that the business actually needs — and we operate it with you. Explore our <Link to="/services" className="text-primary underline underline-offset-4">services</Link> or the <Link to="/products" className="text-primary underline underline-offset-4">product ecosystem</Link>.
+            Octapus partner with founders and operators who have outgrown disconnected tools. Instead of adding another SaaS to the stack, Octapus design the operating layer that the business actually needs — and Octapus operate it with you. Explore our <Link to="/services" className="text-primary underline underline-offset-4">services</Link> or the <Link to="/products" className="text-primary underline underline-offset-4">product ecosystem</Link>.
           </p>
           <p>Designed in the UAE. Built for the world.</p>
           <div className="rounded-2xl border hairline p-6 text-sm bg-[var(--color-surface)]">

@@ -7,7 +7,7 @@ export type TimelineItem = {
 };
 
 const defaultItems: TimelineItem[] = [
-  { label: "Day 1", title: "Discovery call", detail: "We map your current systems, gaps and priorities in one focused session." },
+  { label: "Day 1", title: "Discovery call", detail: "Octapus map your current systems, gaps and priorities in one focused session." },
   { label: "Week 1", title: "Blueprint", detail: "Scope, architecture and a fixed delivery plan you can sign off on." },
   { label: "Weeks 2–4", title: "Design & build", detail: "Interfaces, data model and core workflows built in weekly increments." },
   { label: "Week 5", title: "Integrate", detail: "Your tools connect through OIS so operations run from one layer." },

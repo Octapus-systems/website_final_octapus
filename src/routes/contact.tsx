@@ -84,7 +84,7 @@ function ContactPage() {
         eyebrow="Contact"
         title="Tell Us the Operation You Need to Connect."
         titleAs="h1"
-        intro="We route enquiries to the right team so you get a fast, informed response."
+        intro="Octapus route enquiries to the right team so you get a fast, informed response."
       />
 
       <Container className="pb-20">
@@ -95,7 +95,7 @@ function ContactPage() {
                 <CheckCircle2 className="mx-auto size-8 text-primary" />
                 <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">Message received.</h2>
                 <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                  We've routed your enquiry to the right Octapus team. You'll hear back within one business day.
+                  Octapus've routed your enquiry to the right Octapus team. You'll hear back within one business day.
                 </p>
               </div>
             ) : (
@@ -162,7 +162,7 @@ function ContactPage() {
                 <Button type="submit" size="lg" className="rounded-full w-full md:w-auto" disabled={status === "loading"}>
                   {status === "loading" ? (<><Loader2 className="mr-2 size-4 animate-spin" /> Sending…</>) : "Send enquiry"}
                 </Button>
-                <p className="text-xs text-muted-foreground">By submitting you agree to our privacy policy. We never share your information.</p>
+                <p className="text-xs text-muted-foreground">By submitting you agree to our privacy policy. Octapus never share your information.</p>
               </form>
             )}
           </div>

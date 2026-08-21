@@ -105,7 +105,7 @@ export function StudiosLeadForm() {
       <Button type="submit" size="lg" className="rounded-full w-full md:w-auto px-7" disabled={status === "loading"}>
         {status === "loading" ? (<><Loader2 className="mr-2 size-4 animate-spin" /> Sending…</>) : (<>Start a Studios Project <ArrowRight className="ml-1 size-4" /></>)}
       </Button>
-      <p className="text-xs text-muted-foreground">Takes under a minute. We reply within one business day.</p>
+      <p className="text-xs text-muted-foreground">Takes under a minute. Octapus reply within one business day.</p>
     </form>
   );
 }

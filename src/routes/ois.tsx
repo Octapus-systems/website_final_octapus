@@ -82,7 +82,7 @@ function OIS() {
 
       <Section
         eyebrow="The next step"
-        title="Instead of simply giving your employees AI tools, we build AI employees around your actual business."
+        title="Instead of simply giving your employees AI tools, Octapus build AI employees around your actual business."
         intro="Turn your existing software into an intelligent system. Build an AI version of a repetitive employee workflow. Or, when you need a specific role without expanding your traditional workforce, deploy a dedicated OIS Agent."
       >
         <div className="mt-12 grid gap-3 md:grid-cols-5">

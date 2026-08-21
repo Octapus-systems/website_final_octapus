@@ -51,7 +51,7 @@ function MarketingPage() {
       <TrackPage
         track={track}
         oisTitle="Campaigns connected to the systems — and to OIS."
-        oisBody="Brand and growth work only compounds when demand lands inside a system that can act on it. Campaign, content and lead data flow into the platforms we build, and OIS makes that activity answerable and coordinated."
+        oisBody="Brand and growth work only compounds when demand lands inside a system that can act on it. Campaign, content and lead data flow into the platforms Octapus build, and OIS makes that activity answerable and coordinated."
         oisChain={[
           "Brand and creative systems",
           "Content and campaigns",
