@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { contactSchema, routeEnquiryTo, enquiryLabels } from "@/lib/contact-schema";
+import nodemailer from "nodemailer";
 
 // Simple in-memory rate limit (best-effort; per-instance).
 const hits = new Map<string, number[]>();
@@ -52,8 +53,45 @@ export const Route = createFileRoute("/api/public/contact")({
 
         const routedTo = routeEnquiryTo(data.enquiryType);
 
-        // [OCTAPUS TO PROVIDE EMAIL PROVIDER]
-        // Wire an email provider (Resend / SES / Postmark) here.
+        try {
+          const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT) || 465,
+            secure: process.env.SMTP_PORT === "465" || Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          });
+
+          const mailOptions = {
+            from: process.env.SMTP_FROM || '"Octapus Contact" <info@octapus.ae>',
+            to: process.env.SMTP_TO || "info@octapus.ae",
+            replyTo: data.email,
+            subject: `New Enquiry: ${enquiryLabels[data.enquiryType]} from ${data.name}`,
+            text: `
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone || 'N/A'}
+Company: ${data.company || 'N/A'}
+Preferred Contact: ${data.preferredContact}
+Budget: ${data.budget || 'N/A'}
+Timeline: ${data.timeline || 'N/A'}
+
+Message:
+${data.description}
+            `,
+          };
+
+          await transporter.sendMail(mailOptions);
+        } catch (error) {
+          console.error("Error sending email:", error);
+          return new Response(JSON.stringify({ error: "Failed to send email" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
         // For now Octapus log the routed enquiry server-side so it's captured in logs.
         console.info("[octapus.contact]", {
           routedTo,
