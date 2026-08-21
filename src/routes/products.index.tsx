@@ -24,6 +24,9 @@ export const Route = createFileRoute("/products/")({
 function ProductsIndex() {
   const [view, setView] = useState<"list" | "bento">("list");
 
+  const hiddenSlugs = ["buy", "blueprint", "icon", "mr-crm", "oprate"];
+  const visibleProducts = products.filter(p => !hiddenSlugs.includes(p.slug));
+
   return (
     <>
       <JsonLd data={{
@@ -31,7 +34,7 @@ function ProductsIndex() {
         "@type": "CollectionPage",
         name: `${SITE_NAME} Products`,
         url: "/products",
-        hasPart: products.map((p) => ({
+        hasPart: visibleProducts.map((p) => ({
           "@type": "SoftwareApplication",
           name: p.name,
           applicationCategory: "BusinessApplication",
@@ -79,7 +82,7 @@ function ProductsIndex() {
 
         {view === "list" ? (
           <div className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden md:grid-cols-2">
-            {products.map((p) => (
+            {visibleProducts.map((p) => (
               <Link key={p.slug} to="/products/$slug" params={{ slug: p.slug }} className="group bg-background p-8 hover:bg-[var(--color-primary-soft)]/40 transition-colors">
                 <div className="text-eyebrow mb-4">{p.tags.join(" · ")}</div>
                 <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">{p.name}</h2>
@@ -91,7 +94,7 @@ function ProductsIndex() {
             ))}
           </div>
         ) : (
-          <ProductsShowcase items={products} />
+          <ProductsShowcase items={visibleProducts} />
         )}
       </Section>
 
