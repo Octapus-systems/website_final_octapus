@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
+import FluidFlowGrid from "@/components/ui/fluid-flow-grid";
 import { Container, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/site/JsonLd";
@@ -76,52 +77,72 @@ function ProductPage() {
         </Link>
       </Container>
 
-      <Section>
-        <div className="grid gap-12 lg:grid-cols-12 items-center">
-          <div className={isObms ? "lg:col-span-12 space-y-6 text-center max-w-3xl mx-auto" : "lg:col-span-6 space-y-6"}>
-            <div className="text-eyebrow">{p.tags.join(" · ")}</div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.02]">{p.name}</h1>
-            <p className="text-xl leading-relaxed">{p.headline}</p>
-            <div className={isObms ? "flex flex-wrap gap-3 pt-2 justify-center" : "flex flex-wrap gap-3 pt-2"}>
-              {isOIS ? (
-                <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("ois_external_click", { source: "product_page" })}>
-                  <a href={site.oisExternalUrl} target="_blank" rel="noopener noreferrer">
-                    Experience the OIS Concept <ExternalLink className="ml-1 size-4" />
-                  </a>
-                </Button>
-              ) : (
-                <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("product_enquiry", { product: p.slug })}>
-                  <Link to="/contact">Talk about {p.name} <ArrowRight className="ml-1 size-4" /></Link>
-                </Button>
-              )}
-              {isObms && p.externalUrl ? (
-                <Button asChild size="lg" variant="outline" className="rounded-full" onClick={() => trackEvent("obms_external_click", { source: "product_hero" })}>
-                  <a href={p.externalUrl} target="_blank" rel="noopener noreferrer">
-                    More detail <ExternalLink className="ml-1 size-4" />
-                  </a>
-                </Button>
-              ) : (
-                <Button asChild size="lg" variant="outline" className="rounded-full">
-                  <Link to="/book">Book a strategy call</Link>
-                </Button>
-              )}
-            </div>
-          </div>
-          {!isObms && (
-            <div className="lg:col-span-6">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border hairline bg-[var(--color-surface)]">
-                {p.image ? (
-                  <img src={p.image} alt={`${p.name} interface preview`} loading="lazy" className="size-full object-cover" />
+      <section className="relative overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0">
+          {isObms ? (
+            <video 
+              src="/obms-hero-video.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <FluidFlowGrid />
+          )}
+        </div>
+        {/* Gradient overlay for text readability */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/80" />
+
+        <Container className="relative z-10 section-y">
+          <div className={`grid gap-12 lg:grid-cols-12 items-center ${isObms ? '' : ''}`}>
+            <div className={isObms ? "lg:col-span-12 space-y-6 text-center max-w-3xl mx-auto" : "lg:col-span-6 space-y-6"}>
+              <div className="text-[11px] font-medium uppercase tracking-[0.2em] text-violet-600 dark:text-violet-400">{p.tags.join(" · ")}</div>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.02] text-foreground">{p.name}</h1>
+              <p className="text-xl leading-relaxed text-muted-foreground">{p.headline}</p>
+              <div className={isObms ? "flex flex-wrap gap-3 pt-2 justify-center" : "flex flex-wrap gap-3 pt-2"}>
+                {isOIS ? (
+                  <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("ois_external_click", { source: "product_page" })}>
+                    <a href={site.oisExternalUrl} target="_blank" rel="noopener noreferrer">
+                      Experience the OIS Concept <ExternalLink className="ml-1 size-4" />
+                    </a>
+                  </Button>
                 ) : (
-                  <div className="absolute inset-0 grid-canvas grid place-items-center">
-                    <div className="text-eyebrow">{p.name}</div>
-                  </div>
+                  <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("product_enquiry", { product: p.slug })}>
+                    <Link to="/contact">Talk about {p.name} <ArrowRight className="ml-1 size-4" /></Link>
+                  </Button>
+                )}
+                {isObms && p.externalUrl ? (
+                  <Button asChild size="lg" variant="outline" className="rounded-full" onClick={() => trackEvent("obms_external_click", { source: "product_hero" })}>
+                    <a href={p.externalUrl} target="_blank" rel="noopener noreferrer">
+                      More detail <ExternalLink className="ml-1 size-4" />
+                    </a>
+                  </Button>
+                ) : (
+                  <Button asChild size="lg" variant="outline" className="rounded-full">
+                    <Link to="/book">Book a strategy call</Link>
+                  </Button>
                 )}
               </div>
             </div>
-          )}
-        </div>
-      </Section>
+            {!isObms && (
+              <div className="lg:col-span-6">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm">
+                  {p.image ? (
+                    <img src={p.image} alt={`${p.name} interface preview`} loading="lazy" className="size-full object-cover" />
+                  ) : (
+                    <div className="absolute inset-0 grid place-items-center">
+                      <div className="text-[11px] font-medium uppercase tracking-[0.2em] text-violet-400">{p.name}</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </Container>
+      </section>
 
       {isObms ? <ObmsShowcase product={p} /> : null}
 
