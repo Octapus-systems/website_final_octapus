@@ -31,9 +31,7 @@ function BlogPage() {
 
       <Section eyebrow="Blog" titleAs="h1" title="Field Notes From the Team Building Connected Systems." intro="Octapus publish infrequently — when Octapus have something specific and useful to say about software, AI and running real operations.">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="rounded-2xl border hairline p-8 bg-[var(--color-surface)] text-muted-foreground">
-            [OCTAPUS TO PROVIDE VERIFIED PROOF: initial articles, author bylines and publication dates.]
-          </div>
+
           <div className="mt-8">
             <Button asChild variant="outline" className="rounded-full"><Link to="/contact">Get in touch</Link></Button>
           </div>

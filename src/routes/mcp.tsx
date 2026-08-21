@@ -13,7 +13,7 @@ export const Route = createFileRoute("/mcp")({
     <Section titleAs="h1" eyebrow="Developer" title="Model Context Protocol">
       <div className="mx-auto max-w-3xl text-muted-foreground space-y-4">
         <p>This route reserves the Octapus MCP endpoint. Documentation and authenticated access are published as the endpoint is finalized.</p>
-        <p className="text-sm">[OCTAPUS TO PROVIDE VERIFIED PROOF: MCP endpoint spec, auth mechanism and available tools.]</p>
+
       </div>
     </Section>
   ),
