@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   frameCount?: number;
+  mobileFrameCount?: number;
   heightMultiplier?: number;
   className?: string;
 };
@@ -11,6 +12,7 @@ const pad = (n: number) => String(n).padStart(3, "0");
 
 export function ScrollVideoSection({
   frameCount = 300,
+  mobileFrameCount,
   heightMultiplier = 4,
   className,
 }: Props) {
@@ -21,6 +23,7 @@ export function ScrollVideoSection({
   const targetRef = useRef(0);
   const rafRef = useRef<number | null>(null);
   const visibleRef = useRef(false);
+  const resolvedCountRef = useRef(frameCount);
 
   const [progressLoad, setProgressLoad] = useState(0);
   const [ready, setReady] = useState(false);
@@ -29,29 +32,29 @@ export function ScrollVideoSection({
 
   useEffect(() => {
     let cancelled = false;
-    // Always use the high-res frames for clarity; the low-res mobile set is
-    // only used on very small screens with a low pixel ratio.
-    const lowRes =
-      window.matchMedia("(max-width: 420px)").matches &&
-      (window.devicePixelRatio || 1) < 2;
-    const dir = lowRes ? "/frames-mobile" : "/frames-desktop";
+    // Use portrait mobile frames on portrait/mobile screens,
+    // full landscape desktop frames on wider screens.
+    const isPortrait = window.matchMedia("(max-width: 768px), (orientation: portrait) and (max-width: 1024px)").matches;
+    const dir = isPortrait ? "/frames-mobile" : "/frames-desktop";
+    const actualFrameCount = isPortrait && mobileFrameCount ? mobileFrameCount : frameCount;
+    resolvedCountRef.current = actualFrameCount;
     const imgs: HTMLImageElement[] = [];
     let loaded = 0;
 
     const slowTimer = window.setTimeout(() => {
-      if (!cancelled && loaded < frameCount) setSlow(true);
+      if (!cancelled && loaded < actualFrameCount) setSlow(true);
     }, 6000);
 
-    for (let i = 1; i <= frameCount; i++) {
+    for (let i = 1; i <= actualFrameCount; i++) {
       const img = new Image();
       img.decoding = "async";
       img.src = `${dir}/frame-${pad(i)}.jpg`;
       const done = () => {
         loaded += 1;
         if (cancelled) return;
-        setProgressLoad(Math.round((loaded / frameCount) * 100));
+        setProgressLoad(Math.round((loaded / actualFrameCount) * 100));
         if (loaded === 1) draw();
-        if (loaded >= frameCount) {
+        if (loaded >= actualFrameCount) {
           setReady(true);
           setSlow(false);
         }
@@ -121,14 +124,14 @@ export function ScrollVideoSection({
       const rect = section.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      targetRef.current = p * (frameCount - 1);
+      targetRef.current = p * (resolvedCountRef.current - 1);
       setScrollPct(p);
     };
 
     const tick = () => {
       const diff = targetRef.current - currentRef.current;
       if (Math.abs(diff) > 0.01) {
-        currentRef.current += diff * 0.12;
+        currentRef.current += diff * 0.15;
         draw();
       }
       rafRef.current = visibleRef.current ? requestAnimationFrame(tick) : null;

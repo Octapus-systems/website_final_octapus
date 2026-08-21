@@ -51,7 +51,7 @@ function Home() {
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
 
       {/* ── Hero scroll video ── */}
-      <ScrollVideoSection frameCount={400} heightMultiplier={4} />
+      <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
 
 
 
