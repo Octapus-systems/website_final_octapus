@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useRouter, useNavigate } from "@tanstack/react-router";
 import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "./Wordmark";
@@ -38,10 +38,10 @@ type Category = {
 const PM = new Map(products.map((p) => [p.slug, p]));
 
 const COMPANY_ITEMS: SubItem[] = [
-  { id: "about",    label: "About",    to: "/about" },
-  { id: "team",     label: "Team",     to: "/team" },
-  { id: "careers",  label: "Careers",  to: "/careers" },
-  { id: "contact",  label: "Contact",  to: "/contact" },
+  { id: "about",   label: "About",   to: "/about" },
+  { id: "team",    label: "Team",    to: "/team" },
+  { id: "careers", label: "Careers", to: "/careers" },
+  { id: "contact", label: "Contact", to: "/contact" },
 ];
 
 const PRODUCTS_ITEMS: SubItem[] = [
@@ -84,9 +84,9 @@ const panelVariants = {
 };
 
 const switchVariants = {
-  hidden:   { opacity: 0, x: -10 },
-  visible:  { opacity: 1, x: 0,   transition: { duration: 0.18, ease: "easeOut" as const } },
-  exit:     { opacity: 0, x: 10,  transition: { duration: 0.12, ease: "easeIn" as const } },
+  hidden:  { opacity: 0, x: -10 },
+  visible: { opacity: 1, x: 0,  transition: { duration: 0.18, ease: "easeOut" as const } },
+  exit:    { opacity: 0, x: 10, transition: { duration: 0.12, ease: "easeIn" as const } },
 };
 
 const previewVariants = {
@@ -99,13 +99,21 @@ const previewVariants = {
 // IframePreview — renders the actual page in a scrollable iframe
 // ---------------------------------------------------------------------------
 
-function IframePreview({ src, title }: { src: string; title: string }) {
-  const iframeRef   = useRef<HTMLIFrameElement>(null);
+function IframePreview({
+  src,
+  title,
+  onPreviewClick,
+}: {
+  src: string;
+  title: string;
+  onPreviewClick?: () => void;
+}) {
+  const iframeRef    = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
 
-  // Non-passive wheel handler: forwards scroll deltas to the iframe's
-  // scrollable document without letting the host page scroll.
+  // Non-passive wheel handler: forwards scroll deltas to the iframe's document
+  // without letting the host page scroll.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -124,15 +132,14 @@ function IframePreview({ src, title }: { src: string; title: string }) {
     return () => el.removeEventListener("wheel", onWheel);
   }, []);
 
-  // After the page inside the iframe loads, inject a small style to hide
-  // the site's own header and footer (would be confusing nested inside a nav).
+  // After the iframe page loads, inject CSS to hide the site's own header and
+  // footer (they would be confusing nested inside the mega-menu).
   const handleLoad = useCallback(() => {
     setLoaded(true);
     try {
       const doc = iframeRef.current?.contentDocument;
       if (!doc) return;
-      const existing = doc.getElementById("__octapus_preview_style");
-      if (existing) return; // already injected
+      if (doc.getElementById("__octapus_preview_style")) return;
       const style = doc.createElement("style");
       style.id = "__octapus_preview_style";
       style.textContent = `
@@ -151,8 +158,12 @@ function IframePreview({ src, title }: { src: string; title: string }) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden rounded-xl border hairline bg-surface/30"
-      aria-hidden="true"
+      className={cn(
+        "relative w-full h-full overflow-hidden rounded-xl border hairline bg-surface/30",
+        onPreviewClick && "cursor-pointer",
+      )}
+      aria-label={`Preview of ${title} — click to open`}
+      onClick={onPreviewClick}
     >
       {/* Loading skeleton */}
       <AnimatePresence>
@@ -167,20 +178,24 @@ function IframePreview({ src, title }: { src: string; title: string }) {
             <div className="h-3 w-full rounded bg-muted animate-pulse" />
             <div className="h-3 w-4/5 rounded bg-muted animate-pulse" />
             <div className="h-3 w-3/5 rounded bg-muted animate-pulse" />
-            <div className="mt-3 h-32 w-full rounded-xl bg-muted animate-pulse" />
+            <div className="mt-3 h-40 w-full rounded-xl bg-muted animate-pulse" />
             <div className="h-3 w-full rounded bg-muted animate-pulse" />
             <div className="h-3 w-2/3 rounded bg-muted animate-pulse" />
             <div className="h-3 w-5/6 rounded bg-muted animate-pulse" />
             <div className="mt-3 grid grid-cols-2 gap-2">
-              <div className="h-20 rounded-lg bg-muted animate-pulse" />
-              <div className="h-20 rounded-lg bg-muted animate-pulse" />
+              <div className="h-24 rounded-lg bg-muted animate-pulse" />
+              <div className="h-24 rounded-lg bg-muted animate-pulse" />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* The actual page preview — pointer-events:none so it acts as a
-          read-only preview; scroll is driven by the wheel handler above */}
+      {/*
+        The actual page preview.
+        pointer-events: none → read-only; prevents iframe-internal navigation.
+        Scroll is driven by the wheel handler above.
+        Click is handled by the parent container div → onPreviewClick.
+      */}
       <iframe
         ref={iframeRef}
         src={src}
@@ -194,7 +209,7 @@ function IframePreview({ src, title }: { src: string; title: string }) {
         style={{ pointerEvents: "none" }}
       />
 
-      {/* Bottom fade + hint */}
+      {/* Bottom fade + interaction hint */}
       <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-background/75 to-transparent pointer-events-none flex items-end px-4 pb-2">
         <span className="text-eyebrow text-[9px] opacity-40 tracking-[0.2em]">
           Scroll to explore · Click to open
@@ -216,21 +231,26 @@ function MegaMenuPanel({
   onNavigate: () => void;
 }) {
   const [activeItem, setActiveItem] = useState<SubItem>(category.items[0]);
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigate    = useNavigate();
 
-  // Reset to first item when the parent category switches
+  // Reset to the first item whenever the parent category changes
   useEffect(() => {
     setActiveItem(category.items[0]);
-    return () => {
-      if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    };
+    return () => { if (hoverTimer.current) clearTimeout(hoverTimer.current); };
   }, [category.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Small hover delay avoids preview flickering when mouse passes quickly
+  // Hover delay avoids preview flickering when the mouse passes quickly
   const handleItemHover = useCallback((item: SubItem) => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
     hoverTimer.current = setTimeout(() => setActiveItem(item), 60);
   }, []);
+
+  // Clicking the preview navigates to the active item's page
+  const handlePreviewClick = useCallback(() => {
+    navigate({ to: activeItem.to as "/" });
+    onNavigate(); // close the menu
+  }, [activeItem.to, navigate, onNavigate]);
 
   return (
     <div className="flex gap-0 h-full">
@@ -278,7 +298,11 @@ function MegaMenuPanel({
             exit="exit"
             className="h-full"
           >
-            <IframePreview src={activeItem.to} title={activeItem.label} />
+            <IframePreview
+              src={activeItem.to}
+              title={activeItem.label}
+              onPreviewClick={handlePreviewClick}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -359,11 +383,11 @@ export function Nav() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [mobileOpen, setMobileOpen]         = useState(false);
 
-  const headerRef        = useRef<HTMLElement>(null);
-  const openTimerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const closeTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Stable ref to read latest activeCategory without re-creating callbacks
-  const activeCatRef     = useRef<Category | null>(null);
+  const headerRef     = useRef<HTMLElement>(null);
+  const openTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Stable ref so hover callbacks can read the latest category without being recreated
+  const activeCatRef  = useRef<Category | null>(null);
   activeCatRef.current = activeCategory;
 
   const router = useRouter();
@@ -381,7 +405,7 @@ export function Nav() {
 
   // ── Side-effects ─────────────────────────────────────────────────────────
 
-  // Close when the router navigates to a new page
+  // Close whenever the router navigates to a new page
   useEffect(() => {
     const unsub = router.subscribe("onLoad", closeMenu);
     return unsub;
@@ -401,17 +425,15 @@ export function Nav() {
 
   /**
    * Called when the mouse enters one of the four category buttons.
-   * - If the panel is already open → switch category immediately.
-   * - If the panel is closed → open after a 100 ms intent delay.
+   * - Panel already open → switch category immediately, no gap.
+   * - Panel closed → open after 100 ms intent delay to filter accidental overs.
    */
   const handleCategoryEnter = useCallback((cat: Category) => {
     clearClose();
     if (activeCatRef.current) {
-      // Already open: instant switch, no animation gap
       clearOpen();
       setActiveCategory(cat);
     } else {
-      // Closed: brief delay to avoid opening on accidental mouse pass-overs
       clearOpen();
       openTimerRef.current = setTimeout(() => {
         setActiveCategory(cat);
@@ -421,10 +443,11 @@ export function Nav() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
-   * Called when the mouse leaves the entire <header> element (which includes
-   * the mega-panel since it is a DOM child of <header>).
-   * Schedules a close with a 250 ms grace period so the user can move from
-   * the top bar into the panel without the menu closing.
+   * Called when the mouse leaves the entire <header> element.
+   * The mega-panel is a DOM child of <header>, so moving from the top bar
+   * into the panel does NOT fire this event.
+   * A 250 ms grace period lets the user move from the top bar into the panel
+   * without the menu closing.
    */
   const handleNavLeave = useCallback(() => {
     clearOpen();
@@ -434,20 +457,22 @@ export function Nav() {
     }, 250);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /**
-   * Called when the mouse re-enters the <header> area — cancels any pending
-   * close timer so the panel stays open.
-   */
+  /** Cancel any pending close when the mouse re-enters the <header>. */
   const handleNavEnter = useCallback(() => {
     clearClose();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50"
+      /*
+       * z-[200] ensures the header and its absolutely-positioned mega-panel sit
+       * above FloatingActions and any other fixed/sticky UI (which typically
+       * use z-50 – z-[100]).
+       */
+      className="sticky top-0 z-[200]"
       role="banner"
       onMouseEnter={handleNavEnter}
       onMouseLeave={handleNavLeave}
@@ -475,10 +500,7 @@ export function Nav() {
                   aria-expanded={isActive}
                   aria-controls="mega-menu-panel"
                   onMouseEnter={() => handleCategoryEnter(cat)}
-                  onClick={() =>
-                    // Click also works as a toggle so keyboard / click users can close
-                    isActive ? closeMenu() : handleCategoryEnter(cat)
-                  }
+                  onClick={() => isActive ? closeMenu() : handleCategoryEnter(cat)}
                   className={cn(
                     "relative inline-flex items-center gap-1 px-3 py-2 rounded-lg",
                     "text-sm transition-all duration-150 select-none",
@@ -494,7 +516,7 @@ export function Nav() {
                       isActive && "rotate-180",
                     )}
                   />
-                  {/* Purple underline indicator when active */}
+                  {/* Purple underline indicator when category is active */}
                   {isActive && (
                     <span className="absolute -bottom-[1px] left-1/2 -translate-x-1/2 h-0.5 w-5 bg-primary rounded-full" />
                   )}
@@ -557,9 +579,13 @@ export function Nav() {
       {/* ── Mega-menu panel ─────────────────────────────────────────────── */}
       {/*
         key="mega-panel" is intentionally FIXED so React reuses the same DOM
-        node across category switches. AnimatePresence only plays enter/exit
-        animations when activeCategory flips between null ↔ non-null.
+        node across category switches. AnimatePresence only runs enter/exit
+        animations when activeCategory flips null ↔ non-null.
         Category switches are handled by the inner AnimatePresence (switchVariants).
+
+        h-[calc(100vh-4rem)]: fills exactly the viewport area below the 4rem header.
+        overflow-hidden: clips the panel to prevent underlying-page bleed-through.
+        bg-background: fully opaque — covers FloatingActions and all page content.
       */}
       <AnimatePresence>
         {activeCategory && (
@@ -572,11 +598,13 @@ export function Nav() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute inset-x-0 top-full border-b hairline bg-background/97 backdrop-blur-md shadow-xl shadow-foreground/5"
+            className="absolute inset-x-0 top-full border-b hairline bg-background backdrop-blur-md shadow-2xl shadow-foreground/10 overflow-hidden"
+            style={{ height: "calc(100vh - 4rem)" }}
           >
-            <div className="container-page py-5">
-              {/* Panel header — label animates on category switch */}
-              <div className="mb-4 flex items-center justify-between">
+            {/* Inner layout: flex-col so the preview fills all remaining space */}
+            <div className="container-page h-full flex flex-col py-5">
+              {/* Panel header — category label animates on switch */}
+              <div className="mb-4 flex items-center justify-between flex-shrink-0">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
                     key={activeCategory.id + "-label"}
@@ -600,9 +628,11 @@ export function Nav() {
                 </button>
               </div>
 
-              {/* Panel body — fixed height keeps the layout stable.
-                  Inner content swaps with switchVariants on category change. */}
-              <div className="h-[clamp(380px,52vh,520px)]">
+              {/*
+                Panel body: flex-1 + min-h-0 lets it expand to fill remaining height.
+                The inner motion.div switches with switchVariants on category change.
+              */}
+              <div className="flex-1 min-h-0">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={activeCategory.id}
