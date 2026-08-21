@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
-import { Menu, X, ChevronRight, ArrowRight, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "./Wordmark";
 import { ThemeToggle } from "./ThemeToggle";
@@ -22,9 +22,7 @@ import { products } from "@/lib/site";
 type SubItem = {
   id: string;
   label: string;
-  description: string;
-  to: string;
-  external?: boolean;
+  to: string; // resolved URL path — used for both Link href and iframe src
 };
 
 type Category = {
@@ -34,142 +32,43 @@ type Category = {
 };
 
 // ---------------------------------------------------------------------------
-// Navigation data — using only existing routes
+// Navigation data — only existing routes, no invented content
 // ---------------------------------------------------------------------------
 
+const PM = new Map(products.map((p) => [p.slug, p]));
+
 const COMPANY_ITEMS: SubItem[] = [
-  {
-    id: "about",
-    label: "About",
-    description: "Who we are, our mission and the principles we build on.",
-    to: "/about",
-  },
-  {
-    id: "team",
-    label: "Team",
-    description: "The people behind every system we ship.",
-    to: "/team",
-  },
-  {
-    id: "careers",
-    label: "Careers",
-    description: "Join the team building the future of business systems.",
-    to: "/careers",
-  },
-  {
-    id: "contact",
-    label: "Contact",
-    description: "Get in touch — sales, support or general enquiries.",
-    to: "/contact",
-  },
+  { id: "about",    label: "About",    to: "/about" },
+  { id: "team",     label: "Team",     to: "/team" },
+  { id: "careers",  label: "Careers",  to: "/careers" },
+  { id: "contact",  label: "Contact",  to: "/contact" },
 ];
 
-// Curated product subset for the mega-menu
-const PRODUCTS_PRODUCT_MAP = new Map(products.map((p) => [p.slug, p]));
-
 const PRODUCTS_ITEMS: SubItem[] = [
-  {
-    id: "all-products",
-    label: "All Products",
-    description: "Browse the complete Octapus product ecosystem.",
-    to: "/products",
-  },
-  {
-    id: "obms-erp",
-    label: "O.B.M.S ERP",
-    description:
-      PRODUCTS_PRODUCT_MAP.get("obms-erp")?.headline ??
-      "One operating layer for finance, operations and reporting.",
-    to: "/products/obms-erp",
-  },
-  {
-    id: "mr-crm",
-    label: "MR. CRM",
-    description:
-      PRODUCTS_PRODUCT_MAP.get("mr-crm")?.headline ??
-      "Sales management shaped to how your team sells.",
-    to: "/products/mr-crm",
-  },
-  {
-    id: "custom-ai",
-    label: "Custom AI",
-    description:
-      PRODUCTS_PRODUCT_MAP.get("custom-ai")?.headline ??
-      "AI systems designed around your data and your decisions.",
-    to: "/products/custom-ai",
-  },
-  {
-    id: "ois",
-    label: "OIS",
-    description:
-      PRODUCTS_PRODUCT_MAP.get("ois")?.headline ??
-      "Give your existing systems intelligence.",
-    to: "/ois",
-  },
+  { id: "all-products", label: "All Products",              to: "/products" },
+  { id: "obms-erp",     label: PM.get("obms-erp")?.name  ?? "O.B.M.S ERP", to: "/products/obms-erp" },
+  { id: "mr-crm",       label: PM.get("mr-crm")?.name    ?? "MR. CRM",     to: "/products/mr-crm" },
+  { id: "custom-ai",    label: PM.get("custom-ai")?.name ?? "Custom AI",   to: "/products/custom-ai" },
+  { id: "ois",          label: "OIS",                       to: "/ois" },
 ];
 
 const SOLUTIONS_ITEMS: SubItem[] = [
-  {
-    id: "engineering",
-    label: "Engineering",
-    description:
-      "Custom software, web, mobile, APIs, cloud and system integration.",
-    to: "/engineering",
-  },
-  {
-    id: "studios",
-    label: "Studios",
-    description:
-      "Brand identity, design, content, video and campaign production.",
-    to: "/studios",
-  },
-  {
-    id: "technology",
-    label: "Technology",
-    description:
-      "Engineering, business systems, AI & data and operational support.",
-    to: "/technology",
-  },
-  {
-    id: "marketing",
-    label: "Marketing",
-    description:
-      "Design & brand and growth — presence connected to conversion.",
-    to: "/marketing",
-  },
-  {
-    id: "all-solutions",
-    label: "All Solutions",
-    description: "Every discipline and service Octapus delivers.",
-    to: "/services",
-  },
+  { id: "engineering",   label: "Engineering",   to: "/engineering" },
+  { id: "studios",       label: "Studios",       to: "/studios" },
+  { id: "technology",    label: "Technology",    to: "/technology" },
+  { id: "marketing",     label: "Marketing",     to: "/marketing" },
+  { id: "all-solutions", label: "All Solutions", to: "/services" },
 ];
 
 const RESOURCES_ITEMS: SubItem[] = [
-  {
-    id: "industries",
-    label: "Industries",
-    description:
-      "How Octapus systems serve construction, retail, healthcare and more.",
-    to: "/industries",
-  },
-  {
-    id: "blog",
-    label: "Blog",
-    description: "Articles, insights and thinking from the Octapus team.",
-    to: "/blog",
-  },
-  {
-    id: "support",
-    label: "Support",
-    description: "Help centre, documentation and direct support channels.",
-    to: "/support",
-  },
+  { id: "industries", label: "Industries", to: "/industries" },
+  { id: "blog",       label: "Blog",       to: "/blog" },
+  { id: "support",    label: "Support",    to: "/support" },
 ];
 
 const CATEGORIES: Category[] = [
-  { id: "company", label: "Company", items: COMPANY_ITEMS },
-  { id: "products", label: "Products", items: PRODUCTS_ITEMS },
+  { id: "company",   label: "Company",   items: COMPANY_ITEMS },
+  { id: "products",  label: "Products",  items: PRODUCTS_ITEMS },
   { id: "solutions", label: "Solutions", items: SOLUTIONS_ITEMS },
   { id: "resources", label: "Resources", items: RESOURCES_ITEMS },
 ];
@@ -179,186 +78,134 @@ const CATEGORIES: Category[] = [
 // ---------------------------------------------------------------------------
 
 const panelVariants = {
-  hidden: { opacity: 0, y: -6 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.22, ease: "easeOut" as const },
-  },
-  exit: {
-    opacity: 0,
-    y: -4,
-    transition: { duration: 0.16, ease: "easeIn" as const },
-  },
+  hidden: { opacity: 0, y: -8 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" as const } },
+  exit:    { opacity: 0, y: -4, transition: { duration: 0.15, ease: "easeIn" as const } },
 };
 
-const contentVariants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.18, ease: "easeOut" as const },
-  },
-  exit: {
-    opacity: 0,
-    x: 8,
-    transition: { duration: 0.13, ease: "easeIn" as const },
-  },
+const switchVariants = {
+  hidden:   { opacity: 0, x: -10 },
+  visible:  { opacity: 1, x: 0,   transition: { duration: 0.18, ease: "easeOut" as const } },
+  exit:     { opacity: 0, x: 10,  transition: { duration: 0.12, ease: "easeIn" as const } },
 };
 
-const rightVariants = {
-  hidden: { opacity: 0, y: 6 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.18, ease: "easeOut" as const },
-  },
-  exit: {
-    opacity: 0,
-    y: -4,
-    transition: { duration: 0.1, ease: "easeIn" as const },
-  },
+const previewVariants = {
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.22, ease: "easeOut" as const } },
+  exit:    { opacity: 0, transition: { duration: 0.1,  ease: "easeIn" as const } },
 };
 
 // ---------------------------------------------------------------------------
-// Right-side panel content
+// IframePreview — renders the actual page in a scrollable iframe
 // ---------------------------------------------------------------------------
 
-function RightPanelContent({
-  item,
-  category,
-  onNavigate,
-}: {
-  item: SubItem;
-  category: Category;
-  onNavigate: () => void;
-}) {
-  const isAllProducts = item.id === "all-products";
-  const isAllSolutions = item.id === "all-solutions";
+function IframePreview({ src, title }: { src: string; title: string }) {
+  const iframeRef   = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
 
-  // For "All Products" — show a small product grid
-  if (isAllProducts) {
-    const featured = [
-      PRODUCTS_PRODUCT_MAP.get("obms-erp"),
-      PRODUCTS_PRODUCT_MAP.get("mr-crm"),
-      PRODUCTS_PRODUCT_MAP.get("custom-ai"),
-    ].filter(Boolean);
+  // Non-passive wheel handler: forwards scroll deltas to the iframe's
+  // scrollable document without letting the host page scroll.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-    return (
-      <div className="flex flex-col h-full">
-        <div className="mb-4">
-          <div className="text-eyebrow mb-1">Products</div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            The Octapus product ecosystem — software that removes specific
-            friction from your operation.
-          </p>
-        </div>
-        <div className="grid gap-2 flex-1">
-          {featured.map((p) =>
-            p ? (
-              <Link
-                key={p.slug}
-                to="/products/$slug"
-                params={{ slug: p.slug }}
-                onClick={onNavigate}
-                className="group flex items-start gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
-              >
-                <div className="mt-0.5 size-1.5 rounded-full bg-primary flex-shrink-0 mt-2" />
-                <div>
-                  <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                    {p.name}
-                  </div>
-                  <div className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
-                    {p.headline}
-                  </div>
-                </div>
-              </Link>
-            ) : null,
-          )}
-        </div>
-        <div className="mt-4 pt-3 border-t hairline">
-          <Link
-            to="/products"
-            onClick={onNavigate}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-          >
-            View all products
-            <ArrowRight className="size-3.5" />
-          </Link>
-        </div>
-      </div>
-    );
-  }
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        iframeRef.current?.contentWindow?.scrollBy({ top: e.deltaY });
+      } catch {
+        // Silently ignore if contentWindow is unavailable
+      }
+    };
 
-  if (isAllSolutions) {
-    return (
-      <div className="flex flex-col h-full">
-        <div className="mb-4">
-          <div className="text-eyebrow mb-1">Solutions</div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Six disciplines — engineering, business systems, AI &amp; data,
-            operate, design &amp; brand and growth — inside one team.
-          </p>
-        </div>
-        <div className="grid gap-1.5 flex-1">
-          {SOLUTIONS_ITEMS.filter((s) => s.id !== "all-solutions").map((s) => (
-            <Link
-              key={s.id}
-              to={s.to as "/"}
-              onClick={onNavigate}
-              className="group flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-accent transition-colors"
-            >
-              <ChevronRight className="size-3.5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-              <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                {s.label}
-              </span>
-            </Link>
-          ))}
-        </div>
-        <div className="mt-4 pt-3 border-t hairline">
-          <Link
-            to="/services"
-            onClick={onNavigate}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-          >
-            View all solutions
-            <ArrowRight className="size-3.5" />
-          </Link>
-        </div>
-      </div>
-    );
-  }
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  // After the page inside the iframe loads, inject a small style to hide
+  // the site's own header and footer (would be confusing nested inside a nav).
+  const handleLoad = useCallback(() => {
+    setLoaded(true);
+    try {
+      const doc = iframeRef.current?.contentDocument;
+      if (!doc) return;
+      const existing = doc.getElementById("__octapus_preview_style");
+      if (existing) return; // already injected
+      const style = doc.createElement("style");
+      style.id = "__octapus_preview_style";
+      style.textContent = `
+        header[role="banner"], header, footer, [data-floating-actions] {
+          display: none !important;
+        }
+        #main { padding-top: 0 !important; }
+        html, body { overflow-x: hidden !important; }
+      `;
+      doc.head.appendChild(style);
+    } catch {
+      // Cross-origin or document unavailable — silently ignore
+    }
+  }, []);
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="mb-5">
-        <div className="text-eyebrow mb-1">{category.label}</div>
-        <h3 className="text-base font-semibold tracking-tight text-foreground leading-snug">
-          {item.label}
-        </h3>
-        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-          {item.description}
-        </p>
-      </div>
+    <div
+      ref={containerRef}
+      className="relative w-full h-full overflow-hidden rounded-xl border hairline bg-surface/30"
+      aria-hidden="true"
+    >
+      {/* Loading skeleton */}
+      <AnimatePresence>
+        {!loaded && (
+          <motion.div
+            key="skeleton"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.25 } }}
+            className="absolute inset-0 flex flex-col gap-3 p-6 pointer-events-none"
+          >
+            <div className="h-5 w-36 rounded-md bg-muted animate-pulse" />
+            <div className="h-3 w-full rounded bg-muted animate-pulse" />
+            <div className="h-3 w-4/5 rounded bg-muted animate-pulse" />
+            <div className="h-3 w-3/5 rounded bg-muted animate-pulse" />
+            <div className="mt-3 h-32 w-full rounded-xl bg-muted animate-pulse" />
+            <div className="h-3 w-full rounded bg-muted animate-pulse" />
+            <div className="h-3 w-2/3 rounded bg-muted animate-pulse" />
+            <div className="h-3 w-5/6 rounded bg-muted animate-pulse" />
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="h-20 rounded-lg bg-muted animate-pulse" />
+              <div className="h-20 rounded-lg bg-muted animate-pulse" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* CTA */}
-      <div className="mt-auto">
-        <Link
-          to={item.to as "/"}
-          onClick={onNavigate}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-        >
-          Explore {item.label}
-          <ArrowRight className="size-3.5" />
-        </Link>
+      {/* The actual page preview — pointer-events:none so it acts as a
+          read-only preview; scroll is driven by the wheel handler above */}
+      <iframe
+        ref={iframeRef}
+        src={src}
+        onLoad={handleLoad}
+        title={`${title} — page preview`}
+        tabIndex={-1}
+        className={cn(
+          "absolute inset-0 w-full h-full border-none transition-opacity duration-300",
+          loaded ? "opacity-100" : "opacity-0",
+        )}
+        style={{ pointerEvents: "none" }}
+      />
+
+      {/* Bottom fade + hint */}
+      <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-background/75 to-transparent pointer-events-none flex items-end px-4 pb-2">
+        <span className="text-eyebrow text-[9px] opacity-40 tracking-[0.2em]">
+          Scroll to explore · Click to open
+        </span>
       </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Mega-menu panel (desktop only)
+// MegaMenuPanel — left item list + right iframe preview
 // ---------------------------------------------------------------------------
 
 function MegaMenuPanel({
@@ -369,56 +216,44 @@ function MegaMenuPanel({
   onNavigate: () => void;
 }) {
   const [activeItem, setActiveItem] = useState<SubItem>(category.items[0]);
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Reset active item when category changes
+  // Reset to first item when the parent category switches
   useEffect(() => {
     setActiveItem(category.items[0]);
+    return () => {
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    };
   }, [category.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleHover = useCallback(
-    (item: SubItem) => {
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-      hoverTimerRef.current = setTimeout(() => {
-        setActiveItem(item);
-      }, 60);
-    },
-    [],
-  );
-
-  useEffect(
-    () => () => {
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-    },
-    [],
-  );
+  // Small hover delay avoids preview flickering when mouse passes quickly
+  const handleItemHover = useCallback((item: SubItem) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setActiveItem(item), 60);
+  }, []);
 
   return (
-    <div className="flex gap-0 min-h-[260px]">
+    <div className="flex gap-0 h-full">
       {/* LEFT — item list */}
-      <div className="w-56 flex-shrink-0 border-r hairline pr-5 flex flex-col gap-0.5">
+      <div className="w-52 flex-shrink-0 border-r hairline pr-4 flex flex-col gap-0.5 overflow-y-auto">
         {category.items.map((item) => {
           const isActive = item.id === activeItem.id;
           return (
-            <button
+            <Link
               key={item.id}
-              type="button"
-              onMouseEnter={() => handleHover(item)}
-              onClick={() => {
-                setActiveItem(item);
-              }}
+              to={item.to as "/"}
+              onMouseEnter={() => handleItemHover(item)}
+              onClick={onNavigate}
               className={cn(
-                "group w-full text-left rounded-lg px-3 py-2.5 transition-all duration-150",
-                "flex items-center justify-between gap-2",
+                "group flex items-center justify-between gap-2 rounded-lg px-3 py-2.5",
+                "text-sm font-medium leading-tight transition-all duration-150",
                 isActive
                   ? "bg-accent text-foreground"
                   : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
               )}
               aria-current={isActive ? "true" : undefined}
             >
-              <span className="text-sm font-medium leading-tight">
-                {item.label}
-              </span>
+              <span>{item.label}</span>
               <ChevronRight
                 className={cn(
                   "size-3.5 flex-shrink-0 transition-all duration-150",
@@ -427,29 +262,23 @@ function MegaMenuPanel({
                     : "text-muted-foreground opacity-0 group-hover:opacity-60",
                 )}
               />
-            </button>
+            </Link>
           );
         })}
       </div>
 
-      {/* RIGHT — contextual content */}
-      <div className="flex-1 pl-6 overflow-hidden">
+      {/* RIGHT — live iframe page preview */}
+      <div className="flex-1 pl-5 min-w-0 h-full">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeItem.id}
-            variants={rightVariants}
+            variants={previewVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             className="h-full"
           >
-            <div className="rounded-xl bg-surface/60 border hairline p-5 h-full">
-              <RightPanelContent
-                item={activeItem}
-                category={category}
-                onNavigate={onNavigate}
-              />
-            </div>
+            <IframePreview src={activeItem.to} title={activeItem.label} />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -458,7 +287,7 @@ function MegaMenuPanel({
 }
 
 // ---------------------------------------------------------------------------
-// Mobile nav accordion item
+// MobileCategory — accordion item for the Sheet drawer
 // ---------------------------------------------------------------------------
 
 function MobileCategory({
@@ -493,12 +322,12 @@ function MobileCategory({
             animate={{
               height: "auto",
               opacity: 1,
-              transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
+              transition: { duration: 0.22, ease: "easeOut" as const },
             }}
             exit={{
               height: 0,
               opacity: 0,
-              transition: { duration: 0.16, ease: [0.4, 0, 1, 1] },
+              transition: { duration: 0.16, ease: "easeIn" as const },
             }}
             className="overflow-hidden"
           >
@@ -523,68 +352,117 @@ function MobileCategory({
 }
 
 // ---------------------------------------------------------------------------
-// Main Nav component
+// Nav — main export
 // ---------------------------------------------------------------------------
 
 export function Nav() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
+  const [mobileOpen, setMobileOpen]         = useState(false);
+
+  const headerRef        = useRef<HTMLElement>(null);
+  const openTimerRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Stable ref to read latest activeCategory without re-creating callbacks
+  const activeCatRef     = useRef<Category | null>(null);
+  activeCatRef.current = activeCategory;
+
   const router = useRouter();
 
-  const closeMenu = useCallback(() => setActiveCategory(null), []);
+  // ── Helpers ──────────────────────────────────────────────────────────────
 
-  // Close on route change
+  const clearOpen  = () => { if (openTimerRef.current)  { clearTimeout(openTimerRef.current);  openTimerRef.current  = null; } };
+  const clearClose = () => { if (closeTimerRef.current) { clearTimeout(closeTimerRef.current); closeTimerRef.current = null; } };
+
+  const closeMenu = useCallback(() => {
+    clearOpen();
+    clearClose();
+    setActiveCategory(null);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Side-effects ─────────────────────────────────────────────────────────
+
+  // Close when the router navigates to a new page
   useEffect(() => {
     const unsub = router.subscribe("onLoad", closeMenu);
     return unsub;
   }, [router, closeMenu]);
 
-  // Close on Escape
+  // Escape key
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
-    };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeMenu(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [closeMenu]);
 
-  // Click-outside to close
-  useEffect(() => {
-    if (!activeCategory) return;
-    const handler = (e: MouseEvent) => {
-      if (
-        headerRef.current &&
-        !headerRef.current.contains(e.target as Node)
-      ) {
-        closeMenu();
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [activeCategory, closeMenu]);
+  // Cleanup timers on unmount
+  useEffect(() => () => { clearOpen(); clearClose(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleCategoryClick = (cat: Category) => {
-    setActiveCategory((prev) => (prev?.id === cat.id ? null : cat));
-  };
+  // ── Hover handlers ───────────────────────────────────────────────────────
+
+  /**
+   * Called when the mouse enters one of the four category buttons.
+   * - If the panel is already open → switch category immediately.
+   * - If the panel is closed → open after a 100 ms intent delay.
+   */
+  const handleCategoryEnter = useCallback((cat: Category) => {
+    clearClose();
+    if (activeCatRef.current) {
+      // Already open: instant switch, no animation gap
+      clearOpen();
+      setActiveCategory(cat);
+    } else {
+      // Closed: brief delay to avoid opening on accidental mouse pass-overs
+      clearOpen();
+      openTimerRef.current = setTimeout(() => {
+        setActiveCategory(cat);
+        openTimerRef.current = null;
+      }, 100);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Called when the mouse leaves the entire <header> element (which includes
+   * the mega-panel since it is a DOM child of <header>).
+   * Schedules a close with a 250 ms grace period so the user can move from
+   * the top bar into the panel without the menu closing.
+   */
+  const handleNavLeave = useCallback(() => {
+    clearOpen();
+    closeTimerRef.current = setTimeout(() => {
+      setActiveCategory(null);
+      closeTimerRef.current = null;
+    }, 250);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Called when the mouse re-enters the <header> area — cancels any pending
+   * close timer so the panel stays open.
+   */
+  const handleNavEnter = useCallback(() => {
+    clearClose();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Render ───────────────────────────────────────────────────────────────
 
   return (
     <header
       ref={headerRef}
       className="sticky top-0 z-50"
       role="banner"
+      onMouseEnter={handleNavEnter}
+      onMouseLeave={handleNavLeave}
     >
-      {/* ── Top bar ──────────────────────────────────────────── */}
+      {/* ── Top bar ─────────────────────────────────────────────────────── */}
       <div
         className={cn(
-          "border-b hairline bg-background/90 backdrop-blur-md transition-colors duration-150",
+          "border-b hairline bg-background/90 backdrop-blur-md transition-colors duration-200",
           activeCategory && "border-b-transparent",
         )}
       >
         <div className="container-page flex h-16 items-center justify-between">
           <Wordmark />
 
-          {/* Desktop nav */}
+          {/* Desktop primary nav */}
           <nav aria-label="Primary" className="hidden lg:flex items-center gap-1">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory?.id === cat.id;
@@ -593,11 +471,17 @@ export function Nav() {
                   key={cat.id}
                   type="button"
                   id={`nav-${cat.id}`}
+                  aria-haspopup="true"
                   aria-expanded={isActive}
-                  aria-controls={`mega-panel-${cat.id}`}
-                  onClick={() => handleCategoryClick(cat)}
+                  aria-controls="mega-menu-panel"
+                  onMouseEnter={() => handleCategoryEnter(cat)}
+                  onClick={() =>
+                    // Click also works as a toggle so keyboard / click users can close
+                    isActive ? closeMenu() : handleCategoryEnter(cat)
+                  }
                   className={cn(
-                    "relative inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm transition-all duration-150",
+                    "relative inline-flex items-center gap-1 px-3 py-2 rounded-lg",
+                    "text-sm transition-all duration-150 select-none",
                     isActive
                       ? "text-foreground bg-accent"
                       : "text-muted-foreground hover:text-foreground hover:bg-accent/60",
@@ -610,9 +494,9 @@ export function Nav() {
                       isActive && "rotate-180",
                     )}
                   />
-                  {/* Active indicator dot */}
+                  {/* Purple underline indicator when active */}
                   {isActive && (
-                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 size-1 rounded-full bg-primary" />
+                    <span className="absolute -bottom-[1px] left-1/2 -translate-x-1/2 h-0.5 w-5 bg-primary rounded-full" />
                   )}
                 </button>
               );
@@ -627,7 +511,7 @@ export function Nav() {
             </Button>
           </div>
 
-          {/* Mobile: hamburger */}
+          {/* Mobile: hamburger + Sheet */}
           <div className="flex lg:hidden items-center gap-1">
             <ThemeToggle />
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -639,17 +523,10 @@ export function Nav() {
                   aria-label={mobileOpen ? "Close menu" : "Open menu"}
                   aria-expanded={mobileOpen}
                 >
-                  {mobileOpen ? (
-                    <X className="size-5" />
-                  ) : (
-                    <Menu className="size-5" />
-                  )}
+                  {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
                 </button>
               </SheetTrigger>
-              <SheetContent
-                side="right"
-                className="w-full sm:w-[26rem] overflow-y-auto"
-              >
+              <SheetContent side="right" className="w-full sm:w-[26rem] overflow-y-auto">
                 <SheetHeader className="text-left">
                   <SheetTitle className="text-xl font-semibold tracking-tight">
                     Navigation
@@ -664,8 +541,8 @@ export function Nav() {
                     />
                   ))}
                 </div>
-                <div className="mt-6 flex flex-col gap-2 pt-4 border-t hairline">
-                  <Button asChild className="rounded-full">
+                <div className="mt-6 pt-4 border-t hairline">
+                  <Button asChild className="w-full rounded-full">
                     <Link to="/book" onClick={() => setMobileOpen(false)}>
                       Book a Strategy Call
                     </Link>
@@ -677,24 +554,42 @@ export function Nav() {
         </div>
       </div>
 
-      {/* ── Mega-menu panel ──────────────────────────────────── */}
-      <AnimatePresence mode="wait">
+      {/* ── Mega-menu panel ─────────────────────────────────────────────── */}
+      {/*
+        key="mega-panel" is intentionally FIXED so React reuses the same DOM
+        node across category switches. AnimatePresence only plays enter/exit
+        animations when activeCategory flips between null ↔ non-null.
+        Category switches are handled by the inner AnimatePresence (switchVariants).
+      */}
+      <AnimatePresence>
         {activeCategory && (
           <motion.div
-            key={activeCategory.id}
-            id={`mega-panel-${activeCategory.id}`}
+            key="mega-panel"
+            id="mega-menu-panel"
             role="region"
-            aria-label={`${activeCategory.label} menu`}
+            aria-label={`${activeCategory.label} navigation`}
             variants={panelVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute inset-x-0 top-full border-b hairline bg-background/95 backdrop-blur-md shadow-lg shadow-foreground/5"
+            className="absolute inset-x-0 top-full border-b hairline bg-background/97 backdrop-blur-md shadow-xl shadow-foreground/5"
           >
-            <div className="container-page py-6">
-              {/* Panel header */}
-              <div className="mb-5 flex items-center justify-between">
-                <div className="text-eyebrow">{activeCategory.label}</div>
+            <div className="container-page py-5">
+              {/* Panel header — label animates on category switch */}
+              <div className="mb-4 flex items-center justify-between">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={activeCategory.id + "-label"}
+                    variants={switchVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="text-eyebrow"
+                  >
+                    {activeCategory.label}
+                  </motion.span>
+                </AnimatePresence>
+
                 <button
                   type="button"
                   onClick={closeMenu}
@@ -705,21 +600,25 @@ export function Nav() {
                 </button>
               </div>
 
-              {/* Content area — animates on category switch */}
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={activeCategory.id}
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <MegaMenuPanel
-                    category={activeCategory}
-                    onNavigate={closeMenu}
-                  />
-                </motion.div>
-              </AnimatePresence>
+              {/* Panel body — fixed height keeps the layout stable.
+                  Inner content swaps with switchVariants on category change. */}
+              <div className="h-[clamp(380px,52vh,520px)]">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={activeCategory.id}
+                    variants={switchVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="h-full"
+                  >
+                    <MegaMenuPanel
+                      category={activeCategory}
+                      onNavigate={closeMenu}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </motion.div>
         )}
