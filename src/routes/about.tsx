@@ -58,9 +58,6 @@ function AboutPage() {
             Octapus partner with founders and operators who have outgrown disconnected tools. Instead of adding another SaaS to the stack, Octapus design the operating layer that the business actually needs — and Octapus operate it with you. Explore our <Link to="/services" className="text-primary underline underline-offset-4">services</Link> or the <Link to="/products" className="text-primary underline underline-offset-4">product ecosystem</Link>.
           </p>
           <p>Designed in the UAE. Built for the world.</p>
-          <div className="rounded-2xl border hairline p-6 text-sm bg-[var(--color-surface)]">
-            [OCTAPUS TO PROVIDE VERIFIED PROOF: team, founding date, licensed entity number, verified client references.]
-          </div>
         </div>
         <div className="mt-12 text-center">
           <Button asChild className="rounded-full"><Link to="/book">Book a strategy call</Link></Button>

@@ -28,7 +28,7 @@ function PrivacyPage() {
       <Section eyebrow="Legal" title="Privacy Policy">
         <div className="mx-auto max-w-3xl prose prose-neutral text-muted-foreground space-y-4">
           <p>This policy describes how Octapus L.L.C. collects, uses and protects information collected through this website and related services.</p>
-          <p>[OCTAPUS TO PROVIDE VERIFIED PROOF: final legal-reviewed privacy policy covering data collection, cookies, third-party processors, retention and rights.]</p>
+
         </div>
       </Section>
     </>
