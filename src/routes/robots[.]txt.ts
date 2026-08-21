@@ -8,7 +8,7 @@ export const Route = createFileRoute("/robots.txt")({
           "User-agent: *",
           "Allow: /",
           "",
-          "Sitemap: https://octapus-system-os.lovable.app/sitemap.xml",
+          "Sitemap: https://octapus.ae/sitemap.xml",
         ].join("\n");
         return new Response(body, { headers: { "Content-Type": "text/plain" } });
       },

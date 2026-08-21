@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import wordmarkAsset from "@/assets/octapus-wordmark.png.asset.json";
 
 export function Wordmark({ className, dark = false }: { className?: string; dark?: boolean }) {
   return (
@@ -14,7 +13,7 @@ export function Wordmark({ className, dark = false }: { className?: string; dark
       aria-label="Octapus — home"
     >
       <img
-        src={wordmarkAsset.url}
+        src="https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png"
         alt="Octapus"
         width={128}
         height={32}

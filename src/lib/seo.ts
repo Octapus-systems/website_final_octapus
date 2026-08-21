@@ -5,7 +5,7 @@
 
 export const SITE_NAME = "Octapus";
 export const SITE_TAGLINE = "Software, AI and Business Systems — UAE";
-export const SITE_URL = "https://octapus-system-os.lovable.app";
+export const SITE_URL = "https://octapus.ae";
 
 export function absoluteUrl(path: string) {
   if (!path) return SITE_URL;
