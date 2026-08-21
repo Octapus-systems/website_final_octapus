@@ -54,7 +54,7 @@ export const Route = createFileRoute("/api/public/contact")({
 
         // [OCTAPUS TO PROVIDE EMAIL PROVIDER]
         // Wire an email provider (Resend / SES / Postmark) here.
-        // For now we log the routed enquiry server-side so it's captured in logs.
+        // For now Octapus log the routed enquiry server-side so it's captured in logs.
         console.info("[octapus.contact]", {
           routedTo,
           enquiryType: enquiryLabels[data.enquiryType],

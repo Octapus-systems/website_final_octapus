@@ -294,7 +294,7 @@ export const industries = [
 ] as const;
 
 export const processStages = [
-  { name: "Discover", detail: "We map your operation, systems and constraints in plain language." },
+  { name: "Discover", detail: "Octapus map your operation, systems and constraints in plain language." },
   { name: "Plan", detail: "A clear scope, sequencing and definition of done — before code." },
   { name: "Design", detail: "Interfaces designed for the people who will actually use them." },
   { name: "Develop", detail: "Engineered in short cycles with reviews and measurable progress." },
@@ -370,15 +370,15 @@ export const testimonials = [
 
 export const faqs = [
   { q: "What does a software development company actually do?", a: "It turns a business process into working software: mapping how you operate today, designing the system, building and testing it, connecting it to the tools you already use, and keeping it running afterwards. At Octapus all of those steps sit inside one team rather than across several vendors." },
-  { q: "How is Octapus different from a traditional software agency?", a: "We stay with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors." },
+  { q: "How is Octapus different from a traditional software agency?", a: "Octapus stay with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors." },
   { q: "Why choose custom software instead of an off-the-shelf tool?", a: "Off-the-shelf tools are excellent for standard work. Custom software pays off where your process is the advantage — when you would otherwise pay for licences you do not need in order to work around the software you do." },
   { q: "How can AI improve business operations?", a: "AI helps in three places: answering questions on your own knowledge, extracting and routing documents, and running repeatable decisions with guardrails. OIS adds that intelligence over the systems you already run, and Hermes AI puts it in front of employees as an AI coworker." },
-  { q: "Do you build from scratch or extend existing systems?", a: "Both. We extend Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises." },
+  { q: "Do you build from scratch or extend existing systems?", a: "Both. Octapus extend Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises." },
   { q: "What is OIS and how is it different from a chatbot?", a: "OIS — the Octapus Intelligent System — is an intelligence layer, not a chat window. It connects your existing systems and data, then lets AI agents act on them with authorization and audit trails. A chatbot answers; OIS coordinates real business activity." },
   { q: "Will AI replace our employees?", a: "No. Hermes AI and OIS agents are designed to help people work smarter — removing search, chasing and repetitive steps so employees spend their time on judgement and customers." },
-  { q: "How much does an ERP or custom software project cost in the UAE?", a: "Cost depends on scope, integrations and data migration rather than headcount. We size projects after a discovery phase and agree a scope, sequence and definition of done before any code is written." },
+  { q: "How much does an ERP or custom software project cost in the UAE?", a: "Cost depends on scope, integrations and data migration rather than headcount. Octapus size projects after a discovery phase and agree a scope, sequence and definition of done before any code is written." },
   { q: "What does an engagement typically look like?", a: "Discover, plan, design, develop, integrate, launch, support, scale. Short cycles, working software every two weeks and a definition of done agreed before code." },
-  { q: "Where are you based and who do you serve?", a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. We work with startups and growing companies across the GCC and internationally." },
+  { q: "Where are you based and who do you serve?", a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. Octapus work with startups and growing companies across the GCC and internationally." },
   { q: "Do you offer ongoing support and monitoring?", a: "Yes. Operate is a first-class service — 24/7 monitoring, response and continuous improvement on the systems we build together." },
 ] as const;
 
@@ -413,7 +413,7 @@ export const disciplineTracks: DisciplineTrack[] = [
     title: "Engineering Intelligent Digital Systems",
     hero: "Engineering the systems that power modern businesses.",
     intro:
-      "Four disciplines build and run the operating layer of your company — engineering, business systems, AI & data and operate — with OIS adding intelligence on top of everything we connect.",
+      "Four disciplines build and run the operating layer of your company — engineering, business systems, AI & data and operate — with OIS adding intelligence on top of everything Octapus connect.",
     keywords: [
       "software development UAE",
       "enterprise software UAE",

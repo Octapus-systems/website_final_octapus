@@ -51,7 +51,7 @@ function TechnologyPage() {
       <TrackPage
         track={track}
         oisTitle="Engineering creates the foundation. OIS adds the intelligence."
-        oisBody="Custom software and architecture give the business a reliable operating layer. OIS sits on top of the systems we connect, so authorized AI agents can read, reason and act inside them — without replacing anything."
+        oisBody="Custom software and architecture give the business a reliable operating layer. OIS sits on top of the systems Octapus connect, so authorized AI agents can read, reason and act inside them — without replacing anything."
         oisChain={[
           "Custom software",
           "Architecture and integration",
@@ -60,13 +60,13 @@ function TechnologyPage() {
           "Smarter business systems",
         ]}
         approach={[
-          { k: "Discovery first", v: "We map the operation, systems and constraints before scope or code." },
+          { k: "Discovery first", v: "Octapus map the operation, systems and constraints before scope or code." },
           { k: "Short cycles", v: "Working software every two weeks with a definition of done agreed up front." },
           { k: "Operated after launch", v: "The engineers who built the system monitor, support and scale it." },
         ]}
         related={[
           { to: "/marketing", label: "Octapus Marketing", detail: "The presence and growth side of the same ecosystem." },
-          { to: "/ois", label: "OIS", detail: "The intelligence layer connecting every system we build." },
+          { to: "/ois", label: "OIS", detail: "The intelligence layer connecting every system Octapus build." },
           { to: "/products", label: "Products", detail: "ERP, CRM, automation and AI systems already shipped." },
         ]}
       />

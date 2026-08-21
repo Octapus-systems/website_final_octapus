@@ -29,7 +29,7 @@ function BlogPage() {
       }} />
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }])} />
 
-      <Section eyebrow="Blog" titleAs="h1" title="Field Notes From the Team Building Connected Systems." intro="We publish infrequently — when we have something specific and useful to say about software, AI and running real operations.">
+      <Section eyebrow="Blog" titleAs="h1" title="Field Notes From the Team Building Connected Systems." intro="Octapus publish infrequently — when Octapus have something specific and useful to say about software, AI and running real operations.">
         <div className="mx-auto max-w-2xl text-center">
           <div className="rounded-2xl border hairline p-8 bg-[var(--color-surface)] text-muted-foreground">
             [OCTAPUS TO PROVIDE VERIFIED PROOF: initial articles, author bylines and publication dates.]
@@ -45,7 +45,7 @@ function BlogPage() {
         items={[
           { to: "/products", label: "Products", detail: "See the systems Octapus builds and operates today." },
           { to: "/ois", label: "OIS", detail: "The Octapus vision for one intelligent layer across your business." },
-          { to: "/about", label: "About", detail: "Who Octapus is and how we work with growing companies." },
+          { to: "/about", label: "About", detail: "Who Octapus is and how Octapus work with growing companies." },
         ]}
       />
     </>

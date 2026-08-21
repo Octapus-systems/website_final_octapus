@@ -105,7 +105,7 @@ function EngineeringPage() {
         items={[
           { to: "/studios", label: "Octapus Studios", detail: "The creative division that builds your reputation." },
           { to: "/technology", label: "Technology", detail: "The full technology pathway and disciplines." },
-          { to: "/ois", label: "OIS", detail: "The intelligence layer connecting every system we build." },
+          { to: "/ois", label: "OIS", detail: "The intelligence layer connecting every system Octapus build." },
         ]}
       />
     </>

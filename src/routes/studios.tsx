@@ -25,7 +25,7 @@ export const Route = createFileRoute("/studios")({
 });
 
 const way = [
-  { k: "Positioning first", v: "We define what you should be known for before producing a single asset." },
+  { k: "Positioning first", v: "Octapus define what you should be known for before producing a single asset." },
   { k: "Systems, not one-offs", v: "Every identity ships with rules, templates and a calendar the team can run." },
   { k: "Measured creative", v: "Work is judged on reach, response and reputation — not applause." },
 ];
@@ -93,7 +93,7 @@ function StudiosPage() {
         </div>
       </Section>
 
-      <Section eyebrow="How we work" title="Reputation is built, not bought." className="!pt-0">
+      <Section eyebrow="How Octapus work" title="Reputation is built, not bought." className="!pt-0">
         <div className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden md:grid-cols-3">
           {way.map((a) => (
             <div key={a.k} className="bg-background p-7">
@@ -106,7 +106,7 @@ function StudiosPage() {
 
       <OisConnection
         title="Creative that stays connected to the operation."
-        body="Campaigns, content and enquiries feed back into the systems we build, so OIS can show what demand actually turned into — and where reputation is compounding."
+        body="Campaigns, content and enquiries feed back into the systems Octapus build, so OIS can show what demand actually turned into — and where reputation is compounding."
         chain={["Brand and content", "Campaigns", "CRM and systems", "OIS intelligence layer", "Growth you can explain"]}
       />
 
@@ -115,7 +115,7 @@ function StudiosPage() {
 
         eyebrow="Start here"
         title="Start a Studios Project."
-        intro="Tell us what you want to be known for. We'll come back with a positioning read and a suggested first move."
+        intro="Tell us what you want to be known for. Octapus'll come back with a positioning read and a suggested first move."
         className="!pt-0"
       >
         <div className="grid gap-8 lg:grid-cols-12">
@@ -126,7 +126,7 @@ function StudiosPage() {
             <div className="rounded-2xl border hairline bg-[var(--color-surface)] p-6">
               <div className="text-eyebrow mb-2">What happens next</div>
               <ol className="space-y-2 list-decimal pl-4">
-                <li>We read your brief and check the market position.</li>
+                <li>Octapus read your brief and check the market position.</li>
                 <li>A 30-minute call to test the direction.</li>
                 <li>A scoped creative plan with timeline and cost.</li>
               </ol>

@@ -8,7 +8,7 @@ import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 
 export const Route = createFileRoute("/industries")({
   head: () => buildMeta({
-    title: "Industries We Serve — Software, ERP, CRM and AI Across 12+ Sectors",
+    title: "Industries Octapus Serve — Software, ERP, CRM and AI Across 12+ Sectors",
     description: "Octapus builds software, ERP, CRM and AI systems for construction, healthcare, retail, education, finance, manufacturing, hospitality, real estate, logistics, e-commerce and professional services.",
     path: "/industries",
     ogType: "website",
@@ -36,7 +36,7 @@ function IndustriesPage() {
         eyebrow="Industries"
         title="Sectors Where Octapus Systems Already Run."
         titleAs="h1"
-        intro="We describe what we actually do rather than pretend equal expertise everywhere. Regulated industries receive extra diligence before we take on the work."
+        intro="Octapus describe what Octapus actually do rather than pretend equal expertise everywhere. Regulated industries receive extra diligence before Octapus take on the work."
       />
       <Section className="!pt-0">
         <div className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden grid-cols-2 md:grid-cols-3">
@@ -72,7 +72,7 @@ function IndustriesPage() {
         title="Connect the industry to a system."
         items={[
           { to: "/products", label: "Products", detail: "ERP, CRM, AI and custom systems already delivered across sectors." },
-          { to: "/technology", label: "Technology", detail: "How we design, build and operate systems for your sector." },
+          { to: "/technology", label: "Technology", detail: "How Octapus design, build and operate systems for your sector." },
           { to: "/ois", label: "OIS", detail: "The intelligence layer applied to your sector's data and workflows." },
         ]}
       />
