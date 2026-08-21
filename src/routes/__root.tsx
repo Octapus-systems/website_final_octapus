@@ -10,7 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
@@ -44,7 +43,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    // Optional: Log error to a custom reporting service
   }, [error]);
 
   return (
@@ -88,10 +87,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Octapus — Software, AI and business systems in the UAE" },
       { name: "twitter:description", content: "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies." },
-      // Search Console verification placeholder
       { name: "google-site-verification", content: "[SEARCH_CONSOLE_VERIFICATION_CODE]" },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/910ce847-d84e-4134-8dd2-65b1919fb348/id-preview-f2c2bb6d--375772ad-df7a-4bec-842f-d77f935cfab9.lovable.app-1784739488902.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/910ce847-d84e-4134-8dd2-65b1919fb348/id-preview-f2c2bb6d--375772ad-df7a-4bec-842f-d77f935cfab9.lovable.app-1784739488902.png" },
+      { property: "og:image", content: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png" },
+      { name: "twitter:image", content: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -174,8 +172,8 @@ function RootComponent() {
             "@type": "Organization",
             name: site.legalName,
             alternateName: site.name,
-            url: "https://octapus-system-os.lovable.app/",
-            logo: "https://octapus-system-os.lovable.app/favicon.ico",
+            url: "https://octapus.ae/",
+            logo: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
             email: site.emails.info,
             telephone: site.phones.general,
             address: [
@@ -196,10 +194,10 @@ function RootComponent() {
           {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            "@id": "https://octapus-system-os.lovable.app/#localbusiness",
+            "@id": "https://octapus.ae/#localbusiness",
             name: site.legalName,
-            url: "https://octapus-system-os.lovable.app/",
-            image: "https://octapus-system-os.lovable.app/favicon.ico",
+            url: "https://octapus.ae/",
+            image: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
             telephone: site.phones.general,
             email: site.emails.info,
             areaServed: ["AE", "GCC"],

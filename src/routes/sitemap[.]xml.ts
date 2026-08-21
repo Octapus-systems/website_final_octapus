@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { products } from "@/lib/site";
 
-const BASE_URL = "https://octapus-system-os.lovable.app";
+const BASE_URL = "https://octapus.ae";
 
 const staticPaths = [
   "/", "/engineering", "/studios", "/technology", "/marketing", "/products", "/services", "/industries", "/about",
