@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { OisConnection } from "@/components/site/OisConnection";
 import { ProductsShowcase } from "@/components/site/ProductsShowcase";
-import { products } from "@/lib/site";
+import { products, hiddenProductSlugs } from "@/lib/site";
 import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -24,8 +24,7 @@ export const Route = createFileRoute("/products/")({
 function ProductsIndex() {
   const [view, setView] = useState<"list" | "bento">("list");
 
-  const hiddenSlugs = ["buy", "blueprint", "icon", "mr-crm", "oprate"];
-  const visibleProducts = products.filter(p => !hiddenSlugs.includes(p.slug));
+  const visibleProducts = products.filter(p => !hiddenProductSlugs.includes(p.slug));
 
   return (
     <>
@@ -105,7 +104,7 @@ function ProductsIndex() {
           "CRM — OIS understands customer information and workflow",
           "ERP — OIS helps employees reach business intelligence",
           "Automation — OIS coordinates intelligent workflows",
-          "Hermes AI — the first AI coworker inside OIS",
+          "Horus AI — the first AI coworker inside OIS",
         ]}
       />
 

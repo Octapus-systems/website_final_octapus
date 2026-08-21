@@ -4,9 +4,11 @@ import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
 import { ProductsShowcase } from "@/components/site/ProductsShowcase";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
-import { site, products } from "@/lib/site";
+import { site, products, hiddenProductSlugs } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
+
+const visibleProducts = products.filter(p => !hiddenProductSlugs.includes(p.slug));
 
 export const Route = createFileRoute("/")(  {
   head: () => ({
@@ -40,7 +42,7 @@ function Home() {
           "@context": "https://schema.org",
           "@type": "ItemList",
           name: "Octapus Products",
-          itemListElement: products.slice(0, 8).map((p, i) => ({
+          itemListElement: visibleProducts.slice(0, 8).map((p, i) => ({
             "@type": "ListItem",
             position: i + 1,
             url: `/products/${p.slug}`,
@@ -58,7 +60,7 @@ function Home() {
       {/* ── Our Products ── */}
       <Section title="Our Products">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((p) => (
+          {visibleProducts.map((p) => (
             <Link
               key={p.slug}
               to="/products/$slug"

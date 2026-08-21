@@ -147,7 +147,7 @@ function ProductPage() {
           eyebrow="Enhanced with OIS"
           title={`${p.name}, with the OIS intelligence layer.`}
           body={productOisNotes[p.slug]}
-          chain={[`${p.name}`, "OIS intelligence layer", "AI agents (Hermes AI first)", "People and business actions"]}
+          chain={[`${p.name}`, "OIS intelligence layer", "AI agents (Horus AI first)", "People and business actions"]}
         />
       ) : null}
 

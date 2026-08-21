@@ -47,7 +47,6 @@ const COMPANY_ITEMS: SubItem[] = [
 const PRODUCTS_ITEMS: SubItem[] = [
   { id: "all-products", label: "All Products",              to: "/products" },
   { id: "obms-erp",     label: PM.get("obms-erp")?.name  ?? "O.B.M.S ERP", to: "/products/obms-erp" },
-  { id: "mr-crm",       label: PM.get("mr-crm")?.name    ?? "MR. CRM",     to: "/products/mr-crm" },
   { id: "custom-ai",    label: PM.get("custom-ai")?.name ?? "Custom AI",   to: "/products/custom-ai" },
   { id: "ois",          label: "OIS",                       to: "/ois" },
 ];
@@ -226,9 +225,13 @@ function IframePreview({
 function MegaMenuPanel({
   category,
   onNavigate,
+  isScrollIdle,
+  onClose,
 }: {
   category: Category;
   onNavigate: () => void;
+  isScrollIdle?: boolean;
+  onClose?: () => void;
 }) {
   const [activeItem, setActiveItem] = useState<SubItem>(category.items[0]);
   const hoverTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -289,22 +292,38 @@ function MegaMenuPanel({
 
       {/* RIGHT — live iframe page preview */}
       <div className="flex-1 pl-5 min-w-0 h-full">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={activeItem.id}
-            variants={previewVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="h-full"
-          >
-            <IframePreview
-              src={activeItem.to}
-              title={activeItem.label}
-              onPreviewClick={handlePreviewClick}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div className="relative w-full h-full">
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close navigation panel"
+              className={cn(
+                "absolute top-2 left-1/2 -translate-x-1/2 z-50",
+                "inline-flex size-10 items-center justify-center rounded-full bg-background/80 backdrop-blur-md border hairline shadow-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-300",
+                isScrollIdle ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+              )}
+            >
+              <X className="size-5" />
+            </button>
+          )}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeItem.id}
+              variants={previewVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="h-full"
+            >
+              <IframePreview
+                src={activeItem.to}
+                title={activeItem.label}
+                onPreviewClick={handlePreviewClick}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
@@ -376,12 +395,46 @@ function MobileCategory({
 }
 
 // ---------------------------------------------------------------------------
+// Scroll Idle Hook (hides close button on scroll)
+// ---------------------------------------------------------------------------
+
+function usePanelScrollIdle(active: boolean, delay = 500) {
+  const [idle, setIdle] = useState(true);
+
+  useEffect(() => {
+    if (!active) {
+      setIdle(true);
+      return;
+    }
+    
+    let timer: ReturnType<typeof setTimeout>;
+    const onActivity = () => {
+      setIdle(false);
+      clearTimeout(timer);
+      timer = setTimeout(() => setIdle(true), delay);
+    };
+
+    window.addEventListener("wheel", onActivity, { passive: true, capture: true });
+    window.addEventListener("touchmove", onActivity, { passive: true, capture: true });
+    
+    return () => {
+      window.removeEventListener("wheel", onActivity, { capture: true });
+      window.removeEventListener("touchmove", onActivity, { capture: true });
+      clearTimeout(timer);
+    };
+  }, [active, delay]);
+
+  return idle;
+}
+
+// ---------------------------------------------------------------------------
 // Nav — main export
 // ---------------------------------------------------------------------------
 
 export function Nav() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [mobileOpen, setMobileOpen]         = useState(false);
+  const isScrollIdle = usePanelScrollIdle(!!activeCategory);
 
   const headerRef     = useRef<HTMLElement>(null);
   const openTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -604,7 +657,7 @@ export function Nav() {
             {/* Inner layout: flex-col so the preview fills all remaining space */}
             <div className="container-page h-full flex flex-col py-5">
               {/* Panel header — category label animates on switch */}
-              <div className="mb-4 flex items-center justify-between flex-shrink-0">
+              <div className="mb-4 flex items-center flex-shrink-0">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
                     key={activeCategory.id + "-label"}
@@ -617,15 +670,6 @@ export function Nav() {
                     {activeCategory.label}
                   </motion.span>
                 </AnimatePresence>
-
-                <button
-                  type="button"
-                  onClick={closeMenu}
-                  aria-label="Close navigation panel"
-                  className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                >
-                  <X className="size-4" />
-                </button>
               </div>
 
               {/*
@@ -645,6 +689,8 @@ export function Nav() {
                     <MegaMenuPanel
                       category={activeCategory}
                       onNavigate={closeMenu}
+                      isScrollIdle={isScrollIdle}
+                      onClose={closeMenu}
                     />
                   </motion.div>
                 </AnimatePresence>

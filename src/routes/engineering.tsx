@@ -97,7 +97,7 @@ function EngineeringPage() {
       <OisConnection
         title="Engineering builds the machine. OIS keeps it aware."
         body="Once the systems are built and connected, OIS sits on top of them so authorized AI agents can read, reason and act inside your operation — without replacing anything already working."
-        chain={["Custom software", "Integrations", "OIS intelligence layer", "Hermes AI", "A tuned operation"]}
+        chain={["Custom software", "Integrations", "OIS intelligence layer", "Horus AI", "A tuned operation"]}
       />
 
       <RelatedLinks

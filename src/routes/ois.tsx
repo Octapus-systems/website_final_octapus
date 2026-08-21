@@ -17,7 +17,7 @@ export const Route = createFileRoute("/ois")({
     path: "/ois",
     ogType: "article",
     image: oisImg,
-    keywords: ["OIS", "Octapus Intelligence System", "AI employees", "AI workforce", "AI agents UAE", "business AI UAE", "AI automation", "Hermes AI"],
+    keywords: ["OIS", "Octapus Intelligence System", "AI employees", "AI workforce", "AI agents UAE", "business AI UAE", "AI automation", "Horus AI"],
   }),
 
   component: OIS,

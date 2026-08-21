@@ -169,8 +169,8 @@ export const products: Product[] = [
     tags: ["AI", "Platform"],
   },
   {
-    slug: "hermes-ai",
-    name: "Hermes AI",
+    slug: "horus-ai",
+    name: "Horus AI",
     headline: "The AI coworker powered by OIS.",
     customer: "Teams that lose hours to finding information and chasing status.",
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
@@ -251,6 +251,8 @@ export const products: Product[] = [
     tags: ["Automation", "AI"],
   },
 ];
+
+export const hiddenProductSlugs = ["buy", "blueprint", "icon", "mr-crm", "oprate", "algorithem"];
 
 
 export const services = [
@@ -372,10 +374,10 @@ export const faqs = [
   { q: "What does a software development company actually do?", a: "It turns a business process into working software: mapping how you operate today, designing the system, building and testing it, connecting it to the tools you already use, and keeping it running afterwards. At Octapus all of those steps sit inside one team rather than across several vendors." },
   { q: "How is Octapus different from a traditional software agency?", a: "Octapus stay with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors." },
   { q: "Why choose custom software instead of an off-the-shelf tool?", a: "Off-the-shelf tools are excellent for standard work. Custom software pays off where your process is the advantage — when you would otherwise pay for licences you do not need in order to work around the software you do." },
-  { q: "How can AI improve business operations?", a: "AI helps in three places: answering questions on your own knowledge, extracting and routing documents, and running repeatable decisions with guardrails. OIS adds that intelligence over the systems you already run, and Hermes AI puts it in front of employees as an AI coworker." },
+  { q: "How can AI improve business operations?", a: "AI helps in three places: answering questions on your own knowledge, extracting and routing documents, and running repeatable decisions with guardrails. OIS adds that intelligence over the systems you already run, and Horus AI puts it in front of employees as an AI coworker." },
   { q: "Do you build from scratch or extend existing systems?", a: "Both. Octapus extend Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises." },
   { q: "What is OIS and how is it different from a chatbot?", a: "OIS — the Octapus Intelligent System — is an intelligence layer, not a chat window. It connects your existing systems and data, then lets AI agents act on them with authorization and audit trails. A chatbot answers; OIS coordinates real business activity." },
-  { q: "Will AI replace our employees?", a: "No. Hermes AI and OIS agents are designed to help people work smarter — removing search, chasing and repetitive steps so employees spend their time on judgement and customers." },
+  { q: "Will AI replace our employees?", a: "No. Horus AI and OIS agents are designed to help people work smarter — removing search, chasing and repetitive steps so employees spend their time on judgement and customers." },
   { q: "How much does an ERP or custom software project cost in the UAE?", a: "Cost depends on scope, integrations and data migration rather than headcount. Octapus size projects after a discovery phase and agree a scope, sequence and definition of done before any code is written." },
   { q: "What does an engagement typically look like?", a: "Discover, plan, design, develop, integrate, launch, support, scale. Short cycles, working software every two weeks and a definition of done agreed before code." },
   { q: "Where are you based and who do you serve?", a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. Octapus work with startups and growing companies across the GCC and internationally." },
@@ -530,7 +532,7 @@ export const productOisNotes: Record<string, string> = {
   "odoo-custom-erp": "OIS layers intelligence over Odoo without changing the modules you rely on.",
   "erp-implementation": "OIS shortens adoption by answering process questions during and after rollout.",
   "custom-ai": "Custom AI systems are delivered on the OIS platform, with authorization and audit trails.",
-  "hermes-ai": "Hermes AI is the first AI coworker inside the OIS ecosystem — powered by OIS, never above it.",
+  "horus-ai": "Horus AI is the first AI coworker inside the OIS ecosystem — powered by OIS, never above it.",
   "outreach": "OIS scores and prioritizes leads using the context already inside your systems.",
   "oprate": "OIS surfaces operational exceptions before they reach the customer.",
   "blueprint": "OIS connects project data, documents and progress into one answerable view.",
