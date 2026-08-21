@@ -34,9 +34,7 @@ function BookPage() {
 
       <Section titleAs="h1" eyebrow="Strategy call" title="Thirty Focused Minutes With the Octapus Team." intro="30 minutes. No obligation. Octapus listen, ask precise questions and share what Octapus'd recommend.">
         <div className="mx-auto max-w-2xl rounded-2xl border hairline bg-[var(--color-surface)] p-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            [OCTAPUS TO PROVIDE VERIFIED PROOF: embed the actual scheduling tool (Cal.com, Calendly, HubSpot) here once selected.]
-          </p>
+
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="rounded-full">
               <a href={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}>Email {site.emails.sales}</a>

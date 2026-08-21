@@ -27,7 +27,7 @@ function TermsPage() {
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Terms of Service", path: "/terms" }])} />
       <Section eyebrow="Legal" title="Terms of Service">
         <div className="mx-auto max-w-3xl text-muted-foreground space-y-4">
-          <p>[OCTAPUS TO PROVIDE VERIFIED PROOF: final terms of service reviewed by counsel in the UAE.]</p>
+
         </div>
       </Section>
     </>
