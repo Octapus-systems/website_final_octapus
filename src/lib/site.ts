@@ -53,7 +53,8 @@ export const site = {
   tagline: "The Final Software Destination",
   subTagline: "The systems behind your business. Connected.",
   origin: "Designed in the UAE — Built for the world.",
-  oisExternalUrl: "https://new-website-octapus.vercel.app/",
+  oisExternalUrl: "https://obms.erp.octapus.ae/",
+  horusExternalUrl: "https://horus.octapus.ae/",
 
   emails: {
     sales: "sales@octapus.ae",
@@ -109,7 +110,7 @@ export const products: Product[] = [
     problem: "Numbers live in different places and never agree.",
     outcome: "A single ledger for accounting, inventory, HR and reporting — with roles, approvals and audit trails.",
     image: productErpImg,
-    externalUrl: "https://new-website-octapus.vercel.app/",
+    externalUrl: "https://obms.erp.octapus.ae/",
     tags: ["ERP", "Finance", "Operations"],
   },
 
@@ -175,6 +176,7 @@ export const products: Product[] = [
     customer: "Teams that lose hours to finding information and chasing status.",
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome: "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
+    externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
   },
   {
