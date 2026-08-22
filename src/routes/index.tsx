@@ -4,13 +4,15 @@ import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
 import { ProductsShowcase } from "@/components/site/ProductsShowcase";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
-import { site, products, hiddenProductSlugs } from "@/lib/site";
+import { site, products, hiddenProductSlugs, capabilities, stats, testimonials } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+
+import TestimonialsV2 from "@/components/ui/testimonial-v2";
 
 const visibleProducts = products.filter(p => !hiddenProductSlugs.includes(p.slug));
 
-export const Route = createFileRoute("/")(  {
+export const Route = createFileRoute("/")({
   head: () => ({
     ...buildMeta({
       title: "Octapus — Custom Software, AI Systems and Digital Platforms",
@@ -55,10 +57,54 @@ function Home() {
       {/* ── Hero scroll video ── */}
       <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
 
+      {/* ── 1. Value Proposition (Tagline) ── */}
+      <Section className="py-24 md:py-32 bg-background">
+        <div className="mx-auto max-w-4xl text-center">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-7xl font-medium tracking-tight text-foreground leading-[1.1]">
+            Software that becomes the <span className="text-primary">spine</span> of your operation.
+          </h1>
+          <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            We don't just write code. We forge the systems that connect your people, process, and data—designed in the UAE and built for scale.
+          </p>
+        </div>
+      </Section>
 
+      {/* ── 2. Capabilities ── */}
+      <Section title="What we do" className="bg-surface dark:bg-surface-dark border-y border-hairline">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+          {capabilities.map((cap, idx) => (
+            <div key={idx} className="flex flex-col items-center text-center p-6 rounded-2xl bg-background border border-hairline hover:border-primary/30 transition-colors">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <CheckCircle2 className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">{cap.verb}</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{cap.detail}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
 
-      {/* ── Our Products ── */}
-      <Section title="Our Products">
+      {/* ── 3. Statistics (Trust) ── */}
+      <Section className="py-20 bg-background">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12 max-w-5xl mx-auto text-center">
+          {stats.map((stat, idx) => (
+            <div key={idx} className="space-y-2">
+              <div className="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                {stat.value}
+              </div>
+              <div className="text-sm font-semibold tracking-wide uppercase text-primary">
+                {stat.label}
+              </div>
+              <p className="text-sm text-muted-foreground max-w-[200px] mx-auto">
+                {stat.detail}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── 4. Our Products (Existing Grid) ── */}
+      <Section title="Our Products" intro="The specialized systems we've built to solve complex business problems." className="bg-surface dark:bg-surface-dark border-y border-hairline">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {visibleProducts.map((p) => (
             <Link
@@ -80,6 +126,32 @@ function Home() {
         </div>
       </Section>
 
+      {/* ── 5. Testimonials ── */}
+      <Section title="Built for impact" intro="Don't just take our word for it." className="bg-background">
+        <TestimonialsV2 />
+      </Section>
+
+      {/* ── 6. Final CTA ── */}
+      <Section className="bg-surface dark:bg-surface-dark border-t border-hairline">
+        <div className="mx-auto max-w-3xl text-center flex flex-col items-center">
+          <h2 className="text-3xl md:text-5xl font-display font-semibold tracking-tight text-foreground mb-6">
+            Ready to upgrade your operation?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-10 max-w-xl">
+            Let's discuss how custom software and intelligent systems can transform the way you do business.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button asChild size="lg" className="rounded-full px-8">
+              <Link to="/book">
+                Book a strategy call <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+              <Link to="/contact">Contact sales</Link>
+            </Button>
+          </div>
+        </div>
+      </Section>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
 import FluidFlowGrid from "@/components/ui/fluid-flow-grid";
+import BentoCard from "@/components/ui/bento-card";
 import { Container, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/site/JsonLd";
@@ -122,11 +123,11 @@ function ProductPage() {
           {!isObms && (
             <div className="lg:col-span-6">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border hairline bg-[var(--color-surface)]">
-                {p.image ? (
+                {p.image && !['custom-ai', 'custom-business-solutions'].includes(p.slug) ? (
                   <img src={p.image} alt={`${p.name} interface preview`} loading="lazy" className="size-full object-cover" />
                 ) : (
-                  <div className="absolute inset-0 grid-canvas grid place-items-center">
-                    <div className="text-eyebrow">{p.name}</div>
+                  <div className="absolute inset-0 bg-muted/20 grid place-items-center">
+                    <BentoCard />
                   </div>
                 )}
               </div>
@@ -146,21 +147,7 @@ function ProductPage() {
       ) : null}
 
 
-      <Section className="!pt-0">
-        <div className="mx-auto max-w-4xl grid gap-8 md:grid-cols-3">
-          {[
-            { k: "Customer", v: p.customer },
-            { k: "Problem", v: p.problem },
-            { k: "Outcome", v: p.outcome },
-          ].map((row) => (
-            <div key={row.k} className="rounded-2xl border hairline bg-background p-6">
-              <div className="text-eyebrow mb-2">{row.k}</div>
-              <p className="text-sm leading-relaxed">{row.v}</p>
-            </div>
-          ))}
-        </div>
 
-      </Section>
 
       {productOisNotes[p.slug] ? (
         <OisConnection
