@@ -103,7 +103,7 @@ ${data.description}
           receivedAt: new Date().toISOString(),
         });
 
-        return new Response(JSON.stringify({ ok: true, routedTo }), {
+        return new Response(JSON.stringify({ ok: true }), {
           headers: { "Content-Type": "application/json" },
         });
       },

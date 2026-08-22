@@ -86,8 +86,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies." },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Octapus — Software, AI and business systems in the UAE" },
-      { name: "twitter:description", content: "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies." },
-      { name: "google-site-verification", content: "[SEARCH_CONSOLE_VERIFICATION_CODE]" },
       { property: "og:image", content: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png" },
       { name: "twitter:image", content: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png" },
     ],
@@ -99,9 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" } as unknown as Record<string, string>,
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Epilogue:wght@400;500;600&display=swap" },
-
     ],
-
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -128,13 +124,7 @@ function RootShell({ children }: { children: ReactNode }) {
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`,
           }}
         />
-        {/* GTM (replace [GTM_CONTAINER_ID] with real container) */}
-        <script
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){if(i==='[GTM_CONTAINER_ID]')return;w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','[GTM_CONTAINER_ID]');`,
-          }}
-        />
+
       </head>
       <body>
         {children}

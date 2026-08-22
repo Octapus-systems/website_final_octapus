@@ -14,7 +14,8 @@ type EventName =
   | "email_click"
   | "support_request"
   | "career_apply"
-  | "product_engagement";
+  | "product_engagement"
+  | "horus_external_click";
 
 declare global {
   interface Window {
