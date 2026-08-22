@@ -149,7 +149,7 @@ const TestimonialsColumn = (props: {
 export default function TestimonialsV2() {
   return (
     <div 
-      className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[500px] overflow-hidden w-full"
+      className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[300px] overflow-hidden w-full"
       role="region"
       aria-label="Scrolling Testimonials"
     >
