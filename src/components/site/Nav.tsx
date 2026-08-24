@@ -5,13 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "./Wordmark";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { products } from "@/lib/site";
 
@@ -38,36 +32,36 @@ type Category = {
 const PM = new Map(products.map((p) => [p.slug, p]));
 
 const COMPANY_ITEMS: SubItem[] = [
-  { id: "about",   label: "About",   to: "/about" },
-  { id: "team",    label: "Team",    to: "/team" },
+  { id: "about", label: "About", to: "/about" },
+  { id: "team", label: "Team", to: "/team" },
   { id: "careers", label: "Careers", to: "/careers" },
   { id: "contact", label: "Contact", to: "/contact" },
 ];
 
 const PRODUCTS_ITEMS: SubItem[] = [
-  { id: "all-products", label: "All Products",              to: "/products" },
-  { id: "obms-erp",     label: PM.get("obms-erp")?.name  ?? "O.B.M.S ERP", to: "/products/obms-erp" },
-  { id: "custom-ai",    label: PM.get("custom-ai")?.name ?? "Custom AI",   to: "/products/custom-ai" },
-  { id: "ois",          label: "OIS",                       to: "/ois" },
+  { id: "all-products", label: "All Products", to: "/products" },
+  { id: "obms-erp", label: PM.get("obms-erp")?.name ?? "O.B.M.S ERP", to: "/products/obms-erp" },
+  { id: "custom-ai", label: PM.get("custom-ai")?.name ?? "Custom AI", to: "/products/custom-ai" },
+  { id: "ois", label: "OIS", to: "/ois" },
 ];
 
 const SOLUTIONS_ITEMS: SubItem[] = [
-  { id: "engineering",   label: "Engineering",   to: "/engineering" },
-  { id: "studios",       label: "Studios",       to: "/studios" },
-  { id: "technology",    label: "Technology",    to: "/technology" },
-  { id: "marketing",     label: "Marketing",     to: "/marketing" },
+  { id: "engineering", label: "Engineering", to: "/engineering" },
+  { id: "studios", label: "Studios", to: "/studios" },
+  { id: "technology", label: "Technology", to: "/technology" },
+  { id: "marketing", label: "Marketing", to: "/marketing" },
   { id: "all-solutions", label: "All Solutions", to: "/services" },
 ];
 
 const RESOURCES_ITEMS: SubItem[] = [
   { id: "industries", label: "Industries", to: "/industries" },
-  { id: "blog",       label: "Blog",       to: "/blog" },
-  { id: "support",    label: "Support",    to: "/support" },
+  { id: "blog", label: "Blog", to: "/blog" },
+  { id: "support", label: "Support", to: "/support" },
 ];
 
 const CATEGORIES: Category[] = [
-  { id: "company",   label: "Company",   items: COMPANY_ITEMS },
-  { id: "products",  label: "Products",  items: PRODUCTS_ITEMS },
+  { id: "company", label: "Company", items: COMPANY_ITEMS },
+  { id: "products", label: "Products", items: PRODUCTS_ITEMS },
   { id: "solutions", label: "Solutions", items: SOLUTIONS_ITEMS },
   { id: "resources", label: "Resources", items: RESOURCES_ITEMS },
 ];
@@ -79,19 +73,19 @@ const CATEGORIES: Category[] = [
 const panelVariants = {
   hidden: { opacity: 0, y: -8 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" as const } },
-  exit:    { opacity: 0, y: -4, transition: { duration: 0.15, ease: "easeIn" as const } },
+  exit: { opacity: 0, y: -4, transition: { duration: 0.15, ease: "easeIn" as const } },
 };
 
 const switchVariants = {
-  hidden:  { opacity: 0, x: -10 },
-  visible: { opacity: 1, x: 0,  transition: { duration: 0.18, ease: "easeOut" as const } },
-  exit:    { opacity: 0, x: 10, transition: { duration: 0.12, ease: "easeIn" as const } },
+  hidden: { opacity: 0, x: -10 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.18, ease: "easeOut" as const } },
+  exit: { opacity: 0, x: 10, transition: { duration: 0.12, ease: "easeIn" as const } },
 };
 
 const previewVariants = {
-  hidden:  { opacity: 0 },
+  hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.22, ease: "easeOut" as const } },
-  exit:    { opacity: 0, transition: { duration: 0.1,  ease: "easeIn" as const } },
+  exit: { opacity: 0, transition: { duration: 0.1, ease: "easeIn" as const } },
 };
 
 // ---------------------------------------------------------------------------
@@ -107,7 +101,7 @@ function IframePreview({
   title: string;
   onPreviewClick?: () => void;
 }) {
-  const iframeRef    = useRef<HTMLIFrameElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -234,13 +228,15 @@ function MegaMenuPanel({
   onClose?: () => void;
 }) {
   const [activeItem, setActiveItem] = useState<SubItem>(category.items[0]);
-  const hoverTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const navigate    = useNavigate();
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigate = useNavigate();
 
   // Reset to the first item whenever the parent category changes
   useEffect(() => {
     setActiveItem(category.items[0]);
-    return () => { if (hoverTimer.current) clearTimeout(hoverTimer.current); };
+    return () => {
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    };
   }, [category.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Hover delay avoids preview flickering when the mouse passes quickly
@@ -301,7 +297,9 @@ function MegaMenuPanel({
               className={cn(
                 "absolute top-2 left-1/2 -translate-x-1/2 z-50",
                 "inline-flex size-10 items-center justify-center rounded-full bg-background/80 backdrop-blur-md border hairline shadow-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-300",
-                isScrollIdle ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+                isScrollIdle
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 -translate-y-4 pointer-events-none",
               )}
             >
               <X className="size-5" />
@@ -333,13 +331,7 @@ function MegaMenuPanel({
 // MobileCategory — accordion item for the Sheet drawer
 // ---------------------------------------------------------------------------
 
-function MobileCategory({
-  category,
-  onNavigate,
-}: {
-  category: Category;
-  onNavigate: () => void;
-}) {
+function MobileCategory({ category, onNavigate }: { category: Category; onNavigate: () => void }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -406,7 +398,7 @@ function usePanelScrollIdle(active: boolean, delay = 500) {
       setIdle(true);
       return;
     }
-    
+
     let timer: ReturnType<typeof setTimeout>;
     const onActivity = () => {
       setIdle(false);
@@ -416,7 +408,7 @@ function usePanelScrollIdle(active: boolean, delay = 500) {
 
     window.addEventListener("wheel", onActivity, { passive: true, capture: true });
     window.addEventListener("touchmove", onActivity, { passive: true, capture: true });
-    
+
     return () => {
       window.removeEventListener("wheel", onActivity, { capture: true });
       window.removeEventListener("touchmove", onActivity, { capture: true });
@@ -433,28 +425,38 @@ function usePanelScrollIdle(active: boolean, delay = 500) {
 
 export function Nav() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
-  const [mobileOpen, setMobileOpen]         = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isScrollIdle = usePanelScrollIdle(!!activeCategory);
 
-  const headerRef     = useRef<HTMLElement>(null);
-  const openTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Stable ref so hover callbacks can read the latest category without being recreated
-  const activeCatRef  = useRef<Category | null>(null);
+  const activeCatRef = useRef<Category | null>(null);
   activeCatRef.current = activeCategory;
 
   const router = useRouter();
 
   // ── Helpers ──────────────────────────────────────────────────────────────
 
-  const clearOpen  = () => { if (openTimerRef.current)  { clearTimeout(openTimerRef.current);  openTimerRef.current  = null; } };
-  const clearClose = () => { if (closeTimerRef.current) { clearTimeout(closeTimerRef.current); closeTimerRef.current = null; } };
+  const clearOpen = () => {
+    if (openTimerRef.current) {
+      clearTimeout(openTimerRef.current);
+      openTimerRef.current = null;
+    }
+  };
+  const clearClose = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
 
   const closeMenu = useCallback(() => {
     clearOpen();
     clearClose();
     setActiveCategory(null);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Side-effects ─────────────────────────────────────────────────────────
 
@@ -466,13 +468,21 @@ export function Nav() {
 
   // Escape key
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeMenu(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [closeMenu]);
 
   // Cleanup timers on unmount
-  useEffect(() => () => { clearOpen(); clearClose(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(
+    () => () => {
+      clearOpen();
+      clearClose();
+    },
+    [],
+  );
 
   // ── Hover handlers ───────────────────────────────────────────────────────
 
@@ -493,7 +503,7 @@ export function Nav() {
         openTimerRef.current = null;
       }, 100);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Called when the mouse leaves the entire <header> element.
@@ -508,7 +518,7 @@ export function Nav() {
       setActiveCategory(null);
       closeTimerRef.current = null;
     }, 250);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   /** Cancel any pending close when the mouse re-enters the <header>. */
   const handleNavEnter = useCallback(() => {
@@ -553,7 +563,7 @@ export function Nav() {
                   aria-expanded={isActive}
                   aria-controls="mega-menu-panel"
                   onMouseEnter={() => handleCategoryEnter(cat)}
-                  onClick={() => isActive ? closeMenu() : handleCategoryEnter(cat)}
+                  onClick={() => (isActive ? closeMenu() : handleCategoryEnter(cat))}
                   className={cn(
                     "relative inline-flex items-center gap-1 px-3 py-2 rounded-lg",
                     "text-sm transition-all duration-150 select-none",

@@ -35,7 +35,9 @@ export function OisConnection({
         <div className="grid gap-10 md:grid-cols-12 md:items-center">
           <div className="md:col-span-6">
             <div className="text-eyebrow mb-3">{eyebrow}</div>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{title}</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+              {title}
+            </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">{body}</p>
             <Button asChild className="mt-7 rounded-full">
               <Link to="/ois">
@@ -48,7 +50,9 @@ export function OisConnection({
               <ol className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden">
                 {chain.map((step, i) => (
                   <li key={step} className="bg-background flex items-baseline gap-4 px-6 py-5">
-                    <span className="text-eyebrow text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-eyebrow text-muted-foreground">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     <span className="text-sm font-medium text-foreground">{step}</span>
                   </li>
                 ))}

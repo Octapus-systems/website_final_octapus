@@ -25,7 +25,9 @@ export function DisciplinesSection({ className }: { className?: string }) {
               <div className="text-eyebrow">{track.label}</div>
               <ArrowUpRight className="size-4 text-muted-foreground group-hover:text-primary transition" />
             </div>
-            <h3 className="mt-4 text-2xl md:text-3xl font-semibold tracking-tight">{track.title}</h3>
+            <h3 className="mt-4 text-2xl md:text-3xl font-semibold tracking-tight">
+              {track.title}
+            </h3>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{track.intro}</p>
             <ul className="mt-6 flex flex-wrap gap-2">
               {track.disciplines.map((d) => (

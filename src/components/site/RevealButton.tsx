@@ -34,22 +34,36 @@ export function RevealButton({
   const sharedClasses = cn(
     "group h-9 min-w-9 max-w-9 px-2.5 gap-0 justify-start overflow-hidden transition-all duration-300 ease-out hover:max-w-60 hover:px-4 rounded-full",
     variant === "default" && "btn-aurora",
-    variant === "outline" && "bg-foreground/10 border border-foreground/20 text-white hover:bg-foreground/20 hover:text-white hover:border-foreground/40",
+    variant === "outline" &&
+      "bg-foreground/10 border border-foreground/20 text-white hover:bg-foreground/20 hover:text-white hover:border-foreground/40",
     variant === "white" && "btn-aurora text-white",
-    variant === "subtle" && "bg-foreground/10 border border-foreground/15 text-white hover:bg-foreground/20 hover:border-foreground/30",
+    variant === "subtle" &&
+      "bg-foreground/10 border border-foreground/15 text-white hover:bg-foreground/20 hover:border-foreground/30",
     className,
   );
 
   const baseVariant = variant === "default" || variant === "white" ? "default" : "ghost";
 
   return external ? (
-    <Button asChild variant={baseVariant} className={sharedClasses} aria-label={label} onClick={onClick}>
+    <Button
+      asChild
+      variant={baseVariant}
+      className={sharedClasses}
+      aria-label={label}
+      onClick={onClick}
+    >
       <a href={to} target="_blank" rel="noopener noreferrer">
         {content}
       </a>
     </Button>
   ) : (
-    <Button asChild variant={baseVariant} className={sharedClasses} aria-label={label} onClick={onClick}>
+    <Button
+      asChild
+      variant={baseVariant}
+      className={sharedClasses}
+      aria-label={label}
+      onClick={onClick}
+    >
       <Link to={to}>{content}</Link>
     </Button>
   );

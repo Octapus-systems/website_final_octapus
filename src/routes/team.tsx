@@ -8,27 +8,44 @@ import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/team")({
-  head: () => buildMeta({
-    title: "Meet the Team — Octapus L.L.C.",
-    description: "The people behind Octapus: system architects, operators and growth leaders building software, AI and business systems in the UAE.",
-    path: "/team",
-    ogType: "profile",
-    keywords: ["Octapus team", "Octapus leadership", "UAE software team", "Sayid Nazim", "Shabab", "Jishad", "Ajay Peter"],
-  }),
+  head: () =>
+    buildMeta({
+      title: "Meet the Team — Octapus L.L.C.",
+      description:
+        "The people behind Octapus: system architects, operators and growth leaders building software, AI and business systems in the UAE.",
+      path: "/team",
+      ogType: "profile",
+      keywords: [
+        "Octapus team",
+        "Octapus leadership",
+        "UAE software team",
+        "Sayid Nazim",
+        "Shabab",
+        "Jishad",
+        "Ajay Peter",
+      ],
+    }),
   component: TeamPage,
 });
 
 function TeamPage() {
   return (
     <>
-      <JsonLd data={{
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        name: "Meet the Octapus Team",
-        url: "/team",
-        description: "Leadership and key team members at Octapus L.L.C.",
-      }} />
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Team", path: "/team" }])} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Meet the Octapus Team",
+          url: "/team",
+          description: "Leadership and key team members at Octapus L.L.C.",
+        }}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Team", path: "/team" },
+        ])}
+      />
 
       {/* Hero — dark, editorial, premium */}
       <section className="relative overflow-hidden bg-[var(--color-surface-dark)] text-foreground dark">
@@ -38,13 +55,18 @@ function TeamPage() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-silver uppercase">
-                Meet Experts<br />Behind the<br />Innovation.
+                Meet Experts
+                <br />
+                Behind the
+                <br />
+                Innovation.
               </h1>
             </div>
             <div className="lg:text-right lg:max-w-sm">
               <div className="text-eyebrow text-primary-glow mb-3">[ OUR TEAM ]</div>
               <p className="text-sm md:text-base leading-relaxed text-muted-foreground">
-                Our team is a group of visionaries, creators and technologists working together to build the future.
+                Our team is a group of visionaries, creators and technologists working together to
+                build the future.
               </p>
             </div>
           </div>

@@ -34,7 +34,10 @@ export function HorusCard({
           <div className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/50">
             OIS ecosystem
           </div>
-          <h3 className="mt-3 font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-[clamp(3.2rem,11vw,5.5rem)] scale-y-125 origin-left bg-[linear-gradient(180deg,#ffffff_0%,#a9c2ff_100%)] bg-clip-text text-transparent" style={{ fontFamily: "'Cal Sans', sans-serif" }}>
+          <h3
+            className="mt-3 font-extrabold uppercase leading-[0.82] tracking-[-0.03em] text-[clamp(3.2rem,11vw,5.5rem)] scale-y-125 origin-left bg-[linear-gradient(180deg,#ffffff_0%,#a9c2ff_100%)] bg-clip-text text-transparent"
+            style={{ fontFamily: "'Cal Sans', sans-serif" }}
+          >
             Horus
           </h3>
         </div>

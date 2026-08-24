@@ -12,7 +12,15 @@ export type RelatedLink = {
   params?: Record<string, string>;
 };
 
-export function RelatedLinks({ eyebrow = "Continue", title, items }: { eyebrow?: string; title: string; items: RelatedLink[] }) {
+export function RelatedLinks({
+  eyebrow = "Continue",
+  title,
+  items,
+}: {
+  eyebrow?: string;
+  title: string;
+  items: RelatedLink[];
+}) {
   return (
     <section className="border-t hairline bg-[var(--color-surface)] section-y">
       <Container>

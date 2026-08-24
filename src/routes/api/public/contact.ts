@@ -48,7 +48,9 @@ export const Route = createFileRoute("/api/public/contact")({
         const data = parsed.data;
         if (data.website && data.website.length > 0) {
           // Honeypot triggered — respond OK to avoid signaling.
-          return new Response(JSON.stringify({ ok: true }), { headers: { "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ ok: true }), {
+            headers: { "Content-Type": "application/json" },
+          });
         }
 
         const routedTo = routeEnquiryTo(data.enquiryType);
@@ -72,11 +74,11 @@ export const Route = createFileRoute("/api/public/contact")({
             text: `
 Name: ${data.name}
 Email: ${data.email}
-Phone: ${data.phone || 'N/A'}
-Company: ${data.company || 'N/A'}
+Phone: ${data.phone || "N/A"}
+Company: ${data.company || "N/A"}
 Preferred Contact: ${data.preferredContact}
-Budget: ${data.budget || 'N/A'}
-Timeline: ${data.timeline || 'N/A'}
+Budget: ${data.budget || "N/A"}
+Timeline: ${data.timeline || "N/A"}
 
 Message:
 ${data.description}

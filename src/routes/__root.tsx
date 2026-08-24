@@ -55,7 +55,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
             Try again
@@ -78,16 +81,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Octapus — Software, AI and business systems in the UAE" },
-      { name: "description", content: "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies." },
+      {
+        name: "description",
+        content:
+          "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies.",
+      },
       { name: "theme-color", content: "#601CE6" },
       { property: "og:site_name", content: "Octapus" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Octapus — Software, AI and business systems in the UAE" },
-      { property: "og:description", content: "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies." },
+      {
+        property: "og:description",
+        content:
+          "Octapus designs and develops custom software, ERP, CRM, automation and intelligent business systems for UAE startups and growing companies.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Octapus — Software, AI and business systems in the UAE" },
-      { property: "og:image", content: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png" },
-      { name: "twitter:image", content: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png" },
+      {
+        property: "og:image",
+        content:
+          "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -95,8 +114,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://rsms.me" },
       { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" } as unknown as Record<string, string>,
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Epilogue:wght@400;500;600&display=swap" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      } as unknown as Record<string, string>,
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Epilogue:wght@400;500;600&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -124,7 +150,6 @@ function RootShell({ children }: { children: ReactNode }) {
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`,
           }}
         />
-
       </head>
       <body>
         {children}
@@ -133,7 +158,6 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -187,7 +211,8 @@ function RootComponent() {
             "@id": "https://octapus.ae/#localbusiness",
             name: site.legalName,
             url: "https://octapus.ae/",
-            image: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+            image:
+              "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
             telephone: site.phones.general,
             email: site.emails.info,
             areaServed: ["AE", "GCC"],
@@ -216,4 +241,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

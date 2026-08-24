@@ -22,12 +22,14 @@ const staticRoutes = [
 import { buildMeta } from "@/lib/seo";
 
 export const Route = createFileRoute("/sitemap")({
-  head: () => buildMeta({
-    title: "HTML Sitemap — All Octapus Pages",
-    description: "Human-readable index of every Octapus page — products, services, industries, company and legal — for quick navigation and internal linking.",
-    path: "/sitemap",
-    ogType: "website",
-  }),
+  head: () =>
+    buildMeta({
+      title: "HTML Sitemap — All Octapus Pages",
+      description:
+        "Human-readable index of every Octapus page — products, services, industries, company and legal — for quick navigation and internal linking.",
+      path: "/sitemap",
+      ogType: "website",
+    }),
 
   component: () => (
     <Section titleAs="h1" eyebrow="Sitemap" title="All Octapus pages.">
@@ -36,7 +38,11 @@ export const Route = createFileRoute("/sitemap")({
           <div className="text-eyebrow mb-3">Pages</div>
           <ul className="space-y-2">
             {staticRoutes.map((r) => (
-              <li key={r.to}><Link to={r.to} className="text-sm hover:text-primary">{r.label}</Link></li>
+              <li key={r.to}>
+                <Link to={r.to} className="text-sm hover:text-primary">
+                  {r.label}
+                </Link>
+              </li>
             ))}
           </ul>
         </div>
@@ -44,7 +50,15 @@ export const Route = createFileRoute("/sitemap")({
           <div className="text-eyebrow mb-3">Products</div>
           <ul className="space-y-2">
             {products.map((p) => (
-              <li key={p.slug}><Link to="/products/$slug" params={{ slug: p.slug }} className="text-sm hover:text-primary">{p.name}</Link></li>
+              <li key={p.slug}>
+                <Link
+                  to="/products/$slug"
+                  params={{ slug: p.slug }}
+                  className="text-sm hover:text-primary"
+                >
+                  {p.name}
+                </Link>
+              </li>
             ))}
           </ul>
         </div>

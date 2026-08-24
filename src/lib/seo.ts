@@ -24,15 +24,7 @@ export type MetaInput = {
 };
 
 export function buildMeta(input: MetaInput) {
-  const {
-    title,
-    description,
-    path,
-    ogType = "website",
-    image,
-    noindex,
-    keywords,
-  } = input;
+  const { title, description, path, ogType = "website", image, noindex, keywords } = input;
 
   const canonical = absoluteUrl(path);
 

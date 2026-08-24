@@ -1,5 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, ArrowRight, Zap, Clock, BadgeCheck, TrendingDown, Building2 } from "lucide-react";
+import {
+  ExternalLink,
+  ArrowRight,
+  Zap,
+  Clock,
+  BadgeCheck,
+  TrendingDown,
+  Building2,
+} from "lucide-react";
 import oisImg from "@/assets/ois-network.png";
 import { Container, Section } from "@/components/site/Section";
 import { HorusCard } from "@/components/site/HorusCard";
@@ -11,14 +19,25 @@ import { trackEvent } from "@/lib/analytics";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 
 export const Route = createFileRoute("/ois")({
-  head: () => buildMeta({
-    title: "OIS — From Artificial Intelligence to Actual Workforce | Octapus",
-    description: "OIS, the Octapus Intelligence System, turns your existing software and repetitive workflows into AI employees. Lower cost, faster execution, higher accuracy — available beyond office hours.",
-    path: "/ois",
-    ogType: "article",
-    image: oisImg,
-    keywords: ["OIS", "Octapus Intelligence System", "AI employees", "AI workforce", "AI agents UAE", "business AI UAE", "AI automation", "Horus AI"],
-  }),
+  head: () =>
+    buildMeta({
+      title: "OIS — From Artificial Intelligence to Actual Workforce | Octapus",
+      description:
+        "OIS, the Octapus Intelligence System, turns your existing software and repetitive workflows into AI employees. Lower cost, faster execution, higher accuracy — available beyond office hours.",
+      path: "/ois",
+      ogType: "article",
+      image: oisImg,
+      keywords: [
+        "OIS",
+        "Octapus Intelligence System",
+        "AI employees",
+        "AI workforce",
+        "AI agents UAE",
+        "business AI UAE",
+        "AI automation",
+        "Horus AI",
+      ],
+    }),
 
   component: OIS,
 });
@@ -26,26 +45,37 @@ export const Route = createFileRoute("/ois")({
 function OIS() {
   return (
     <>
-      <JsonLd data={{
-        "@context": "https://schema.org",
-        "@type": "TechArticle",
-        headline: "OIS — Octapus Intelligence System",
-        description: "OIS turns your existing software and repetitive workflows into AI employees. Lower cost, faster execution, higher accuracy — available beyond office hours.",
-        image: oisImg,
-        author: { "@type": "Organization", name: site.legalName },
-        publisher: { "@type": "Organization", name: site.legalName, url: "/" },
-        url: "/ois",
-      }} />
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "OIS", path: "/ois" }])} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "TechArticle",
+          headline: "OIS — Octapus Intelligence System",
+          description:
+            "OIS turns your existing software and repetitive workflows into AI employees. Lower cost, faster execution, higher accuracy — available beyond office hours.",
+          image: oisImg,
+          author: { "@type": "Organization", name: site.legalName },
+          publisher: { "@type": "Organization", name: site.legalName, url: "/" },
+          url: "/ois",
+        }}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "OIS", path: "/ois" },
+        ])}
+      />
 
       <section className="bg-[var(--color-surface-dark)] dark border-b border-border">
         <Container className="pt-20 pb-14">
-          <div className="text-eyebrow mb-6 text-primary-glow">OIS — Octapus Intelligence System</div>
+          <div className="text-eyebrow mb-6 text-primary-glow">
+            OIS — Octapus Intelligence System
+          </div>
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.02] max-w-4xl text-foreground">
             Your Business Already Uses AI. Now Give AI a Job.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-            Your employees are already using AI to write faster, research quicker, analyse information and save time. OIS takes the next step.
+            Your employees are already using AI to write faster, research quicker, analyse
+            information and save time. OIS takes the next step.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button
@@ -55,7 +85,9 @@ function OIS() {
               className="rounded-full"
               onClick={() => trackEvent("strategy_call_click", { source: "ois_hero" })}
             >
-              <a href="/book">Start with OIS <ArrowRight className="ml-1 size-4" /></a>
+              <a href="/book">
+                Start with OIS <ArrowRight className="ml-1 size-4" />
+              </a>
             </Button>
             <Button
               asChild
@@ -73,11 +105,15 @@ function OIS() {
 
         <Container className="pb-20 grid gap-6 lg:grid-cols-2 items-start">
           <div className="rounded-3xl overflow-hidden border border-border">
-            <img src={oisImg} alt="OIS connects AI agents around your existing business systems" loading="lazy" className="w-full h-auto" />
+            <img
+              src={oisImg}
+              alt="OIS connects AI agents around your existing business systems"
+              loading="lazy"
+              className="w-full h-auto"
+            />
           </div>
           <HorusCard source="ois_page" showExploreLink={false} />
         </Container>
-
       </section>
 
       <Section
@@ -93,7 +129,10 @@ function OIS() {
             { icon: Clock, label: "Available beyond traditional working hours" },
             { icon: Building2, label: "Built specifically for your business" },
           ].map((item) => (
-            <div key={item.label} className="rounded-2xl border border-border p-5 flex flex-col gap-3">
+            <div
+              key={item.label}
+              className="rounded-2xl border border-border p-5 flex flex-col gap-3"
+            >
               <item.icon className="size-5 text-primary-glow" />
               <div className="text-sm font-semibold text-foreground leading-snug">{item.label}</div>
             </div>
@@ -101,11 +140,7 @@ function OIS() {
         </div>
       </Section>
 
-      <Section
-        dark
-        eyebrow="Three ways to start"
-        title="Don't Just Use AI. Employ It."
-      >
+      <Section dark eyebrow="Three ways to start" title="Don't Just Use AI. Employ It.">
         <div className="grid gap-4 md:grid-cols-3">
           {[
             {
@@ -152,7 +187,9 @@ function OIS() {
               className="rounded-full"
               onClick={() => trackEvent("strategy_call_click", { source: "ois_final" })}
             >
-              <a href="/book">Start with OIS <ArrowRight className="ml-1 size-4" /></a>
+              <a href="/book">
+                Start with OIS <ArrowRight className="ml-1 size-4" />
+              </a>
             </Button>
             <Button
               asChild
@@ -172,9 +209,21 @@ function OIS() {
       <RelatedLinks
         title="Systems adjacent to the OIS vision."
         items={[
-          { to: "/products", label: "Products", detail: "The Octapus systems that OIS coordinates." },
-          { to: "/technology", label: "Technology", detail: "Engineering, business systems and AI & data — the foundation OIS sits on." },
-          { to: "/marketing", label: "Marketing", detail: "Brand and growth work, connected to the same systems." },
+          {
+            to: "/products",
+            label: "Products",
+            detail: "The Octapus systems that OIS coordinates.",
+          },
+          {
+            to: "/technology",
+            label: "Technology",
+            detail: "Engineering, business systems and AI & data — the foundation OIS sits on.",
+          },
+          {
+            to: "/marketing",
+            label: "Marketing",
+            detail: "Brand and growth work, connected to the same systems.",
+          },
         ]}
       />
     </>

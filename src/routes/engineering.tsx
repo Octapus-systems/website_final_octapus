@@ -56,7 +56,9 @@ function EngineeringPage() {
         <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.03] max-w-4xl">
           {engineering.position}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">{engineering.intro}</p>
+        <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+          {engineering.intro}
+        </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild size="lg" className="rounded-full px-7">
             <Link to="/book">
@@ -97,15 +99,33 @@ function EngineeringPage() {
       <OisConnection
         title="Engineering builds the machine. OIS keeps it aware."
         body="Once the systems are built and connected, OIS sits on top of them so authorized AI agents can read, reason and act inside your operation — without replacing anything already working."
-        chain={["Custom software", "Integrations", "OIS intelligence layer", "Horus AI", "A tuned operation"]}
+        chain={[
+          "Custom software",
+          "Integrations",
+          "OIS intelligence layer",
+          "Horus AI",
+          "A tuned operation",
+        ]}
       />
 
       <RelatedLinks
         title="Continue through the ecosystem."
         items={[
-          { to: "/studios", label: "Octapus Studios", detail: "The creative division that builds your reputation." },
-          { to: "/technology", label: "Technology", detail: "The full technology pathway and disciplines." },
-          { to: "/ois", label: "OIS", detail: "The intelligence layer connecting every system Octapus build." },
+          {
+            to: "/studios",
+            label: "Octapus Studios",
+            detail: "The creative division that builds your reputation.",
+          },
+          {
+            to: "/technology",
+            label: "Technology",
+            detail: "The full technology pathway and disciplines.",
+          },
+          {
+            to: "/ois",
+            label: "OIS",
+            detail: "The intelligence layer connecting every system Octapus build.",
+          },
         ]}
       />
     </>

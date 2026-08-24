@@ -26,10 +26,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       size="icon"
       onClick={() => setIsDark((d) => !d)}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className={cn(
-        "group relative rounded-full transition-colors",
-        className,
-      )}
+      className={cn("group relative rounded-full transition-colors", className)}
     >
       {/* Soft ambient glow — fades with theme */}
       <span
@@ -38,7 +35,7 @@ export function ThemeToggle({ className }: { className?: string }) {
           "pointer-events-none absolute inset-0 rounded-full transition-opacity duration-500 ease-out motion-reduce:transition-none motion-reduce:duration-0",
           "bg-[radial-gradient(circle,_color-mix(in_oklab,var(--color-primary)_30%,transparent)_0%,transparent_70%)]",
           "opacity-0 group-hover:opacity-100",
-          isDark && "opacity-60 group-hover:opacity-100"
+          isDark && "opacity-60 group-hover:opacity-100",
         )}
       />
       <Lightbulb

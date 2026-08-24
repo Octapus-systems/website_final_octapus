@@ -32,11 +32,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn(
-        "relative section-y",
-        dark && "bg-[var(--color-surface-dark)] dark",
-        className,
-      )}
+      className={cn("relative section-y", dark && "bg-[var(--color-surface-dark)] dark", className)}
     >
       <Container>
         {(eyebrow || title || intro) && (
@@ -58,5 +54,4 @@ export function Section({
       </Container>
     </section>
   );
-
 }

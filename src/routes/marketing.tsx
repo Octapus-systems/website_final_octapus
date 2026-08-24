@@ -60,14 +60,31 @@ function MarketingPage() {
           "Prioritized, answerable pipeline",
         ]}
         approach={[
-          { k: "Strategy before assets", v: "Positioning and audience decided before a single deliverable is produced." },
-          { k: "Built as a system", v: "Brand, content and campaigns run as one repeatable production line." },
-          { k: "Measured honestly", v: "Reporting tied to the systems that capture and convert demand." },
+          {
+            k: "Strategy before assets",
+            v: "Positioning and audience decided before a single deliverable is produced.",
+          },
+          {
+            k: "Built as a system",
+            v: "Brand, content and campaigns run as one repeatable production line.",
+          },
+          {
+            k: "Measured honestly",
+            v: "Reporting tied to the systems that capture and convert demand.",
+          },
         ]}
         related={[
-          { to: "/technology", label: "Octapus Technology", detail: "The engineering and systems side of the same ecosystem." },
+          {
+            to: "/technology",
+            label: "Octapus Technology",
+            detail: "The engineering and systems side of the same ecosystem.",
+          },
           { to: "/ois", label: "OIS", detail: "The intelligence layer behind Octapus solutions." },
-          { to: "/industries", label: "Industries", detail: "Sectors where this work already runs." },
+          {
+            to: "/industries",
+            label: "Industries",
+            detail: "Sectors where this work already runs.",
+          },
         ]}
       />
     </>

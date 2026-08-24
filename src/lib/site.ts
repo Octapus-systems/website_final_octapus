@@ -46,7 +46,6 @@ export const team: TeamMember[] = [
   },
 ];
 
-
 export const site = {
   name: "Octapus",
   legalName: "Octapus L.L.C.",
@@ -108,7 +107,8 @@ export const products: Product[] = [
     headline: "One operating layer for finance, operations and reporting.",
     customer: "Growing companies outgrowing spreadsheets and disconnected tools.",
     problem: "Numbers live in different places and never agree.",
-    outcome: "A single ledger for accounting, inventory, HR and reporting — with roles, approvals and audit trails.",
+    outcome:
+      "A single ledger for accounting, inventory, HR and reporting — with roles, approvals and audit trails.",
     image: productErpImg,
     externalUrl: "https://obms.erp.octapus.ae/",
     tags: ["ERP", "Finance", "Operations"],
@@ -137,7 +137,8 @@ export const products: Product[] = [
     name: "Custom Business Solutions",
     headline: "Software built for the systems that only your business has.",
     customer: "Operators with a workflow that no off-the-shelf tool covers.",
-    problem: "You've been paying for the software you don't need to work around the software you do.",
+    problem:
+      "You've been paying for the software you don't need to work around the software you do.",
     outcome: "A precise system built for your exact operation — nothing more, nothing less.",
     tags: ["Custom", "Software"],
   },
@@ -156,7 +157,8 @@ export const products: Product[] = [
     headline: "AI systems designed around your data and your decisions.",
     customer: "Teams ready to move beyond generic chat tools.",
     problem: "Off-the-shelf AI doesn't understand your business.",
-    outcome: "Focused AI systems: retrieval on your knowledge, actions on your systems, evaluations you can trust.",
+    outcome:
+      "Focused AI systems: retrieval on your knowledge, actions on your systems, evaluations you can trust.",
     image: productAiImg,
     tags: ["AI", "Custom"],
   },
@@ -164,9 +166,11 @@ export const products: Product[] = [
     slug: "ois",
     name: "OIS — Octapus Intelligent System",
     headline: "Give your existing systems intelligence.",
-    customer: "Operators who already have software, data and people — and want them to think together.",
+    customer:
+      "Operators who already have software, data and people — and want them to think together.",
     problem: "AI assistants sit next to the work rather than participating in it.",
-    outcome: "An intelligence layer over the systems you already run: existing systems → OIS → AI agents → employees → business actions. No rip-and-replace.",
+    outcome:
+      "An intelligence layer over the systems you already run: existing systems → OIS → AI agents → employees → business actions. No rip-and-replace.",
     tags: ["AI", "Platform"],
   },
   {
@@ -175,7 +179,8 @@ export const products: Product[] = [
     headline: "The AI coworker powered by OIS.",
     customer: "Teams that lose hours to finding information and chasing status.",
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
-    outcome: "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
+    outcome:
+      "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
   },
@@ -185,16 +190,19 @@ export const products: Product[] = [
     headline: "Commerce that stays connected to the rest of the business.",
     customer: "Retail and B2B teams selling across storefronts, marketplaces and sales reps.",
     problem: "Orders, stock and finance each tell a different story.",
-    outcome: "A commerce platform wired into inventory, fulfilment and accounting, so one order updates every system once.",
+    outcome:
+      "A commerce platform wired into inventory, fulfilment and accounting, so one order updates every system once.",
     tags: ["Commerce", "Platform"],
   },
   {
     slug: "blueprint",
     name: "BLUEPRINT",
     headline: "Project management built around delivery, not to-do lists.",
-    customer: "Delivery, construction and professional-services teams running many projects at once.",
+    customer:
+      "Delivery, construction and professional-services teams running many projects at once.",
     problem: "Plans live in spreadsheets while progress lives in conversations.",
-    outcome: "Scope, milestones, resourcing, costs and progress in one place — with a definition of done everyone can see.",
+    outcome:
+      "Scope, milestones, resourcing, costs and progress in one place — with a definition of done everyone can see.",
     tags: ["Projects", "Delivery"],
   },
   {
@@ -203,7 +211,8 @@ export const products: Product[] = [
     headline: "Lead intelligence that tells you who is worth calling.",
     customer: "Sales teams buried under unqualified enquiries.",
     problem: "Time spent qualifying instead of selling.",
-    outcome: "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
+    outcome:
+      "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
   },
   {
@@ -221,7 +230,8 @@ export const products: Product[] = [
     headline: "Sales management shaped to how your team sells.",
     customer: "Sales organizations forced into generic pipelines.",
     problem: "The tool defines the process instead of the process defining the tool.",
-    outcome: "Pipelines, fields, automations and reporting built around your motion — with forecasting leadership can trust.",
+    outcome:
+      "Pipelines, fields, automations and reporting built around your motion — with forecasting leadership can trust.",
     image: productCrmImg,
     tags: ["CRM", "Sales"],
   },
@@ -240,7 +250,8 @@ export const products: Product[] = [
     headline: "Enterprise deployment, migration and adoption — done properly.",
     customer: "Companies rolling out or replacing an ERP across teams and entities.",
     problem: "Most ERP projects fail on data, process and adoption, not software.",
-    outcome: "Discovery, configuration, data migration, training, rehearsed cutover and post-launch support.",
+    outcome:
+      "Discovery, configuration, data migration, training, rehearsed cutover and post-launch support.",
     tags: ["ERP", "Deployment"],
   },
   {
@@ -249,60 +260,80 @@ export const products: Product[] = [
     headline: "Custom intelligent workflows across your systems.",
     customer: "Teams repeating manual steps between tools every single day.",
     problem: "People act as the integration layer between software.",
-    outcome: "Automations with guardrails, audit trails and human overrides — measured on the hours they return.",
+    outcome:
+      "Automations with guardrails, audit trails and human overrides — measured on the hours they return.",
     tags: ["Automation", "AI"],
   },
 ];
 
 export const hiddenProductSlugs = ["buy", "blueprint", "icon", "mr-crm", "oprate", "algorithem"];
 
-
 export const services = [
   {
     slug: "engineering",
     name: "Octapus Engineering",
-    summary: "The workshop where your business gets tuned: custom software, web and mobile applications, enterprise platforms, APIs, cloud, database architecture and system integration — with security, testing and deployment treated as part of the build.",
+    summary:
+      "The workshop where your business gets tuned: custom software, web and mobile applications, enterprise platforms, APIs, cloud, database architecture and system integration — with security, testing and deployment treated as part of the build.",
   },
   {
     slug: "business-systems",
     name: "Business Systems",
-    summary: "ERP, CRM, workflow and automation platforms designed around how your team actually operates — including Odoo implementation, migration and enterprise deployment.",
+    summary:
+      "ERP, CRM, workflow and automation platforms designed around how your team actually operates — including Odoo implementation, migration and enterprise deployment.",
   },
   {
     slug: "ai-and-data",
     name: "AI & Data",
-    summary: "OIS-powered intelligence: AI agents, retrieval on your own knowledge, document and voice AI, analytics and data pipelines — with evaluations you can read and audit trails you can trust.",
+    summary:
+      "OIS-powered intelligence: AI agents, retrieval on your own knowledge, document and voice AI, analytics and data pipelines — with evaluations you can read and audit trails you can trust.",
   },
   {
     slug: "design-and-brand",
     name: "Octapus Studios",
-    summary: "A creative studio inside a technology company: brand identity and guidelines, product and interface design, content and copy, video and motion graphics — built to make complex systems feel obvious.",
+    summary:
+      "A creative studio inside a technology company: brand identity and guidelines, product and interface design, content and copy, video and motion graphics — built to make complex systems feel obvious.",
   },
   {
     slug: "growth",
     name: "Growth",
-    summary: "Positioning, search, social strategy, digital advertising, content and campaign measurement — connected directly to the systems that capture and convert demand.",
+    summary:
+      "Positioning, search, social strategy, digital advertising, content and campaign measurement — connected directly to the systems that capture and convert demand.",
   },
   {
     slug: "operate",
     name: "Operate",
-    summary: "Ongoing operation, consulting, support, monitoring and scaling of the systems we build together — 24/7, by the engineers who built them.",
+    summary:
+      "Ongoing operation, consulting, support, monitoring and scaling of the systems we build together — 24/7, by the engineers who built them.",
   },
 ] as const;
 
-
 export const industries = [
-  "Construction", "Healthcare", "Retail", "Education",
-  "Finance", "Manufacturing", "Hospitality", "Real Estate",
-  "Transportation", "E-commerce", "Logistics", "Professional Services",
+  "Construction",
+  "Healthcare",
+  "Retail",
+  "Education",
+  "Finance",
+  "Manufacturing",
+  "Hospitality",
+  "Real Estate",
+  "Transportation",
+  "E-commerce",
+  "Logistics",
+  "Professional Services",
 ] as const;
 
 export const processStages = [
-  { name: "Discover", detail: "Octapus map your operation, systems and constraints in plain language." },
+  {
+    name: "Discover",
+    detail: "Octapus map your operation, systems and constraints in plain language.",
+  },
   { name: "Plan", detail: "A clear scope, sequencing and definition of done — before code." },
   { name: "Design", detail: "Interfaces designed for the people who will actually use them." },
   { name: "Develop", detail: "Engineered in short cycles with reviews and measurable progress." },
-  { name: "Integrate", detail: "Connected to the systems that already exist — with defined contracts." },
+  {
+    name: "Integrate",
+    detail: "Connected to the systems that already exist — with defined contracts.",
+  },
   { name: "Launch", detail: "Rehearsed release, migration and rollback." },
   { name: "Support", detail: "Monitoring, response and continuous improvement." },
   { name: "Scale", detail: "The system grows with the business, not against it." },
@@ -317,32 +348,105 @@ export const capabilities = [
 ] as const;
 
 export const stats = [
-  { value: "120+", label: "Systems shipped", detail: "Custom platforms, ERP rollouts and AI systems delivered end-to-end." },
-  { value: "98%", label: "Client retention", detail: "Long-term partnerships that outlast the first release." },
-  { value: "12+", label: "Industries served", detail: "From construction and healthcare to retail and finance." },
-  { value: "24/7", label: "Operate & support", detail: "Monitoring, response and continuous improvement." },
-  { value: "50+", label: "Integrations", detail: "ERPs, CRMs, payment rails, messaging and data pipelines." },
-  { value: "10+", label: "Years of practice", detail: "A decade of building software that runs real operations." },
+  {
+    value: "120+",
+    label: "Systems shipped",
+    detail: "Custom platforms, ERP rollouts and AI systems delivered end-to-end.",
+  },
+  {
+    value: "98%",
+    label: "Client retention",
+    detail: "Long-term partnerships that outlast the first release.",
+  },
+  {
+    value: "12+",
+    label: "Industries served",
+    detail: "From construction and healthcare to retail and finance.",
+  },
+  {
+    value: "24/7",
+    label: "Operate & support",
+    detail: "Monitoring, response and continuous improvement.",
+  },
+  {
+    value: "50+",
+    label: "Integrations",
+    detail: "ERPs, CRMs, payment rails, messaging and data pipelines.",
+  },
+  {
+    value: "10+",
+    label: "Years of practice",
+    detail: "A decade of building software that runs real operations.",
+  },
 ] as const;
 
 export const comparison = [
-  { dimension: "Delivery speed", traditional: "6–12 month waterfall cycles", octapus: "Working software every 2 weeks" },
-  { dimension: "Ownership", traditional: "Handed to five vendors", octapus: "One accountable team, one roadmap" },
-  { dimension: "AI & automation", traditional: "Bolted on after launch", octapus: "Designed into the system from day one" },
-  { dimension: "Support", traditional: "Ticket queues, timezone gaps", octapus: "Direct line to the engineers who built it" },
-  { dimension: "Scalability", traditional: "Rewrites every 3 years", octapus: "Architecture that grows with the business" },
-  { dimension: "Total cost", traditional: "Licence sprawl and rework", octapus: "One system, predictable spend" },
+  {
+    dimension: "Delivery speed",
+    traditional: "6–12 month waterfall cycles",
+    octapus: "Working software every 2 weeks",
+  },
+  {
+    dimension: "Ownership",
+    traditional: "Handed to five vendors",
+    octapus: "One accountable team, one roadmap",
+  },
+  {
+    dimension: "AI & automation",
+    traditional: "Bolted on after launch",
+    octapus: "Designed into the system from day one",
+  },
+  {
+    dimension: "Support",
+    traditional: "Ticket queues, timezone gaps",
+    octapus: "Direct line to the engineers who built it",
+  },
+  {
+    dimension: "Scalability",
+    traditional: "Rewrites every 3 years",
+    octapus: "Architecture that grows with the business",
+  },
+  {
+    dimension: "Total cost",
+    traditional: "Licence sprawl and rework",
+    octapus: "One system, predictable spend",
+  },
 ] as const;
 
 export const aiCapabilities = [
-  { name: "AI Agents", detail: "Specialized agents that act on your systems with authorization, guardrails and audit trails." },
-  { name: "Workflow Automation", detail: "Repeatable decisions moved into transparent, auditable rules with human overrides." },
-  { name: "Voice & WhatsApp AI", detail: "Conversational surfaces on the channels your customers and teams already use." },
-  { name: "OCR & Document AI", detail: "Extract, classify and route documents into your ERP and CRM automatically." },
-  { name: "Retrieval & Chatbots", detail: "Grounded answers on your knowledge, your policies and your product." },
-  { name: "Predictive Analytics", detail: "Forecasting and scoring models trained on your operational data." },
-  { name: "Smart Reporting", detail: "Executive dashboards that surface the number that matters, not the noise." },
-  { name: "Custom ML Systems", detail: "Focused models designed around your decisions and evaluated the way you measure them." },
+  {
+    name: "AI Agents",
+    detail:
+      "Specialized agents that act on your systems with authorization, guardrails and audit trails.",
+  },
+  {
+    name: "Workflow Automation",
+    detail: "Repeatable decisions moved into transparent, auditable rules with human overrides.",
+  },
+  {
+    name: "Voice & WhatsApp AI",
+    detail: "Conversational surfaces on the channels your customers and teams already use.",
+  },
+  {
+    name: "OCR & Document AI",
+    detail: "Extract, classify and route documents into your ERP and CRM automatically.",
+  },
+  {
+    name: "Retrieval & Chatbots",
+    detail: "Grounded answers on your knowledge, your policies and your product.",
+  },
+  {
+    name: "Predictive Analytics",
+    detail: "Forecasting and scoring models trained on your operational data.",
+  },
+  {
+    name: "Smart Reporting",
+    detail: "Executive dashboards that surface the number that matters, not the noise.",
+  },
+  {
+    name: "Custom ML Systems",
+    detail: "Focused models designed around your decisions and evaluated the way you measure them.",
+  },
 ] as const;
 
 export const techStack = [
@@ -356,36 +460,71 @@ export const techStack = [
 
 export const testimonials = [
   {
-    quote: "Octapus rebuilt our operations layer in six months. The system pays for itself every quarter.",
+    quote:
+      "Octapus rebuilt our operations layer in six months. The system pays for itself every quarter.",
     author: "Managing Director",
     company: "Construction group, Dubai",
   },
   {
-    quote: "The team behaves like an internal engineering function — not a vendor. That is what actually moved the numbers.",
+    quote:
+      "The team behaves like an internal engineering function — not a vendor. That is what actually moved the numbers.",
     author: "Chief Operating Officer",
     company: "Retail chain, UAE",
   },
   {
-    quote: "They connected eight tools we thought would never talk to each other. Reporting is finally honest.",
+    quote:
+      "They connected eight tools we thought would never talk to each other. Reporting is finally honest.",
     author: "Head of Finance",
     company: "Healthcare provider",
   },
 ] as const;
 
 export const faqs = [
-  { q: "What does a software development company actually do?", a: "It turns a business process into working software: mapping how you operate today, designing the system, building and testing it, connecting it to the tools you already use, and keeping it running afterwards. At Octapus all of those steps sit inside one team rather than across several vendors." },
-  { q: "How is Octapus different from a traditional software agency?", a: "Octapus stay with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors." },
-  { q: "Why choose custom software instead of an off-the-shelf tool?", a: "Off-the-shelf tools are excellent for standard work. Custom software pays off where your process is the advantage — when you would otherwise pay for licences you do not need in order to work around the software you do." },
-  { q: "How can AI improve business operations?", a: "AI helps in three places: answering questions on your own knowledge, extracting and routing documents, and running repeatable decisions with guardrails. OIS adds that intelligence over the systems you already run, and Horus AI puts it in front of employees as an AI coworker." },
-  { q: "Do you build from scratch or extend existing systems?", a: "Both. Octapus extend Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises." },
-  { q: "What is OIS and how is it different from a chatbot?", a: "OIS — the Octapus Intelligent System — is an intelligence layer, not a chat window. It connects your existing systems and data, then lets AI agents act on them with authorization and audit trails. A chatbot answers; OIS coordinates real business activity." },
-  { q: "Will AI replace our employees?", a: "No. Horus AI and OIS agents are designed to help people work smarter — removing search, chasing and repetitive steps so employees spend their time on judgement and customers." },
-  { q: "How much does an ERP or custom software project cost in the UAE?", a: "Cost depends on scope, integrations and data migration rather than headcount. Octapus size projects after a discovery phase and agree a scope, sequence and definition of done before any code is written." },
-  { q: "What does an engagement typically look like?", a: "Discover, plan, design, develop, integrate, launch, support, scale. Short cycles, working software every two weeks and a definition of done agreed before code." },
-  { q: "Where are you based and who do you serve?", a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. Octapus work with startups and growing companies across the GCC and internationally." },
-  { q: "Do you offer ongoing support and monitoring?", a: "Yes. Operate is a first-class service — 24/7 monitoring, response and continuous improvement on the systems we build together." },
+  {
+    q: "What does a software development company actually do?",
+    a: "It turns a business process into working software: mapping how you operate today, designing the system, building and testing it, connecting it to the tools you already use, and keeping it running afterwards. At Octapus all of those steps sit inside one team rather than across several vendors.",
+  },
+  {
+    q: "How is Octapus different from a traditional software agency?",
+    a: "Octapus stay with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors.",
+  },
+  {
+    q: "Why choose custom software instead of an off-the-shelf tool?",
+    a: "Off-the-shelf tools are excellent for standard work. Custom software pays off where your process is the advantage — when you would otherwise pay for licences you do not need in order to work around the software you do.",
+  },
+  {
+    q: "How can AI improve business operations?",
+    a: "AI helps in three places: answering questions on your own knowledge, extracting and routing documents, and running repeatable decisions with guardrails. OIS adds that intelligence over the systems you already run, and Horus AI puts it in front of employees as an AI coworker.",
+  },
+  {
+    q: "Do you build from scratch or extend existing systems?",
+    a: "Both. Octapus extend Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises.",
+  },
+  {
+    q: "What is OIS and how is it different from a chatbot?",
+    a: "OIS — the Octapus Intelligent System — is an intelligence layer, not a chat window. It connects your existing systems and data, then lets AI agents act on them with authorization and audit trails. A chatbot answers; OIS coordinates real business activity.",
+  },
+  {
+    q: "Will AI replace our employees?",
+    a: "No. Horus AI and OIS agents are designed to help people work smarter — removing search, chasing and repetitive steps so employees spend their time on judgement and customers.",
+  },
+  {
+    q: "How much does an ERP or custom software project cost in the UAE?",
+    a: "Cost depends on scope, integrations and data migration rather than headcount. Octapus size projects after a discovery phase and agree a scope, sequence and definition of done before any code is written.",
+  },
+  {
+    q: "What does an engagement typically look like?",
+    a: "Discover, plan, design, develop, integrate, launch, support, scale. Short cycles, working software every two weeks and a definition of done agreed before code.",
+  },
+  {
+    q: "Where are you based and who do you serve?",
+    a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. Octapus work with startups and growing companies across the GCC and internationally.",
+  },
+  {
+    q: "Do you offer ongoing support and monitoring?",
+    a: "Yes. Operate is a first-class service — 24/7 monitoring, response and continuous improvement on the systems we build together.",
+  },
 ] as const;
-
 
 /* -------------------------------------------------------------------------
  * Octapus disciplines — two pathways, six disciplines, one intelligence layer.
@@ -455,7 +594,8 @@ export const disciplineTracks: DisciplineTrack[] = [
       {
         slug: "ai-and-data",
         name: "AI & Data",
-        summary: "The intelligence: OIS, AI agents and data systems on top of what you already run.",
+        summary:
+          "The intelligence: OIS, AI agents and data systems on top of what you already run.",
         capabilities: [
           "AI solutions",
           "AI agents",
@@ -468,12 +608,7 @@ export const disciplineTracks: DisciplineTrack[] = [
         slug: "operate",
         name: "Operate",
         summary: "The continuity: the engineers who built the system keep it running.",
-        capabilities: [
-          "Cloud management",
-          "Maintenance",
-          "Support",
-          "Optimization",
-        ],
+        capabilities: ["Cloud management", "Maintenance", "Support", "Optimization"],
       },
     ],
   },
@@ -526,30 +661,56 @@ export const disciplineTracks: DisciplineTrack[] = [
 
 /** One-line OIS relationship for products that carry an intelligence layer. */
 export const productOisNotes: Record<string, string> = {
-  "obms-erp": "OIS helps employees reach business intelligence inside the ERP instead of chasing reports.",
-  "mr-crm": "OIS understands customer information and workflow, so the pipeline stays current without manual upkeep.",
-  "ai-business-automation": "OIS coordinates intelligent workflows across the tools your team already uses.",
-  "algorithem": "OIS applies your decision rules consistently and explains each outcome.",
-  "hub8": "OIS reads across connected tools so one question does not require eight logins.",
+  "obms-erp":
+    "OIS helps employees reach business intelligence inside the ERP instead of chasing reports.",
+  "mr-crm":
+    "OIS understands customer information and workflow, so the pipeline stays current without manual upkeep.",
+  "ai-business-automation":
+    "OIS coordinates intelligent workflows across the tools your team already uses.",
+  algorithem: "OIS applies your decision rules consistently and explains each outcome.",
+  hub8: "OIS reads across connected tools so one question does not require eight logins.",
   "odoo-custom-erp": "OIS layers intelligence over Odoo without changing the modules you rely on.",
-  "erp-implementation": "OIS shortens adoption by answering process questions during and after rollout.",
-  "custom-ai": "Custom AI systems are delivered on the OIS platform, with authorization and audit trails.",
-  "horus-ai": "Horus AI is the first AI coworker inside the OIS ecosystem — powered by OIS, never above it.",
-  "outreach": "OIS scores and prioritizes leads using the context already inside your systems.",
-  "oprate": "OIS surfaces operational exceptions before they reach the customer.",
-  "blueprint": "OIS connects project data, documents and progress into one answerable view.",
-  "buy": "OIS keeps orders, stock and finance reconciled and explains any drift.",
-  "icon": "OIS connects campaign performance back to the systems that capture demand.",
+  "erp-implementation":
+    "OIS shortens adoption by answering process questions during and after rollout.",
+  "custom-ai":
+    "Custom AI systems are delivered on the OIS platform, with authorization and audit trails.",
+  "horus-ai":
+    "Horus AI is the first AI coworker inside the OIS ecosystem — powered by OIS, never above it.",
+  outreach: "OIS scores and prioritizes leads using the context already inside your systems.",
+  oprate: "OIS surfaces operational exceptions before they reach the customer.",
+  blueprint: "OIS connects project data, documents and progress into one answerable view.",
+  buy: "OIS keeps orders, stock and finance reconciled and explains any drift.",
+  icon: "OIS connects campaign performance back to the systems that capture demand.",
 };
 
 /** Industry-specific OIS use cases used across industry surfaces. */
 export const industryOisUseCases: Array<{ industry: string; useCase: string }> = [
-  { industry: "Construction", useCase: "OIS connects project data, documents, teams and workflows across sites." },
-  { industry: "Healthcare", useCase: "OIS connects information and improves operational assistance for clinical and admin teams." },
-  { industry: "Finance", useCase: "OIS helps teams reach reports and financial knowledge without waiting on analysts." },
-  { industry: "Retail", useCase: "OIS keeps stock, pricing and store operations answering the same question the same way." },
-  { industry: "Manufacturing", useCase: "OIS links production, maintenance and supply data into one operational picture." },
-  { industry: "Logistics", useCase: "OIS tracks movement, exceptions and documentation across the chain." },
+  {
+    industry: "Construction",
+    useCase: "OIS connects project data, documents, teams and workflows across sites.",
+  },
+  {
+    industry: "Healthcare",
+    useCase:
+      "OIS connects information and improves operational assistance for clinical and admin teams.",
+  },
+  {
+    industry: "Finance",
+    useCase: "OIS helps teams reach reports and financial knowledge without waiting on analysts.",
+  },
+  {
+    industry: "Retail",
+    useCase:
+      "OIS keeps stock, pricing and store operations answering the same question the same way.",
+  },
+  {
+    industry: "Manufacturing",
+    useCase: "OIS links production, maintenance and supply data into one operational picture.",
+  },
+  {
+    industry: "Logistics",
+    useCase: "OIS tracks movement, exceptions and documentation across the chain.",
+  },
 ];
 
 /** Octapus Engineering — "The warehouse for tuning your business". */
@@ -560,12 +721,36 @@ export const engineering = {
   intro:
     "One place where the machinery of your company is built, repaired, upgraded and tuned — software, integrations, data and infrastructure, handled by the same team that runs them after launch.",
   bays: [
-    { name: "Build Bay", summary: "New systems from scratch.", items: ["Custom software", "Web applications", "Mobile applications", "Internal tools"] },
-    { name: "Integration Bay", summary: "Systems that finally talk to each other.", items: ["API development", "Third-party integrations", "Data pipelines", "Legacy migration"] },
-    { name: "Tuning Bay", summary: "Existing systems made faster and cheaper to run.", items: ["Performance tuning", "Cost optimization", "Refactoring", "Technical audits"] },
-    { name: "Infrastructure Bay", summary: "The floor everything stands on.", items: ["Cloud architecture", "CI/CD pipelines", "Monitoring", "Security hardening"] },
-    { name: "Data Bay", summary: "Turning operational exhaust into decisions.", items: ["Data modelling", "Warehousing", "Reporting layers", "AI-ready datasets"] },
-    { name: "Service Bay", summary: "The system stays tuned after launch.", items: ["SLA support", "Maintenance", "Incident response", "Continuous improvement"] },
+    {
+      name: "Build Bay",
+      summary: "New systems from scratch.",
+      items: ["Custom software", "Web applications", "Mobile applications", "Internal tools"],
+    },
+    {
+      name: "Integration Bay",
+      summary: "Systems that finally talk to each other.",
+      items: ["API development", "Third-party integrations", "Data pipelines", "Legacy migration"],
+    },
+    {
+      name: "Tuning Bay",
+      summary: "Existing systems made faster and cheaper to run.",
+      items: ["Performance tuning", "Cost optimization", "Refactoring", "Technical audits"],
+    },
+    {
+      name: "Infrastructure Bay",
+      summary: "The floor everything stands on.",
+      items: ["Cloud architecture", "CI/CD pipelines", "Monitoring", "Security hardening"],
+    },
+    {
+      name: "Data Bay",
+      summary: "Turning operational exhaust into decisions.",
+      items: ["Data modelling", "Warehousing", "Reporting layers", "AI-ready datasets"],
+    },
+    {
+      name: "Service Bay",
+      summary: "The system stays tuned after launch.",
+      items: ["SLA support", "Maintenance", "Incident response", "Continuous improvement"],
+    },
   ],
   keywords: [
     "software engineering UAE",
@@ -584,12 +769,30 @@ export const studios = {
   intro:
     "The creative division of Octapus. Where engineering builds the machine, Studios builds how the market sees it — brand, content, campaigns and the presence that makes the system worth finding.",
   provides: [
-    { name: "Brand Identity", summary: "Naming, logo systems, typography, colour and the rules that keep it consistent." },
-    { name: "Web & Digital Design", summary: "Websites and product interfaces designed to convert, not just to look good." },
-    { name: "Content Production", summary: "Photography, video, motion graphics and 3D built around a release calendar." },
-    { name: "Social & Community", summary: "Channel strategy, always-on content and community management." },
-    { name: "Campaigns & Performance", summary: "Creative and media working together — paid, organic and lifecycle." },
-    { name: "Reputation & PR", summary: "Positioning, press, founder presence and review ecosystems." },
+    {
+      name: "Brand Identity",
+      summary: "Naming, logo systems, typography, colour and the rules that keep it consistent.",
+    },
+    {
+      name: "Web & Digital Design",
+      summary: "Websites and product interfaces designed to convert, not just to look good.",
+    },
+    {
+      name: "Content Production",
+      summary: "Photography, video, motion graphics and 3D built around a release calendar.",
+    },
+    {
+      name: "Social & Community",
+      summary: "Channel strategy, always-on content and community management.",
+    },
+    {
+      name: "Campaigns & Performance",
+      summary: "Creative and media working together — paid, organic and lifecycle.",
+    },
+    {
+      name: "Reputation & PR",
+      summary: "Positioning, press, founder presence and review ecosystems.",
+    },
   ],
   keywords: [
     "creative agency UAE",

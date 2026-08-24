@@ -9,36 +9,52 @@ import { OisConnection } from "@/components/site/OisConnection";
 import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
 
 export const Route = createFileRoute("/services")({
-  head: () => buildMeta({
-    title: "Octapus Services — Engineering, AI, ERP and Growth",
-    description: "Octapus delivers engineering, business systems, AI & data, design, growth and operate as one continuous relationship — custom software, ERP, CRM and automation for the UAE and beyond.",
-    path: "/services",
-    ogType: "website",
-    keywords: ["custom software UAE", "ERP development Dubai", "CRM development", "AI development UAE", "software engineering services", "Odoo implementation UAE"],
-  }),
+  head: () =>
+    buildMeta({
+      title: "Octapus Services — Engineering, AI, ERP and Growth",
+      description:
+        "Octapus delivers engineering, business systems, AI & data, design, growth and operate as one continuous relationship — custom software, ERP, CRM and automation for the UAE and beyond.",
+      path: "/services",
+      ogType: "website",
+      keywords: [
+        "custom software UAE",
+        "ERP development Dubai",
+        "CRM development",
+        "AI development UAE",
+        "software engineering services",
+        "Odoo implementation UAE",
+      ],
+    }),
   component: ServicesPage,
 });
 
 function ServicesPage() {
   return (
     <>
-      <JsonLd data={{
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        name: `${SITE_NAME} Services`,
-        itemListElement: services.map((s, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          item: {
-            "@type": "Service",
-            name: s.name,
-            description: s.summary,
-            url: "/services",
-            provider: { "@type": "Organization", name: "Octapus L.L.C." },
-          },
-        })),
-      }} />
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }])} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: `${SITE_NAME} Services`,
+          itemListElement: services.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Service",
+              name: s.name,
+              description: s.summary,
+              url: "/services",
+              provider: { "@type": "Organization", name: "Octapus L.L.C." },
+            },
+          })),
+        }}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ])}
+      />
 
       <Section
         eyebrow="Services"
@@ -56,7 +72,9 @@ function ServicesPage() {
           ))}
         </div>
         <div className="mt-16 text-center">
-          <Button asChild size="lg" className="rounded-full"><Link to="/book">Book a strategy call</Link></Button>
+          <Button asChild size="lg" className="rounded-full">
+            <Link to="/book">Book a strategy call</Link>
+          </Button>
         </div>
       </Section>
 
@@ -71,9 +89,21 @@ function ServicesPage() {
       <RelatedLinks
         title="See the services applied."
         items={[
-          { to: "/products", label: "Products", detail: "Concrete systems these services have shipped." },
-          { to: "/technology", label: "Technology", detail: "Engineering, business systems, AI & data and operate." },
-          { to: "/marketing", label: "Marketing", detail: "Design & brand and growth, connected to the systems." },
+          {
+            to: "/products",
+            label: "Products",
+            detail: "Concrete systems these services have shipped.",
+          },
+          {
+            to: "/technology",
+            label: "Technology",
+            detail: "Engineering, business systems, AI & data and operate.",
+          },
+          {
+            to: "/marketing",
+            label: "Marketing",
+            detail: "Design & brand and growth, connected to the systems.",
+          },
         ]}
       />
     </>

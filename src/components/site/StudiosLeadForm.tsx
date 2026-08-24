@@ -14,7 +14,11 @@ export function StudiosLeadForm() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ContactInput>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ContactInput>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(contactSchema) as any,
     defaultValues: { enquiryType: "marketing_growth", preferredContact: "email" },
@@ -68,7 +72,14 @@ export function StudiosLeadForm() {
       noValidate
       className="space-y-5 rounded-2xl border hairline bg-background p-6 md:p-8"
     >
-      <input type="text" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register("website")} />
+      <input
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden
+        {...register("website")}
+      />
       <input type="hidden" {...register("enquiryType")} />
       <input type="hidden" {...register("preferredContact")} />
 
@@ -76,7 +87,11 @@ export function StudiosLeadForm() {
         <div className="space-y-2">
           <Label htmlFor="s-name">Name</Label>
           <Input id="s-name" autoComplete="name" {...register("name")} />
-          {errors.name?.message && <p role="alert" className="text-xs text-destructive">{errors.name.message}</p>}
+          {errors.name?.message && (
+            <p role="alert" className="text-xs text-destructive">
+              {errors.name.message}
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="s-company">Company</Label>
@@ -87,25 +102,56 @@ export function StudiosLeadForm() {
       <div className="space-y-2">
         <Label htmlFor="s-email">Work email</Label>
         <Input id="s-email" type="email" autoComplete="email" {...register("email")} />
-        {errors.email?.message && <p role="alert" className="text-xs text-destructive">{errors.email.message}</p>}
+        {errors.email?.message && (
+          <p role="alert" className="text-xs text-destructive">
+            {errors.email.message}
+          </p>
+        )}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="s-desc">What do you want to be known for?</Label>
-        <Textarea id="s-desc" rows={4} placeholder="Brand, content, campaign or reputation goal…" {...register("description")} />
-        {errors.description?.message && <p role="alert" className="text-xs text-destructive">{errors.description.message}</p>}
+        <Textarea
+          id="s-desc"
+          rows={4}
+          placeholder="Brand, content, campaign or reputation goal…"
+          {...register("description")}
+        />
+        {errors.description?.message && (
+          <p role="alert" className="text-xs text-destructive">
+            {errors.description.message}
+          </p>
+        )}
       </div>
 
       {errorMsg && (
-        <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+        <div
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive"
+        >
           {errorMsg}
         </div>
       )}
 
-      <Button type="submit" size="lg" className="rounded-full w-full md:w-auto px-7" disabled={status === "loading"}>
-        {status === "loading" ? (<><Loader2 className="mr-2 size-4 animate-spin" /> Sending…</>) : (<>Start a Studios Project <ArrowRight className="ml-1 size-4" /></>)}
+      <Button
+        type="submit"
+        size="lg"
+        className="rounded-full w-full md:w-auto px-7"
+        disabled={status === "loading"}
+      >
+        {status === "loading" ? (
+          <>
+            <Loader2 className="mr-2 size-4 animate-spin" /> Sending…
+          </>
+        ) : (
+          <>
+            Start a Studios Project <ArrowRight className="ml-1 size-4" />
+          </>
+        )}
       </Button>
-      <p className="text-xs text-muted-foreground">Takes under a minute. Octapus reply within one business day.</p>
+      <p className="text-xs text-muted-foreground">
+        Takes under a minute. Octapus reply within one business day.
+      </p>
     </form>
   );
 }

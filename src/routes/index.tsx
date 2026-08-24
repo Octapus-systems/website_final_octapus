@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import * as React from "react";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
 import { ProductsShowcase } from "@/components/site/ProductsShowcase";
@@ -10,7 +11,22 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import TestimonialsV2 from "@/components/ui/testimonial-v2";
 
-const visibleProducts = products.filter(p => !hiddenProductSlugs.includes(p.slug));
+import { cn } from "@/lib/utils";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { motion } from "framer-motion";
+import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
+
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=640&h=640&fit=crop&q=70&auto=format",
+  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=640&h=640&fit=crop&q=70&auto=format",
+  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=640&h=640&fit=crop&q=70&auto=format",
+  "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=640&h=640&fit=crop&q=70&auto=format",
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=640&h=640&fit=crop&q=70&auto=format",
+  "https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=640&h=640&fit=crop&q=70&auto=format",
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=640&h=640&fit=crop&q=70&auto=format",
+];
+
+const visibleProducts = products.filter((p) => !hiddenProductSlugs.includes(p.slug));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +36,15 @@ export const Route = createFileRoute("/")({
         "Octapus designs and develops custom software, intelligent AI systems and digital platforms that help businesses in the UAE operate, automate and grow.",
       path: "/",
       ogType: "website",
-      keywords: ["Octapus", "UAE software company", "custom software development UAE", "ERP CRM Dubai", "AI solutions UAE", "business systems", "digital platforms"],
+      keywords: [
+        "Octapus",
+        "UAE software company",
+        "custom software development UAE",
+        "ERP CRM Dubai",
+        "AI solutions UAE",
+        "business systems",
+        "digital platforms",
+      ],
     }),
     links: [{ rel: "canonical", href: "/" }],
   }),
@@ -28,6 +52,18 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const navigate = useNavigate();
+
+  const carouselSlides = React.useMemo(() => {
+    return visibleProducts.map((p, idx) => ({
+      src: p.image || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length],
+      alt: p.name,
+      title: p.name,
+      subtitle: p.headline,
+      meta: p.tags.slice(0, 3).map((tag) => ({ label: "Tag", value: tag })),
+    }));
+  }, []);
+
   return (
     <>
       <JsonLd
@@ -58,22 +94,47 @@ function Home() {
       <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
 
       {/* ── 1. Value Proposition (Tagline) ── */}
-      <Section className="py-24 md:py-32 bg-background">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="font-display text-4xl md:text-5xl lg:text-7xl font-medium tracking-tight text-foreground leading-[1.1]">
+      <Section className="py-24 md:py-32 bg-background relative overflow-hidden">
+        <DotPattern
+          className={cn(
+            "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+            "animate-scrolling-dots",
+          )}
+        />
+        <div className="mx-auto max-w-4xl text-center relative z-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="font-display text-4xl md:text-5xl lg:text-7xl font-medium tracking-tight text-foreground leading-[1.1]"
+          >
             Software that becomes the <span className="text-primary">spine</span> of your operation.
-          </h1>
-          <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            We don't just write code. We forge the systems that connect your people, process, and data—designed in the UAE and built for scale.
-          </p>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+          >
+            We don't just write code. We forge the systems that connect your people, process, and
+            data—designed in the UAE and built for scale.
+          </motion.p>
         </div>
       </Section>
 
       {/* ── 2. Capabilities ── */}
-      <Section title="What we do" className="bg-surface dark:bg-surface-dark border-y border-hairline">
+      <Section
+        title="What we do"
+        className="bg-surface dark:bg-surface-dark border-y border-hairline"
+      >
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {capabilities.map((cap, idx) => (
-            <div key={idx} className="flex flex-col items-center text-center p-6 rounded-2xl bg-background border border-hairline hover:border-primary/30 transition-colors">
+            <div
+              key={idx}
+              className="flex flex-col items-center text-center p-6 rounded-2xl bg-background border border-hairline hover:border-primary/30 transition-colors"
+            >
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <CheckCircle2 className="h-6 w-6 text-primary" />
               </div>
@@ -95,39 +156,36 @@ function Home() {
               <div className="text-sm font-semibold tracking-wide uppercase text-primary">
                 {stat.label}
               </div>
-              <p className="text-sm text-muted-foreground max-w-[200px] mx-auto">
-                {stat.detail}
-              </p>
+              <p className="text-sm text-muted-foreground max-w-[200px] mx-auto">{stat.detail}</p>
             </div>
           ))}
         </div>
       </Section>
 
       {/* ── 4. Our Products (Existing Grid) ── */}
-      <Section title="Our Products" intro="The specialized systems we've built to solve complex business problems." className="bg-surface dark:bg-surface-dark border-y border-hairline">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {visibleProducts.map((p) => (
-            <Link
-              key={p.slug}
-              to="/products/$slug"
-              params={{ slug: p.slug }}
-              className="group flex flex-col justify-between rounded-2xl border hairline bg-background p-6 transition-all hover:border-primary/50 hover:bg-accent hover:shadow-sm"
-            >
-              <div>
-                <div className="text-xl font-semibold tracking-tight transition-colors group-hover:text-primary">
-                  {p.name}
-                </div>
-                <div className="mt-2 text-sm text-muted-foreground">
-                  {p.headline}
-                </div>
-              </div>
-            </Link>
-          ))}
+      <Section
+        title="Our Products"
+        intro="The specialized systems we've built to solve complex business problems."
+        className="bg-surface dark:bg-surface-dark border-y border-hairline"
+      >
+        <div className="w-full overflow-hidden bg-background py-10 mt-8 rounded-3xl border border-hairline">
+          <CoverflowCarousel
+            slides={carouselSlides}
+            showCaption
+            showNavigation
+            onSlideClick={(index) => {
+              navigate({ to: "/products/$slug", params: { slug: visibleProducts[index].slug } });
+            }}
+          />
         </div>
       </Section>
 
       {/* ── 5. Testimonials ── */}
-      <Section title="Built for impact" intro="Don't just take our word for it." className="bg-background">
+      <Section
+        title="Built for impact"
+        intro="Don't just take our word for it."
+        className="bg-background"
+      >
         <TestimonialsV2 />
       </Section>
 
@@ -138,7 +196,8 @@ function Home() {
             Ready to upgrade your operation?
           </h2>
           <p className="text-lg text-muted-foreground mb-10 max-w-xl">
-            Let's discuss how custom software and intelligent systems can transform the way you do business.
+            Let's discuss how custom software and intelligent systems can transform the way you do
+            business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button asChild size="lg" className="rounded-full px-8">

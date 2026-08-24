@@ -10,7 +10,6 @@ import { trackEvent } from "@/lib/analytics";
 import { studios, site } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 
-
 export const Route = createFileRoute("/studios")({
   head: () =>
     buildMeta({
@@ -25,8 +24,14 @@ export const Route = createFileRoute("/studios")({
 });
 
 const way = [
-  { k: "Positioning first", v: "Octapus define what you should be known for before producing a single asset." },
-  { k: "Systems, not one-offs", v: "Every identity ships with rules, templates and a calendar the team can run." },
+  {
+    k: "Positioning first",
+    v: "Octapus define what you should be known for before producing a single asset.",
+  },
+  {
+    k: "Systems, not one-offs",
+    v: "Every identity ships with rules, templates and a calendar the team can run.",
+  },
   { k: "Measured creative", v: "Work is judged on reach, response and reputation — not applause." },
 ];
 
@@ -64,7 +69,9 @@ function StudiosPage() {
         <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.03] max-w-4xl">
           {studios.position}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">{studios.intro}</p>
+        <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+          {studios.intro}
+        </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild size="lg" className="rounded-full px-7">
             <a
@@ -81,7 +88,11 @@ function StudiosPage() {
         </div>
       </Container>
 
-      <Section eyebrow="What Octapus Studios provides" title="Six creative capabilities." className="!pt-4">
+      <Section
+        eyebrow="What Octapus Studios provides"
+        title="Six creative capabilities."
+        className="!pt-4"
+      >
         <div className="grid gap-px bg-hairline border hairline rounded-3xl overflow-hidden md:grid-cols-2 lg:grid-cols-3">
           {studios.provides.map((p, i) => (
             <article key={p.name} className="bg-background p-8">
@@ -93,7 +104,11 @@ function StudiosPage() {
         </div>
       </Section>
 
-      <Section eyebrow="How Octapus work" title="Reputation is built, not bought." className="!pt-0">
+      <Section
+        eyebrow="How Octapus work"
+        title="Reputation is built, not bought."
+        className="!pt-0"
+      >
         <div className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden md:grid-cols-3">
           {way.map((a) => (
             <div key={a.k} className="bg-background p-7">
@@ -107,7 +122,13 @@ function StudiosPage() {
       <OisConnection
         title="Creative that stays connected to the operation."
         body="Campaigns, content and enquiries feed back into the systems Octapus build, so OIS can show what demand actually turned into — and where reputation is compounding."
-        chain={["Brand and content", "Campaigns", "CRM and systems", "OIS intelligence layer", "Growth you can explain"]}
+        chain={[
+          "Brand and content",
+          "Campaigns",
+          "CRM and systems",
+          "OIS intelligence layer",
+          "Growth you can explain",
+        ]}
       />
 
       <Section
@@ -146,12 +167,19 @@ function StudiosPage() {
         </div>
       </Section>
 
-
       <RelatedLinks
         title="Continue through the ecosystem."
         items={[
-          { to: "/engineering", label: "Octapus Engineering", detail: "The warehouse where your systems get built and tuned." },
-          { to: "/marketing", label: "Marketing", detail: "The growth disciplines behind the creative work." },
+          {
+            to: "/engineering",
+            label: "Octapus Engineering",
+            detail: "The warehouse where your systems get built and tuned.",
+          },
+          {
+            to: "/marketing",
+            label: "Marketing",
+            detail: "The growth disciplines behind the creative work.",
+          },
           { to: "/contact", label: "Talk to us", detail: "Tell us what you want to be known for." },
         ]}
       />

@@ -7,13 +7,22 @@ import { site } from "@/lib/site";
 import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => buildMeta({
-    title: "About Octapus — Systems Behind Modern UAE Business",
-    description: "Octapus L.L.C. is a UAE software, AI and business-systems partner designing connected operations for startups and growing companies — from Dubai and Ajman to the world.",
-    path: "/about",
-    ogType: "profile",
-    keywords: ["Octapus", "UAE software company", "business systems", "AI partner", "custom ERP", "Dubai software"],
-  }),
+  head: () =>
+    buildMeta({
+      title: "About Octapus — Systems Behind Modern UAE Business",
+      description:
+        "Octapus L.L.C. is a UAE software, AI and business-systems partner designing connected operations for startups and growing companies — from Dubai and Ajman to the world.",
+      path: "/about",
+      ogType: "profile",
+      keywords: [
+        "Octapus",
+        "UAE software company",
+        "business systems",
+        "AI partner",
+        "custom ERP",
+        "Dubai software",
+      ],
+    }),
   component: AboutPage,
 });
 
@@ -43,7 +52,12 @@ function AboutPage() {
           },
         }}
       />
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
 
       <Section
         eyebrow="About"
@@ -53,23 +67,51 @@ function AboutPage() {
       />
       <Section className="!pt-0">
         <div className="mx-auto max-w-3xl space-y-6 text-lg leading-relaxed text-muted-foreground">
-          <p>Octapus exists to take complicated technology, remove the noise, and arrange it into one controlled business system.</p>
           <p>
-            Octapus partner with founders and operators who have outgrown disconnected tools. Instead of adding another SaaS to the stack, Octapus design the operating layer that the business actually needs — and Octapus operate it with you. Explore our <Link to="/services" className="text-primary underline underline-offset-4">services</Link> or the <Link to="/products" className="text-primary underline underline-offset-4">product ecosystem</Link>.
+            Octapus exists to take complicated technology, remove the noise, and arrange it into one
+            controlled business system.
+          </p>
+          <p>
+            Octapus partner with founders and operators who have outgrown disconnected tools.
+            Instead of adding another SaaS to the stack, Octapus design the operating layer that the
+            business actually needs — and Octapus operate it with you. Explore our{" "}
+            <Link to="/services" className="text-primary underline underline-offset-4">
+              services
+            </Link>{" "}
+            or the{" "}
+            <Link to="/products" className="text-primary underline underline-offset-4">
+              product ecosystem
+            </Link>
+            .
           </p>
           <p>Designed in the UAE. Built for the world.</p>
         </div>
         <div className="mt-12 text-center">
-          <Button asChild className="rounded-full"><Link to="/book">Book a strategy call</Link></Button>
+          <Button asChild className="rounded-full">
+            <Link to="/book">Book a strategy call</Link>
+          </Button>
         </div>
       </Section>
 
       <RelatedLinks
         title="Keep exploring Octapus."
         items={[
-          { to: "/services", label: "Services", detail: "Engineering, business systems, AI, design, growth and operate — one connected team." },
-          { to: "/industries", label: "Industries", detail: "Sectors where Octapus systems are already running." },
-          { to: "/contact", label: "Contact", detail: "Tell us about the operation you need to connect." },
+          {
+            to: "/services",
+            label: "Services",
+            detail:
+              "Engineering, business systems, AI, design, growth and operate — one connected team.",
+          },
+          {
+            to: "/industries",
+            label: "Industries",
+            detail: "Sectors where Octapus systems are already running.",
+          },
+          {
+            to: "/contact",
+            label: "Contact",
+            detail: "Tell us about the operation you need to connect.",
+          },
         ]}
       />
     </>

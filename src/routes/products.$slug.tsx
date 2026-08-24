@@ -39,79 +39,133 @@ export const Route = createFileRoute("/products/$slug")({
   notFoundComponent: () => (
     <Section title="Product not found">
       <div className="text-center">
-        <Button asChild variant="outline"><Link to="/products">Back to products</Link></Button>
+        <Button asChild variant="outline">
+          <Link to="/products">Back to products</Link>
+        </Button>
       </div>
     </Section>
   ),
 });
-
 
 function ProductPage() {
   const p = Route.useLoaderData();
   const isOIS = p.slug === "ois";
   const isObms = p.slug === "obms-erp";
   return (
-
     <>
-      <JsonLd data={{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        name: p.name,
-        applicationCategory: "BusinessApplication",
-        operatingSystem: "Web",
-        description: p.headline,
-        url: `/products/${p.slug}`,
-        ...(p.image ? { image: p.image } : {}),
-        offers: { "@type": "Offer", price: "0", priceCurrency: "AED", availability: "https://schema.org/InStock" },
-        provider: { "@type": "Organization", name: site.legalName, url: "/" },
-        keywords: p.tags.join(", "),
-      }} />
-      <JsonLd data={breadcrumbSchema([
-        { name: "Home", path: "/" },
-        { name: "Products", path: "/products" },
-        { name: p.name, path: `/products/${p.slug}` },
-      ])} />
-
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: p.name,
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web",
+          description: p.headline,
+          url: `/products/${p.slug}`,
+          ...(p.image ? { image: p.image } : {}),
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "AED",
+            availability: "https://schema.org/InStock",
+          },
+          provider: { "@type": "Organization", name: site.legalName, url: "/" },
+          keywords: p.tags.join(", "),
+        }}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Products", path: "/products" },
+          { name: p.name, path: `/products/${p.slug}` },
+        ])}
+      />
 
       <Container className="pt-10 pb-4">
-        <Link to="/products" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          to="/products"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
           <ArrowLeft className="size-4" /> All products
         </Link>
       </Container>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-12 items-center">
-          <div className={isObms ? "lg:col-span-12 space-y-6 text-center max-w-3xl mx-auto" : "lg:col-span-6 space-y-6"}>
+          <div
+            className={
+              isObms
+                ? "lg:col-span-12 space-y-6 text-center max-w-3xl mx-auto"
+                : "lg:col-span-6 space-y-6"
+            }
+          >
             <div className="text-eyebrow">{p.tags.join(" · ")}</div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.02]">{p.name}</h1>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.02]">
+              {p.name}
+            </h1>
             <p className="text-xl leading-relaxed">{p.headline}</p>
-            <div className={isObms ? "flex flex-wrap gap-3 pt-2 justify-center" : "flex flex-wrap gap-3 pt-2"}>
+            <div
+              className={
+                isObms ? "flex flex-wrap gap-3 pt-2 justify-center" : "flex flex-wrap gap-3 pt-2"
+              }
+            >
               {isOIS ? (
-                <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("ois_external_click", { source: "product_page" })}>
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full"
+                  onClick={() => trackEvent("ois_external_click", { source: "product_page" })}
+                >
                   <a href={site.oisExternalUrl} target="_blank" rel="noopener noreferrer">
                     Experience the OIS Concept <ExternalLink className="ml-1 size-4" />
                   </a>
                 </Button>
               ) : p.slug === "horus-ai" && p.externalUrl ? (
-                <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("horus_external_click", { source: "product_hero" })}>
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full"
+                  onClick={() => trackEvent("horus_external_click", { source: "product_hero" })}
+                >
                   <a href={p.externalUrl} target="_blank" rel="noopener noreferrer">
                     Visit the Horus AI website <ExternalLink className="ml-1 size-4" />
                   </a>
                 </Button>
               ) : (
-                <Button asChild size="lg" className="rounded-full" onClick={() => trackEvent("product_enquiry", { product: p.slug })}>
-                  <Link to="/contact">Talk about {p.name} <ArrowRight className="ml-1 size-4" /></Link>
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full"
+                  onClick={() => trackEvent("product_enquiry", { product: p.slug })}
+                >
+                  <Link to="/contact">
+                    Talk about {p.name} <ArrowRight className="ml-1 size-4" />
+                  </Link>
                 </Button>
               )}
               {isObms && p.externalUrl ? (
-                <Button asChild size="lg" variant="outline" className="rounded-full" onClick={() => trackEvent("obms_external_click", { source: "product_hero" })}>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={() => trackEvent("obms_external_click", { source: "product_hero" })}
+                >
                   <a href={p.externalUrl} target="_blank" rel="noopener noreferrer">
                     More detail <ExternalLink className="ml-1 size-4" />
                   </a>
                 </Button>
               ) : p.slug === "horus-ai" ? (
-                <Button asChild size="lg" variant="outline" className="rounded-full" onClick={() => trackEvent("product_enquiry", { product: p.slug })}>
-                  <Link to="/contact">Talk about {p.name} <ArrowRight className="ml-1 size-4" /></Link>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={() => trackEvent("product_enquiry", { product: p.slug })}
+                >
+                  <Link to="/contact">
+                    Talk about {p.name} <ArrowRight className="ml-1 size-4" />
+                  </Link>
                 </Button>
               ) : (
                 <Button asChild size="lg" variant="outline" className="rounded-full">
@@ -123,8 +177,13 @@ function ProductPage() {
           {!isObms && (
             <div className="lg:col-span-6">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border hairline bg-[var(--color-surface)]">
-                {p.image && !['custom-ai', 'custom-business-solutions'].includes(p.slug) ? (
-                  <img src={p.image} alt={`${p.name} interface preview`} loading="lazy" className="size-full object-cover" />
+                {p.image && !["custom-ai", "custom-business-solutions"].includes(p.slug) ? (
+                  <img
+                    src={p.image}
+                    alt={`${p.name} interface preview`}
+                    loading="lazy"
+                    className="size-full object-cover"
+                  />
                 ) : (
                   <div className="absolute inset-0 bg-muted/20 grid place-items-center">
                     <BentoCard />
@@ -146,27 +205,40 @@ function ProductPage() {
         </Section>
       ) : null}
 
-
-
-
       {productOisNotes[p.slug] ? (
         <OisConnection
           eyebrow="Enhanced with OIS"
           title={`${p.name}, with the OIS intelligence layer.`}
           body={productOisNotes[p.slug]}
-          chain={[`${p.name}`, "OIS intelligence layer", "AI agents (Horus AI first)", "People and business actions"]}
+          chain={[
+            `${p.name}`,
+            "OIS intelligence layer",
+            "AI agents (Horus AI first)",
+            "People and business actions",
+          ]}
         />
       ) : null}
 
       <RelatedLinks
         title="Related Octapus systems and services."
         items={[
-          { to: "/products", label: "All products", detail: "Browse the full Octapus product ecosystem." },
-          { to: "/technology", label: "Technology", detail: "How Octapus designs, builds and operates systems like this one." },
-          { to: "/ois", label: "OIS", detail: "The intelligence layer that connects Octapus systems." },
+          {
+            to: "/products",
+            label: "All products",
+            detail: "Browse the full Octapus product ecosystem.",
+          },
+          {
+            to: "/technology",
+            label: "Technology",
+            detail: "How Octapus designs, builds and operates systems like this one.",
+          },
+          {
+            to: "/ois",
+            label: "OIS",
+            detail: "The intelligence layer that connects Octapus systems.",
+          },
         ]}
       />
     </>
   );
 }
-

@@ -34,7 +34,9 @@ export function ScrollVideoSection({
     let cancelled = false;
     // Use portrait mobile frames on portrait/mobile screens,
     // full landscape desktop frames on wider screens.
-    const isPortrait = window.matchMedia("(max-width: 768px), (orientation: portrait) and (max-width: 1024px)").matches;
+    const isPortrait = window.matchMedia(
+      "(max-width: 768px), (orientation: portrait) and (max-width: 1024px)",
+    ).matches;
     const dir = isPortrait ? "/frames-mobile" : "/frames-desktop";
     const actualFrameCount = isPortrait && mobileFrameCount ? mobileFrameCount : frameCount;
     resolvedCountRef.current = actualFrameCount;
@@ -91,10 +93,7 @@ export function ScrollVideoSection({
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const idx = Math.min(
-      imagesRef.current.length - 1,
-      Math.max(0, Math.round(currentRef.current)),
-    );
+    const idx = Math.min(imagesRef.current.length - 1, Math.max(0, Math.round(currentRef.current)));
     const img = imagesRef.current[idx];
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (!img || !img.naturalWidth) return;

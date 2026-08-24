@@ -60,9 +60,7 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-16">
           <div className="space-y-5">
             <Wordmark />
-            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              {site.tagline}
-            </p>
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">{site.tagline}</p>
             <p className="text-xs text-muted-foreground/80">{site.origin}</p>
           </div>
 
@@ -88,7 +86,6 @@ export function Footer() {
           </div>
         </div>
 
-
         <div className="mt-14 grid gap-6 md:grid-cols-2 text-sm text-muted-foreground">
           <div className="space-y-1">
             <div>Dubai — {site.addresses[0].line}</div>
@@ -96,13 +93,19 @@ export function Footer() {
           </div>
           <div className="md:text-right space-y-1">
             <div>General {site.phones.general}</div>
-            <div>Sales {site.phones.sales} · Support {site.phones.support}</div>
+            <div>
+              Sales {site.phones.sales} · Support {site.phones.support}
+            </div>
           </div>
         </div>
 
         <div className="mt-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 border-t hairline pt-6 text-xs text-muted-foreground">
-          <div>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</div>
-          <div>{site.emails.info} · {site.emails.sales}</div>
+          <div>
+            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
+          </div>
+          <div>
+            {site.emails.info} · {site.emails.sales}
+          </div>
         </div>
       </div>
     </footer>

@@ -60,14 +60,35 @@ function TechnologyPage() {
           "Smarter business systems",
         ]}
         approach={[
-          { k: "Discovery first", v: "Octapus map the operation, systems and constraints before scope or code." },
-          { k: "Short cycles", v: "Working software every two weeks with a definition of done agreed up front." },
-          { k: "Operated after launch", v: "The engineers who built the system monitor, support and scale it." },
+          {
+            k: "Discovery first",
+            v: "Octapus map the operation, systems and constraints before scope or code.",
+          },
+          {
+            k: "Short cycles",
+            v: "Working software every two weeks with a definition of done agreed up front.",
+          },
+          {
+            k: "Operated after launch",
+            v: "The engineers who built the system monitor, support and scale it.",
+          },
         ]}
         related={[
-          { to: "/marketing", label: "Octapus Marketing", detail: "The presence and growth side of the same ecosystem." },
-          { to: "/ois", label: "OIS", detail: "The intelligence layer connecting every system Octapus build." },
-          { to: "/products", label: "Products", detail: "ERP, CRM, automation and AI systems already shipped." },
+          {
+            to: "/marketing",
+            label: "Octapus Marketing",
+            detail: "The presence and growth side of the same ecosystem.",
+          },
+          {
+            to: "/ois",
+            label: "OIS",
+            detail: "The intelligence layer connecting every system Octapus build.",
+          },
+          {
+            to: "/products",
+            label: "Products",
+            detail: "ERP, CRM, automation and AI systems already shipped.",
+          },
         ]}
       />
     </>

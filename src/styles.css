@@ -487,3 +487,18 @@
   background-clip: text;
   color: transparent;
 }
+
+@utility animate-scrolling-dots {
+  /* pattern width/height is 16px, so we translate by 16px to loop it */
+  animation: scrolling-dots 3s linear infinite;
+  /* to prevent gaps when translating, we scale the svg slightly so the edges aren't visible */
+  width: calc(100% + 32px) !important;
+  height: calc(100% + 32px) !important;
+  left: -16px;
+  top: -16px;
+}
+
+@keyframes scrolling-dots {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(16px, 16px); }
+}

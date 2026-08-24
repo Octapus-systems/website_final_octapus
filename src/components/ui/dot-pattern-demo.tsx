@@ -10,9 +10,7 @@ export function DotPatternDemo() {
         Dot Pattern
       </p>
       <DotPattern
-        className={cn(
-          "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
-        )}
+        className={cn("[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]")}
       />
     </div>
   );

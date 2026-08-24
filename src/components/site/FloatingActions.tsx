@@ -38,7 +38,9 @@ export function FloatingActions() {
           : "opacity-0 translate-y-6 scale-95 pointer-events-none"
       }`}
     >
-      <div className={`flex items-center gap-2 rounded-full p-1.5 glass-panel ${idle ? "cta-pop-in" : ""}`}>
+      <div
+        className={`flex items-center gap-2 rounded-full p-1.5 glass-panel ${idle ? "cta-pop-in" : ""}`}
+      >
         <a
           href={waUrl}
           target="_blank"

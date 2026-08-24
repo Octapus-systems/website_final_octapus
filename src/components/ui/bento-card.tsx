@@ -84,12 +84,9 @@ const BentoCard = () => {
     <div className="flex items-center justify-center w-full h-full antialiased">
       <div className="group relative w-full h-full overflow-hidden border-0 bg-transparent transition-all duration-500 m-0">
         <div className="p-4 sm:p-6 space-y-1.5 z-10 relative">
-          <h2 className="text-xs text-muted-foreground uppercase ">
-            Project Dashboard
-          </h2>
+          <h2 className="text-xs text-muted-foreground uppercase ">Project Dashboard</h2>
           <p className="text-lg sm:text-2xl text-foreground font-medium leading-snug max-w-[480px]">
-            High-performance analytics and team collaboration tools in one
-            place.
+            High-performance analytics and team collaboration tools in one place.
           </p>
         </div>
 
@@ -104,9 +101,7 @@ const BentoCard = () => {
                 <div className="w-2 h-2 rounded-full bg-muted-foreground/20" />
               </div>
               <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-                <span className="text-xs  text-muted-foreground/50  uppercase">
-                  Workspace
-                </span>
+                <span className="text-xs  text-muted-foreground/50  uppercase">Workspace</span>
               </div>
             </div>
 
@@ -128,13 +123,8 @@ const BentoCard = () => {
                             : "text-muted-foreground hover:text-foreground",
                         )}
                       >
-                        <Icon
-                          size={14}
-                          className="z-20 shrink-0 relative"
-                        />
-                        <span className="truncate z-20 relative font-medium">
-                          {tab.label}
-                        </span>
+                        <Icon size={14} className="z-20 shrink-0 relative" />
+                        <span className="truncate z-20 relative font-medium">{tab.label}</span>
                         {tab.badge && (
                           <span
                             className={cn(
@@ -216,18 +206,11 @@ const OverviewDashboard = () => (
     <div className="relative p-3.5 rounded-xl border border-border/40 bg-gradient-to-br from-background to-muted/20 overflow-hidden">
       <div className="flex flex-col gap-2 relative z-10">
         <div className="flex items-center justify-between">
-          <span className="text-[9px] font-medium text-muted-foreground">
-            Team Performance
-          </span>
-          <ArrowUpRight
-            size={12}
-            className="text-primary"
-          />
+          <span className="text-[9px] font-medium text-muted-foreground">Team Performance</span>
+          <ArrowUpRight size={12} className="text-primary" />
         </div>
         <div className="flex flex-col gap-0.5">
-          <span className="text-xl font-medium tracking-tight text-foreground">
-            94.2%
-          </span>
+          <span className="text-xl font-medium tracking-tight text-foreground">94.2%</span>
           <div className="w-full h-1 bg-muted rounded-full overflow-hidden mt-1">
             <motion.div
               initial={{ width: 0 }}
@@ -249,23 +232,16 @@ const OverviewDashboard = () => (
       <div className="p-3 rounded-xl border border-border/40 bg-background/50 flex items-center justify-between">
         <div className="flex flex-col">
           <span className="text-[10px] font-medium text-foreground">1,070</span>
-          <span className="text-[8px] text-muted-foreground uppercase font-medium">
-            Keywords
-          </span>
+          <span className="text-[8px] text-muted-foreground uppercase font-medium">Keywords</span>
         </div>
         <Search size={14} className="opacity-20" />
       </div>
       <div className="p-3 rounded-xl border border-border/40 bg-background/50 flex items-center justify-between">
         <div className="flex flex-col">
           <span className="text-[10px] font-medium text-foreground">2.3M</span>
-          <span className="text-[8px] text-muted-foreground uppercase font-medium">
-            Credits
-          </span>
+          <span className="text-[8px] text-muted-foreground uppercase font-medium">Credits</span>
         </div>
-        <Info
-          size={14}
-          className="opacity-20"
-        />
+        <Info size={14} className="opacity-20" />
       </div>
     </div>
   </div>
@@ -279,13 +255,8 @@ const ManagementDashboard = () => (
           Active Users
         </span>
         <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md bg-background border border-border/40">
-          <Search
-            size={10}
-            className="text-muted-foreground/50"
-          />
-          <span className="text-[8px] text-muted-foreground font-medium">
-            Search
-          </span>
+          <Search size={10} className="text-muted-foreground/50" />
+          <span className="text-[8px] text-muted-foreground font-medium">Search</span>
         </div>
       </div>
       <div className="p-1 flex flex-col gap-0.5">
@@ -314,10 +285,7 @@ const ManagementDashboard = () => (
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30 transition-colors group"
           >
             <div className="w-6 h-6 rounded-full bg-muted border border-border/40 flex items-center justify-center relative">
-              <User
-                size={10}
-                className="text-muted-foreground"
-              />
+              <User size={10} className="text-muted-foreground" />
               <div
                 className={cn(
                   "absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full border border-background",
@@ -326,18 +294,11 @@ const ManagementDashboard = () => (
               />
             </div>
             <div className="flex flex-col min-w-0 flex-1">
-              <span className="text-[10px] font-medium text-foreground truncate">
-                {user.name}
-              </span>
-              <span className="text-[8px] text-muted-foreground truncate">
-                {user.role}
-              </span>
+              <span className="text-[10px] font-medium text-foreground truncate">{user.name}</span>
+              <span className="text-[8px] text-muted-foreground truncate">{user.role}</span>
             </div>
             <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-              <Settings
-                size={12}
-                className="text-muted-foreground"
-              />
+              <Settings size={12} className="text-muted-foreground" />
             </div>
           </div>
         ))}
@@ -363,42 +324,33 @@ const ThreadsDashboard = () => (
       ].map((card, i) => {
         const Icon = card.icon;
         return (
-        <div
-          key={i}
-          className="p-3.5 rounded-xl border border-border/40 bg-background/50 flex flex-col gap-3 relative overflow-hidden group"
-        >
-          <div className="flex flex-col gap-1 z-10">
-            <span className="text-[12px] font-medium text-foreground leading-tight">
-              {card.title}
-            </span>
-            <span className="text-[9px] text-muted-foreground leading-tight">
-              {card.desc}
-            </span>
+          <div
+            key={i}
+            className="p-3.5 rounded-xl border border-border/40 bg-background/50 flex flex-col gap-3 relative overflow-hidden group"
+          >
+            <div className="flex flex-col gap-1 z-10">
+              <span className="text-[12px] font-medium text-foreground leading-tight">
+                {card.title}
+              </span>
+              <span className="text-[9px] text-muted-foreground leading-tight">{card.desc}</span>
+            </div>
+            <button className="w-fit flex items-center gap-1.5 px-2 py-1 rounded-md bg-foreground text-background text-[8px] font-semibold transition-transform active:scale-95 group-hover:bg-primary z-10">
+              <Plus size={8} strokeWidth={3} />
+              Create
+            </button>
           </div>
-          <button className="w-fit flex items-center gap-1.5 px-2 py-1 rounded-md bg-foreground text-background text-[8px] font-semibold transition-transform active:scale-95 group-hover:bg-primary z-10">
-            <Plus size={8} strokeWidth={3} />
-            Create
-          </button>
-        </div>
-      )})}
+        );
+      })}
     </div>
 
     <div className="mt-auto p-3 rounded-xl bg-muted/20 border border-border/30 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <div className="p-1 px-1.5 rounded-md bg-background border border-border/40">
-          <Info
-            size={10}
-            className="text-muted-foreground"
-          />
+          <Info size={10} className="text-muted-foreground" />
         </div>
-        <span className="text-[9px] text-muted-foreground font-medium">
-          Pin a new item
-        </span>
+        <span className="text-[9px] text-muted-foreground font-medium">Pin a new item</span>
       </div>
-      <Plus
-        size={12}
-        className="text-muted-foreground/50"
-      />
+      <Plus size={12} className="text-muted-foreground/50" />
     </div>
   </div>
 );
@@ -410,10 +362,7 @@ const ResourcesDashboard = () => (
         <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">
           Archives & Logs
         </span>
-        <Database
-          size={12}
-          className="text-muted-foreground/30"
-        />
+        <Database size={12} className="text-muted-foreground/30" />
       </div>
       <div className="flex-1 p-1 overflow-y-auto scrollbar-hide">
         {[
@@ -444,27 +393,28 @@ const ResourcesDashboard = () => (
         ].map((item, i) => {
           const Icon = item.icon;
           return (
-          <div
-            key={i}
-            className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer group"
-          >
-            <div className="w-6 h-6 rounded-md bg-muted/50 border border-border/40 flex items-center justify-center text-muted-foreground/60 group-hover:text-primary group-hover:bg-primary/5 transition-colors">
-              <Icon size={12} />
+            <div
+              key={i}
+              className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer group"
+            >
+              <div className="w-6 h-6 rounded-md bg-muted/50 border border-border/40 flex items-center justify-center text-muted-foreground/60 group-hover:text-primary group-hover:bg-primary/5 transition-colors">
+                <Icon size={12} />
+              </div>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-[10px] font-medium text-foreground truncate">
+                  {item.file}
+                </span>
+                <span className="text-[8px] text-muted-foreground tabular-nums uppercase">
+                  {item.size} • {item.type}
+                </span>
+              </div>
+              <ArrowUpRight
+                size={10}
+                className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+              />
             </div>
-            <div className="flex flex-col min-w-0 flex-1">
-              <span className="text-[10px] font-medium text-foreground truncate">
-                {item.file}
-              </span>
-              <span className="text-[8px] text-muted-foreground tabular-nums uppercase">
-                {item.size} • {item.type}
-              </span>
-            </div>
-            <ArrowUpRight
-              size={10}
-              className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
-            />
-          </div>
-        )})}
+          );
+        })}
       </div>
     </div>
   </div>

@@ -28,7 +28,9 @@ export function TrackPage({
         <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.03] max-w-4xl">
           {track.hero}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">{track.intro}</p>
+        <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+          {track.intro}
+        </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild size="lg" className="rounded-full px-7">
             <Link to="/book">
@@ -73,7 +75,11 @@ export function TrackPage({
 
       <OisConnection title={oisTitle} body={oisBody} chain={oisChain} />
 
-      <Section eyebrow="Industries" title="Sectors already running on this work." className="!pt-14">
+      <Section
+        eyebrow="Industries"
+        title="Sectors already running on this work."
+        className="!pt-14"
+      >
         <div className="flex flex-wrap justify-center gap-2">
           {industries.map((i) => (
             <Link
