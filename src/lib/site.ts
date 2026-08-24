@@ -1,6 +1,10 @@
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
+import odooProductVideo from "@/assets/odoo-product.mp4";
+import horusAiVideo from "@/assets/horus.mp4";
+import oisVideo from "@/assets/ois-v3.mp4";
+import customAiVideo from "@/assets/custom-ai-v2.mp4";
 
 export type TeamMember = {
   name: string;
@@ -149,6 +153,7 @@ export const products: Product[] = [
     customer: "Companies choosing Odoo as their operating layer.",
     problem: "Standard Odoo covers most of the work; the rest is where the value is.",
     outcome: "Modules extended, integrations built, deployment operated and supported.",
+    image: odooProductVideo,
     tags: ["Odoo", "ERP"],
   },
   {
@@ -159,7 +164,7 @@ export const products: Product[] = [
     problem: "Off-the-shelf AI doesn't understand your business.",
     outcome:
       "Focused AI systems: retrieval on your knowledge, actions on your systems, evaluations you can trust.",
-    image: productAiImg,
+    image: customAiVideo,
     tags: ["AI", "Custom"],
   },
   {
@@ -171,6 +176,7 @@ export const products: Product[] = [
     problem: "AI assistants sit next to the work rather than participating in it.",
     outcome:
       "An intelligence layer over the systems you already run: existing systems → OIS → AI agents → employees → business actions. No rip-and-replace.",
+    image: oisVideo,
     tags: ["AI", "Platform"],
   },
   {
@@ -181,6 +187,7 @@ export const products: Product[] = [
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome:
       "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
+    image: horusAiVideo,
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
   },

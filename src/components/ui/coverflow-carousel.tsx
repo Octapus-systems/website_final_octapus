@@ -311,13 +311,23 @@ export function CoverflowCarousel({
                 )}
                 style={{ width: "var(--cf-card)" }}
               >
-
-                <img
-                  src={slide.src}
-                  alt={slide.alt}
-                  draggable={false}
-                  className="h-full w-full select-none object-cover"
-                />
+                {slide.src.endsWith(".mp4") || slide.src.endsWith(".webm") ? (
+                  <video
+                    src={slide.src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="h-full w-full select-none object-cover"
+                  />
+                ) : (
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    draggable={false}
+                    className="h-full w-full select-none object-cover"
+                  />
+                )}
               </div>
             ))}
           </div>
