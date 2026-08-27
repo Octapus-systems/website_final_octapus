@@ -5,16 +5,15 @@ import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
 import { ProductsShowcase } from "@/components/site/ProductsShowcase";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
-import { site, products, hiddenProductSlugs, capabilities, stats, testimonials } from "@/lib/site";
+import { site, products, hiddenProductSlugs, capabilities, stats } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-
-import TestimonialsV2 from "@/components/ui/testimonial-v2";
-
+import { ArrowRight } from "lucide-react";
+import { CustomApproachSection } from "@/components/site/CustomApproachSection";
 import { cn } from "@/lib/utils";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { motion } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
+import { CapabilityIcons } from "@/components/site/WhatWeDoIcons";
 
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
@@ -130,24 +129,42 @@ function Home() {
         </div>
       </Section>
 
-      {/* ── 2. Capabilities ── */}
+      {/* ── 2. Capabilities ("What we do") ── */}
       <Section
         title="What we do"
         className="bg-surface dark:bg-surface-dark border-y border-hairline"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
-          {capabilities.map((cap, idx) => (
-            <div
-              key={idx}
-              className="flex flex-col items-center text-center p-6 rounded-2xl bg-background border border-hairline hover:border-primary/30 transition-colors"
-            >
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-6 w-6 text-primary" />
+          {capabilities.map((cap, idx) => {
+            const Icon = CapabilityIcons[cap.verb as keyof typeof CapabilityIcons];
+            const isAutomate = cap.verb === "Automate";
+
+            return (
+              <div
+                key={idx}
+                className={cn(
+                  "flex flex-col items-center text-center p-6 rounded-2xl bg-background transition-all duration-300 group relative overflow-hidden",
+                  isAutomate
+                    ? "border border-primary/50 shadow-lg shadow-primary/10 ring-1 ring-primary/30"
+                    : "border border-hairline hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+                )}
+              >
+                {/* Subtle top ambient glow for Automate card */}
+                {isAutomate && (
+                  <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-500 via-primary to-indigo-500" />
+                )}
+
+                {/* 3D Minimal Icon Container */}
+                <div className="relative mb-5 flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-b from-primary/10 to-primary/[0.02] border border-primary/15 shadow-inner group-hover:scale-105 group-hover:border-primary/40 transition-all duration-300">
+                  <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {Icon && <Icon className="w-12 h-12 relative z-10 filter drop-shadow-md" />}
+                </div>
+
+                <h3 className="text-lg font-semibold text-foreground tracking-tight mb-1">{cap.verb}</h3>
+                <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{cap.detail}</p>
               </div>
-              <h3 className="text-lg font-semibold text-foreground tracking-tight">{cap.verb}</h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{cap.detail}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
 
@@ -186,14 +203,8 @@ function Home() {
         </div>
       </Section>
 
-      {/* ── 5. Testimonials ── */}
-      <Section
-        title="Built for impact"
-        intro="Don't just take our word for it."
-        className="bg-background"
-      >
-        <TestimonialsV2 />
-      </Section>
+      {/* ── 5. Custom Software Approach ── */}
+      <CustomApproachSection />
 
       {/* ── 6. Final CTA ── */}
       <Section className="bg-surface dark:bg-surface-dark border-t border-hairline">
