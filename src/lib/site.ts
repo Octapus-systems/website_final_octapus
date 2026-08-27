@@ -106,6 +106,19 @@ export const obmsMetrics = [
 
 export const products: Product[] = [
   {
+    slug: "billing-software",
+    name: "Billing Software",
+    headline: "Billing software that adapts to your business — not the other way around.",
+    customer:
+      "Retail shops, supermarkets, restaurants, salons, pharmacies, workshops, service companies, wholesalers, and distributors.",
+    problem:
+      "Off-the-shelf billing tools force you to change your workflow, pricing models, and printing setups to fit their constraints.",
+    outcome:
+      "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
+    tags: ["Billing", "POS", "Custom Workflows"],
+  },
+
+  {
     slug: "obms-erp",
     name: "O.B.M.S ERP",
     headline: "One operating layer for finance, operations and reporting.",
@@ -668,6 +681,8 @@ export const disciplineTracks: DisciplineTrack[] = [
 
 /** One-line OIS relationship for products that carry an intelligence layer. */
 export const productOisNotes: Record<string, string> = {
+  "billing-software":
+    "OIS connects billing data with inventory, customer history, and financial reporting across all your locations.",
   "obms-erp":
     "OIS helps employees reach business intelligence inside the ERP instead of chasing reports.",
   "mr-crm":
