@@ -17,6 +17,7 @@ const columns = [
     label: "Products",
     links: [
       { to: "/products", text: "All products" },
+      { to: "/products/$slug", params: { slug: "billing-software" }, text: "Billing Software" },
       { to: "/products/$slug", params: { slug: "obms-erp" }, text: "O.B.M.S ERP" },
       { to: "/products/$slug", params: { slug: "mr-crm" }, text: "MR. CRM" },
       { to: "/products/$slug", params: { slug: "custom-ai" }, text: "Custom AI" },

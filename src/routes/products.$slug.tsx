@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { OisConnection } from "@/components/site/OisConnection";
 import { ObmsShowcase } from "@/components/site/ObmsShowcase";
+import { BillingShowcase } from "@/components/site/BillingShowcase";
 import { HorusCard } from "@/components/site/HorusCard";
 import { products, productOisNotes, site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
@@ -197,6 +198,8 @@ function ProductPage() {
 
       {isObms ? (
         <ObmsShowcase product={p} />
+      ) : p.slug === "billing-software" ? (
+        <BillingShowcase product={p} />
       ) : p.slug === "horus-ai" ? (
         <Section className="!pt-0">
           <div className="mx-auto max-w-4xl">
