@@ -16,6 +16,7 @@ import { FloatingActions } from "@/components/site/FloatingActions";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { site } from "@/lib/site";
+import { getGstTheme, THEME_STORAGE_KEY } from "@/lib/theme";
 
 function NotFoundComponent() {
   return (
@@ -136,11 +137,11 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        {/* Theme: set before first paint to avoid flash */}
+        {/* Theme: set before first paint based on user override or GST time */}
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{const t=localStorage.getItem('octapus-theme');if(t==='dark'){document.documentElement.classList.add('dark');}else if(t==='light'){document.documentElement.classList.remove('dark');}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+            __html: `(function(){try{const t=localStorage.getItem('octapus-theme');if(t==='dark'){document.documentElement.classList.add('dark');}else if(t==='light'){document.documentElement.classList.remove('dark');}else{const h=(new Date().getUTCHours()+4)%24;if(h<6||h>=18){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}}catch(e){}})();`,
           }}
         />
         {/* Consent Mode v2 default (denied) — bootstraps before GTM loads */}
@@ -175,6 +176,25 @@ function RootComponent() {
     const observer = new MutationObserver(update);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const syncGstTheme = () => {
+      try {
+        if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+          const isDark = getGstTheme() === "dark";
+          if (document.documentElement.classList.contains("dark") !== isDark) {
+            document.documentElement.classList.toggle("dark", isDark);
+          }
+        }
+      } catch {
+        // ignore storage errors
+      }
+    };
+
+    syncGstTheme();
+    const interval = setInterval(syncGstTheme, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
