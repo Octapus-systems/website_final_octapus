@@ -32,7 +32,7 @@ export const contactSchema = z.object({
   email: z.string().trim().email("Please enter a valid work email").max(200),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   enquiryType: z.enum(enquiryTypes),
-  description: z.string().trim().min(10, "Tell us a little about the project").max(2000),
+  description: z.string().trim().min(10, "Please enter at least 10 characters").max(2000),
   preferredContact: z.enum(["email", "phone", "whatsapp"]),
   budget: z.string().trim().max(80).optional().or(z.literal("")),
   timeline: z.string().trim().max(80).optional().or(z.literal("")),
