@@ -2,18 +2,20 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import * as React from "react";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
-import { ProductsShowcase } from "@/components/site/ProductsShowcase";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
-import { site, products, hiddenProductSlugs, capabilities, stats } from "@/lib/site";
+import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
-import { CustomApproachSection } from "@/components/site/CustomApproachSection";
 import { cn } from "@/lib/utils";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { motion } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
-import { CapabilityIcons } from "@/components/site/WhatWeDoIcons";
+
+import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
+import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
+import { BuildProcessSection } from "@/components/site/BuildProcessSection";
+import { WhyItChangesSection } from "@/components/site/WhyItChangesSection";
 
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
@@ -38,17 +40,21 @@ export const Route = createFileRoute("/")({
     ...buildMeta({
       title: "Octapus — Custom Software, AI Systems and Digital Platforms",
       description:
-        "Octapus designs and develops custom software, intelligent AI systems and digital platforms that help businesses in the UAE operate, automate and grow.",
+        "Octapus is an AI-first software company combining AI development speed with experienced human engineering to deliver production-ready software, AI systems, and business platforms.",
       path: "/",
       ogType: "website",
       keywords: [
         "Octapus",
-        "UAE software company",
-        "custom software development UAE",
-        "ERP CRM Dubai",
-        "AI solutions UAE",
-        "business systems",
+        "custom software development",
+        "AI systems",
+        "AI-powered software",
         "digital platforms",
+        "business software",
+        "business automation",
+        "ERP",
+        "CRM",
+        "AI agents",
+        "custom business software",
       ],
     }),
     links: [{ rel: "canonical", href: "/" }],
@@ -95,103 +101,69 @@ function Home() {
       />
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
 
-      {/* ── Hero scroll video ── */}
+      {/* ── 01. HERO ── */}
       <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
 
-      {/* ── 1. Value Proposition (Tagline) ── */}
-      <Section className="py-24 md:py-32 bg-background relative overflow-hidden">
+      <Section className="py-20 md:py-28 bg-background relative overflow-hidden">
         <DotPattern
           className={cn(
             "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-            "animate-scrolling-dots",
+            "animate-scrolling-dots"
           )}
         />
-        <div className="mx-auto max-w-4xl text-center relative z-10">
+        <div className="mx-auto max-w-4xl text-center relative z-10 space-y-6">
+
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="font-display text-4xl md:text-5xl lg:text-7xl font-medium tracking-tight text-foreground leading-[1.1]"
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1]"
           >
-            Software that becomes the <span className="text-primary">spine</span> of your operation.
+            Custom Software + AI Systems + <span className="text-primary">Digital Platforms</span>
           </motion.h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
           >
-            We don't just write code. We forge the systems that connect your people, process, and
-            data—designed in the UAE and built for scale.
+            AI-first development combined with experienced engineering to build production-ready
+            software faster.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <Button asChild size="lg" className="rounded-full px-8 h-12 text-base font-semibold shadow-lg shadow-primary/25">
+              <Link to="/book">
+                Start Your Project <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-12 text-base font-medium">
+              <Link to="/contact">Discuss Software Idea</Link>
+            </Button>
+          </motion.div>
         </div>
       </Section>
 
-      {/* ── 2. Capabilities ("What we do") ── */}
+      {/* ── 02. WHAT WE BUILD ── */}
+      <WhatWeBuildSection />
+
+      {/* ── 03. OUR PRODUCTS & TRUST PROOF ── */}
       <Section
-        title="What we do"
-        className="bg-surface dark:bg-surface-dark border-y border-hairline"
+        eyebrow="Proven Systems"
+        title="OUR PRODUCTS"
+        intro="Real-world business systems designed, built, and deployed by Octapus."
+        className="bg-background relative overflow-hidden"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
-          {capabilities.map((cap, idx) => {
-            const Icon = CapabilityIcons[cap.verb as keyof typeof CapabilityIcons];
-            const isAutomate = cap.verb === "Automate";
-
-            return (
-              <div
-                key={idx}
-                className={cn(
-                  "flex flex-col items-center text-center p-6 rounded-2xl bg-background transition-all duration-300 group relative overflow-hidden",
-                  isAutomate
-                    ? "border border-primary/50 shadow-lg shadow-primary/10 ring-1 ring-primary/30"
-                    : "border border-hairline hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
-                )}
-              >
-                {/* Subtle top ambient glow for Automate card */}
-                {isAutomate && (
-                  <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-500 via-primary to-indigo-500" />
-                )}
-
-                {/* 3D Minimal Icon Container */}
-                <div className="relative mb-5 flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-b from-primary/10 to-primary/[0.02] border border-primary/15 shadow-inner group-hover:scale-105 group-hover:border-primary/40 transition-all duration-300">
-                  <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {Icon && <Icon className="w-12 h-12 relative z-10 filter drop-shadow-md" />}
-                </div>
-
-                <h3 className="text-lg font-semibold text-foreground tracking-tight mb-1">{cap.verb}</h3>
-                <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{cap.detail}</p>
-              </div>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* ── 3. Statistics (Trust) ── */}
-      <Section className="py-20 bg-background">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12 max-w-5xl mx-auto text-center">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="space-y-2">
-              <div className="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-                {stat.value}
-              </div>
-              <div className="text-sm font-semibold tracking-wide uppercase text-primary">
-                {stat.label}
-              </div>
-              <p className="text-sm text-muted-foreground max-w-[200px] mx-auto">{stat.detail}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ── 4. Our Products (Existing Grid) ── */}
-      <Section
-        title="Our Products"
-        intro="The specialized systems we've built to solve complex business problems."
-        className="bg-surface dark:bg-surface-dark border-y border-hairline"
-      >
-        <div className="w-full overflow-hidden bg-background py-10 mt-8 rounded-3xl border border-hairline">
+        <div className="w-full overflow-hidden bg-surface dark:bg-surface-dark py-10 mt-6 rounded-3xl border border-hairline shadow-lg">
           <CoverflowCarousel
             slides={carouselSlides}
             showCaption
@@ -201,29 +173,52 @@ function Home() {
             }}
           />
         </div>
+
+        {/* Integrated Trust Metrics */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10 max-w-5xl mx-auto text-center mt-16 pt-12 border-t border-hairline">
+          {stats.map((stat, idx) => (
+            <div key={idx} className="space-y-1">
+              <div className="font-display text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+                {stat.value}
+              </div>
+              <div className="text-xs font-mono font-bold tracking-wider uppercase text-primary">
+                {stat.label}
+              </div>
+              <p className="text-xs text-muted-foreground max-w-[200px] mx-auto mt-1">{stat.detail}</p>
+            </div>
+          ))}
+        </div>
       </Section>
 
-      {/* ── 5. Custom Software Approach ── */}
-      <CustomApproachSection />
+      {/* ── 04. THE OCTAPUS ADVANTAGE ── */}
+      <OctapusAdvantageSection />
 
-      {/* ── 6. Final CTA ── */}
-      <Section className="bg-surface dark:bg-surface-dark border-t border-hairline">
-        <div className="mx-auto max-w-3xl text-center flex flex-col items-center">
-          <h2 className="text-3xl md:text-5xl font-display font-semibold tracking-tight text-foreground mb-6">
-            Ready to upgrade your operation?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-10 max-w-xl">
-            Let's discuss how custom software and intelligent systems can transform the way you do
-            business.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button asChild size="lg" className="rounded-full px-8">
+      {/* ── 05. OUR BUILD PROCESS ── */}
+      <BuildProcessSection />
+
+      {/* ── 06. WHY THIS CHANGES SOFTWARE DEVELOPMENT ── */}
+      <WhyItChangesSection />
+
+      {/* ── 07. CLOSING CTA ── */}
+      <Section className="bg-surface dark:bg-surface-dark border-t border-hairline relative overflow-hidden py-24 md:py-32">
+        <div className="mx-auto max-w-4xl text-center flex flex-col items-center relative z-10 space-y-8">
+          <div className="space-y-4">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.15]">
+              Your idea goes in. <br />
+              <span className="bg-gradient-to-r from-primary via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+                A production-ready system comes out.
+              </span>
+            </h2>
+          </div>
+
+          <div className="pt-6 flex flex-col sm:flex-row gap-4">
+            <Button asChild size="lg" className="rounded-full px-10 h-14 text-base font-semibold shadow-xl shadow-primary/25">
               <Link to="/book">
-                Book a strategy call <ArrowRight className="ml-2 h-4 w-4" />
+                Start Your Project <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-              <Link to="/contact">Contact sales</Link>
+            <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-medium">
+              <Link to="/contact">Contact Sales</Link>
             </Button>
           </div>
         </div>
