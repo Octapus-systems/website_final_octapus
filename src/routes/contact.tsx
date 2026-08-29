@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Loader2, Mail, Phone, MapPin } from "lucide-react";
+import { CheckCircle2, Loader2, Mail, Phone, MapPin, Upload } from "lucide-react";
 import { Section, Container } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,9 +44,14 @@ function ContactPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
 
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [cvError, setCvError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<ContactInput>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,24 +59,103 @@ function ContactPage() {
     defaultValues: { enquiryType: "product_enquiry", preferredContact: "email" },
   });
 
+  const currentEnquiryType = watch("enquiryType");
+  const isCareer = currentEnquiryType === "career";
+
+  useEffect(() => {
+    if (!isCareer) {
+      setCvFile(null);
+      setCvError(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  }, [isCareer]);
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setCvFile(null);
+      setCvError("Please upload your CV / resume");
+      return;
+    }
+
+    const maxBytes = 10 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setCvFile(null);
+      setCvError("File size must be less than 10 MB");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    const ext = file.name.split(".").pop()?.toLowerCase() || "";
+    const allowedExts = ["pdf", "doc", "docx"];
+    if (!allowedExts.includes(ext)) {
+      setCvFile(null);
+      setCvError("Only PDF, DOC, and DOCX files are allowed");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setCvFile(file);
+    setCvError(null);
+  }
+
   async function onSubmit(data: ContactInput) {
     setStatus("loading");
     setErrorMsg(null);
+
+    if (data.enquiryType === "career") {
+      if (!cvFile) {
+        setCvError("Please upload your CV / resume");
+        setStatus("idle");
+        return;
+      }
+      const ext = cvFile.name.split(".").pop()?.toLowerCase() || "";
+      const allowedExts = ["pdf", "doc", "docx"];
+      if (!allowedExts.includes(ext)) {
+        setCvError("Only PDF, DOC, and DOCX files are allowed");
+        setStatus("idle");
+        return;
+      }
+      if (cvFile.size > 10 * 1024 * 1024) {
+        setCvError("File size must be less than 10 MB");
+        setStatus("idle");
+        return;
+      }
+    }
+
     try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("company", data.company || "");
+      formData.append("email", data.email);
+      formData.append("phone", data.phone || "");
+      formData.append("enquiryType", data.enquiryType);
+      formData.append("description", data.description);
+      formData.append("preferredContact", data.preferredContact);
+      formData.append("budget", data.budget || "");
+      formData.append("timeline", data.timeline || "");
+      formData.append("website", data.website || "");
+
+      if (data.enquiryType === "career" && cvFile) {
+        formData.append("cv", cvFile);
+      }
+
       const res = await fetch("/api/public/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: formData,
       });
+
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
-        throw new Error(j.error ?? "Something went wrong");
+        throw new Error(j.error ?? "Something went wrong while sending your enquiry");
       }
       setStatus("success");
       trackEvent("form_submit", { enquiry_type: data.enquiryType });
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong");
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong while sending your enquiry");
       trackEvent("form_error");
     }
   }
@@ -204,32 +288,68 @@ function ContactPage() {
                 </Field>
 
                 <Field
-                  label="Brief project description"
+                  label={isCareer ? "Tell me about yourself" : "Brief project description"}
                   error={errors.description?.message}
                   htmlFor="c-desc"
                 >
-                  <Textarea id="c-desc" rows={5} {...register("description")} />
+                  <Textarea
+                    id="c-desc"
+                    rows={5}
+                    placeholder={
+                      isCareer
+                        ? "Introduce yourself, your background, and why you'd like to join Octapus..."
+                        : undefined
+                    }
+                    {...register("description")}
+                  />
                 </Field>
 
-                <div className="grid gap-5 md:grid-cols-3">
-                  <Field label="Preferred contact" htmlFor="c-pref">
-                    <select
-                      id="c-pref"
-                      {...register("preferredContact")}
-                      className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                    >
-                      <option value="email">Email</option>
-                      <option value="phone">Phone</option>
-                      <option value="whatsapp">WhatsApp</option>
-                    </select>
+                {isCareer && (
+                  <Field
+                    label="Attach CV / Resume (PDF, DOC, DOCX — max 10MB)"
+                    error={cvError || undefined}
+                    htmlFor="c-cv"
+                  >
+                    <div className="relative">
+                      <Input
+                        id="c-cv"
+                        type="file"
+                        ref={fileInputRef}
+                        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        onChange={handleFileChange}
+                        className="cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                      />
+                    </div>
+                    {cvFile && (
+                      <p className="text-xs text-muted-foreground flex items-center gap-1.5 pt-1">
+                        <Upload className="size-3.5 text-primary" />
+                        Selected file: <span className="font-medium text-foreground">{cvFile.name}</span> ({(cvFile.size / (1024 * 1024)).toFixed(2)} MB)
+                      </p>
+                    )}
                   </Field>
-                  <Field label="Budget (optional)" htmlFor="c-budget">
-                    <Input id="c-budget" {...register("budget")} placeholder="e.g. AED 50k–150k" />
-                  </Field>
-                  <Field label="Timeline (optional)" htmlFor="c-timeline">
-                    <Input id="c-timeline" {...register("timeline")} placeholder="e.g. Q3 launch" />
-                  </Field>
-                </div>
+                )}
+
+                {!isCareer && (
+                  <div className="grid gap-5 md:grid-cols-3">
+                    <Field label="Preferred contact" htmlFor="c-pref">
+                      <select
+                        id="c-pref"
+                        {...register("preferredContact")}
+                        className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                      >
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="whatsapp">WhatsApp</option>
+                      </select>
+                    </Field>
+                    <Field label="Budget (optional)" htmlFor="c-budget">
+                      <Input id="c-budget" {...register("budget")} placeholder="e.g. AED 50k–150k" />
+                    </Field>
+                    <Field label="Timeline (optional)" htmlFor="c-timeline">
+                      <Input id="c-timeline" {...register("timeline")} placeholder="e.g. Q3 launch" />
+                    </Field>
+                  </div>
+                )}
 
                 {errorMsg && (
                   <div
