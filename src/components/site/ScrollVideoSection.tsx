@@ -25,9 +25,6 @@ export function ScrollVideoSection({
   const visibleRef = useRef(false);
   const resolvedCountRef = useRef(frameCount);
 
-  const [progressLoad, setProgressLoad] = useState(0);
-  const [ready, setReady] = useState(false);
-  const [slow, setSlow] = useState(false);
   const [scrollPct, setScrollPct] = useState(0);
 
   useEffect(() => {
@@ -44,7 +41,7 @@ export function ScrollVideoSection({
     let loaded = 0;
 
     const slowTimer = window.setTimeout(() => {
-      if (!cancelled && loaded < actualFrameCount) setSlow(true);
+      //
     }, 6000);
 
     for (let i = 1; i <= actualFrameCount; i++) {
@@ -54,12 +51,7 @@ export function ScrollVideoSection({
       const done = () => {
         loaded += 1;
         if (cancelled) return;
-        setProgressLoad(Math.round((loaded / actualFrameCount) * 100));
         if (loaded === 1) draw();
-        if (loaded >= actualFrameCount) {
-          setReady(true);
-          setSlow(false);
-        }
       };
       img.onload = done;
       img.onerror = done;
@@ -101,15 +93,8 @@ export function ScrollVideoSection({
     ctx.imageSmoothingQuality = "high";
     const cw = canvas.width;
     const ch = canvas.height;
-    // Cover would crop the sides on portrait screens and cut off the text
-    // baked into the frames, so contain whenever the canvas is narrower
-    // than the frame's aspect ratio.
-    const canvasAspect = cw / ch;
-    const imgAspect = img.naturalWidth / img.naturalHeight;
-    const scale =
-      canvasAspect < imgAspect
-        ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight)
-        : Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+    // Use cover behavior to prevent letterboxing on mobile
+    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
     const w = img.naturalWidth * scale;
     const h = img.naturalHeight * scale;
     ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
@@ -173,35 +158,22 @@ export function ScrollVideoSection({
   return (
     <section
       ref={sectionRef}
-      className={cn("relative w-full bg-[#0b0b0f]", className)}
+      className={cn("relative w-full bg-background", className)}
       style={{ height: `${heightMultiplier * 100}vh` }}
       aria-label="Octapus system animation"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0b0b0f]">
-        <canvas ref={canvasRef} className="block h-full w-full" />
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
+        <canvas 
+          ref={canvasRef} 
+          className="block h-full w-full" 
+          style={{ 
+            filter: "contrast(1.15) brightness(1.2)",
+            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 85%)",
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 85%)"
+          }}
+        />
 
-        {!ready && (
-          <div className="absolute inset-0 grid place-items-center bg-[#0b0b0f]">
-            <div className="w-56 max-w-[70vw] text-center">
-              <div className="h-[3px] w-full overflow-hidden rounded-full bg-white/10">
-                <div
-                  className="h-full rounded-full bg-[oklch(0.62_0.2_285)] transition-[width] duration-200"
-                  style={{ width: `${progressLoad}%` }}
-                />
-              </div>
-              <div className="mt-3 text-[11px] uppercase tracking-[0.2em] text-white/50">
-                {progressLoad}%
-              </div>
-              {slow && (
-                <div className="mt-2 text-[11px] text-white/40">
-                  Slow connection — still loading
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-white/10">
+        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/10">
           <div
             className="h-full bg-[oklch(0.62_0.2_285)]"
             style={{ width: `${scrollPct * 100}%` }}
