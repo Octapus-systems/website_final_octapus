@@ -102,8 +102,6 @@ function Home() {
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
 
       {/* ── 01. HERO ── */}
-      <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
-
       <Section className="py-20 md:py-28 bg-background relative overflow-hidden">
         <DotPattern
           className={cn(
@@ -153,7 +151,10 @@ function Home() {
         </div>
       </Section>
 
-      {/* ── 02. WHAT WE BUILD ── */}
+      {/* ── 02. VIDEO SECTION ── */}
+      <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
+
+      {/* ── 03. WHAT WE BUILD ── */}
       <WhatWeBuildSection />
 
       {/* ── 03. OUR PRODUCTS & TRUST PROOF ── */}
