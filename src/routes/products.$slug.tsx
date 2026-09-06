@@ -13,6 +13,7 @@ import { HorusCard } from "@/components/site/HorusCard";
 import { products, productOisNotes, site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -177,14 +178,43 @@ function ProductPage() {
           </div>
           {!isObms && (
             <div className="lg:col-span-6">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border hairline bg-[var(--color-surface)]">
-                {p.image && !["custom-ai", "custom-business-solutions"].includes(p.slug) ? (
-                  <img
-                    src={p.image}
-                    alt={`${p.name} interface preview`}
-                    loading="lazy"
-                    className="size-full object-cover"
-                  />
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border hairline bg-gradient-to-br from-primary/10 via-background to-muted/40 p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-xl">
+                {/* Background ambient lighting */}
+                <div className="absolute -top-20 -right-20 size-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-20 -left-20 size-64 rounded-full bg-purple-500/15 blur-3xl pointer-events-none" />
+
+                {p.image && !["custom-ai"].includes(p.slug) ? (
+                  ["billing-software", "outreach", "custom-business-solutions"].includes(p.slug) ? (
+                    <div className="relative z-10 flex flex-col items-center justify-center size-full gap-5">
+                      {/* Sleek White App Badge Tile */}
+                      <div className="group relative rounded-3xl bg-white p-5 md:p-6 shadow-[0_20px_50px_-12px_rgba(79,70,229,0.25)] border border-slate-200/80 transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_25px_60px_-10px_rgba(79,70,229,0.35)]">
+                        <img
+                          src={p.image}
+                          alt={`${p.name} logo`}
+                          loading="lazy"
+                          className="h-32 md:h-40 w-auto object-contain rounded-xl"
+                        />
+                      </div>
+
+                      {/* Descriptive Text Capsule */}
+                      <div className="rounded-2xl bg-background/85 backdrop-blur-md border hairline p-4 max-w-md shadow-sm">
+                        <p className="text-xs md:text-sm text-foreground/90 font-medium leading-relaxed">
+                          {p.slug === "outreach"
+                            ? "Lead intelligence and CRM workflows built to capture, qualify, and convert opportunities faster."
+                            : p.slug === "custom-business-solutions"
+                            ? "Tailored software architecture engineered specifically around your unique business operations."
+                            : "Using the app, there are many more such custom features and tools built around the app to suit your business."}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={p.image}
+                      alt={`${p.name} interface preview`}
+                      loading="lazy"
+                      className="size-full object-cover"
+                    />
+                  )
                 ) : (
                   <div className="absolute inset-0 bg-muted/20 grid place-items-center">
                     <BentoCard />

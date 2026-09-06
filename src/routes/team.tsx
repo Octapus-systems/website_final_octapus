@@ -47,14 +47,14 @@ function TeamPage() {
         ])}
       />
 
-      {/* Hero — dark, editorial, premium */}
-      <section className="relative overflow-hidden bg-[var(--color-surface-dark)] text-foreground dark">
-        <div className="absolute inset-0 grid-canvas-dark opacity-40" />
+      {/* Hero — editorial, premium */}
+      <section className="relative overflow-hidden bg-background text-foreground">
+        <div className="absolute inset-0 grid-canvas dark:grid-canvas-dark opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
         <Container className="relative py-16 md:py-24 lg:py-28">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-silver uppercase">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground dark:text-silver uppercase">
                 Meet Experts
                 <br />
                 Behind the
@@ -63,7 +63,7 @@ function TeamPage() {
               </h1>
             </div>
             <div className="lg:text-right lg:max-w-sm">
-              <div className="text-eyebrow text-primary-glow mb-3">[ OUR TEAM ]</div>
+              <div className="text-eyebrow text-primary dark:text-primary-glow mb-3">[ OUR TEAM ]</div>
               <p className="text-sm md:text-base leading-relaxed text-muted-foreground">
                 Our team is a group of visionaries, creators and technologists working together to
                 build the future.
@@ -73,30 +73,37 @@ function TeamPage() {
         </Container>
       </section>
 
-      {/* Team image — exact reference image */}
-      <Section className="relative bg-[var(--color-surface-dark)] dark py-6 md:py-10">
+      {/* Team image */}
+      <Section className="relative py-6 md:py-10">
         <Container>
           <div className="relative overflow-hidden rounded-2xl border hairline shadow-2xl shadow-primary/10">
             <img
-              src="https://res.cloudinary.com/dk0v8kljx/image/upload/v1787327927/WhatsApp_Image_2026-08-21_at_9.10.38_PM_gorbzm.jpg"
+              src="/Team_dark_mode_1295x1215.png"
               alt="Meet the experts behind Octapus — Sayid Nazim, Shabab, Jishad and Ajay Peter"
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover dark:hidden"
               loading="eager"
               decoding="async"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface-dark)] via-transparent to-transparent opacity-40" />
+            <img
+              src="https://res.cloudinary.com/dk0v8kljx/image/upload/v1787327927/WhatsApp_Image_2026-08-21_at_9.10.38_PM_gorbzm.jpg"
+              alt="Meet the experts behind Octapus — Sayid Nazim, Shabab, Jishad and Ajay Peter"
+              className="w-full h-auto object-cover hidden dark:block"
+              loading="eager"
+              decoding="async"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-40 pointer-events-none" />
           </div>
         </Container>
       </Section>
 
       {/* Team grid — contact cards */}
-      <Section className="relative bg-[var(--color-surface-dark)] dark">
+      <Section className="relative">
         <Container>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((member, idx) => (
               <article
                 key={member.name}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border hairline bg-background transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border hairline bg-card transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2"
                 style={{ animationDelay: `${idx * 100}ms` }}
               >
                 {/* Top illuminated bar */}
@@ -151,10 +158,10 @@ function TeamPage() {
       </Section>
 
       {/* CTA */}
-      <Section className="border-t hairline bg-[var(--color-surface-dark)] dark">
+      <Section className="border-t hairline">
         <Container>
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-silver">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground dark:text-silver">
               Work with the team.
             </h2>
             <p className="mt-3 text-muted-foreground">
