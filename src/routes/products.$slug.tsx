@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
 import FluidFlowGrid from "@/components/ui/fluid-flow-grid";
@@ -53,6 +54,31 @@ function ProductPage() {
   const p = Route.useLoaderData();
   const isOIS = p.slug === "ois";
   const isObms = p.slug === "obms-erp";
+
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleMouseEnter = () => {
+    if (p.slug !== "billing-software") return;
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (p.slug !== "billing-software") return;
+    setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
   return (
     <>
       <JsonLd
@@ -178,14 +204,42 @@ function ProductPage() {
           </div>
           {!isObms && (
             <div className="lg:col-span-6">
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border hairline bg-gradient-to-br from-primary/10 via-background to-muted/40 p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-xl">
+              <div
+                className={cn(
+                  "relative aspect-[4/3] rounded-3xl overflow-hidden border hairline bg-gradient-to-br from-primary/10 via-background to-muted/40 p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300",
+                  p.slug === "billing-software" && "cursor-pointer"
+                )}
+                onMouseEnter={p.slug === "billing-software" ? handleMouseEnter : undefined}
+                onMouseLeave={p.slug === "billing-software" ? handleMouseLeave : undefined}
+              >
                 {/* Background ambient lighting */}
                 <div className="absolute -top-20 -right-20 size-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
                 <div className="absolute -bottom-20 -left-20 size-64 rounded-full bg-purple-500/15 blur-3xl pointer-events-none" />
 
+                {p.slug === "billing-software" && (
+                  <video
+                    ref={videoRef}
+                    src="/beep-hero-video.mp4"
+                    muted
+                    playsInline
+                    preload="auto"
+                    className={cn(
+                      "absolute inset-0 size-full object-cover rounded-3xl transition-all duration-500 z-20 pointer-events-none",
+                      isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105"
+                    )}
+                  />
+                )}
+
                 {p.image && !["custom-ai"].includes(p.slug) ? (
                   ["billing-software", "outreach", "custom-business-solutions"].includes(p.slug) ? (
-                    <div className="relative z-10 flex flex-col items-center justify-center size-full gap-5">
+                    <div
+                      className={cn(
+                        "relative z-10 flex flex-col items-center justify-center size-full gap-5 transition-all duration-500",
+                        p.slug === "billing-software" && isHovered
+                          ? "opacity-0 scale-95 pointer-events-none"
+                          : "opacity-100 scale-100"
+                      )}
+                    >
                       {/* Sleek White App Badge Tile */}
                       <div className="group relative rounded-3xl bg-white p-5 md:p-6 shadow-[0_20px_50px_-12px_rgba(79,70,229,0.25)] border border-slate-200/80 transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_25px_60px_-10px_rgba(79,70,229,0.35)]">
                         <img
