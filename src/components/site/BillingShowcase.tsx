@@ -136,26 +136,18 @@ export function BillingShowcase({ product }: { product: Product }) {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-8 md:p-12 border hairline">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-2xl space-y-4 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/15 px-3.5 py-1 text-xs font-semibold text-primary">
-                <Sparkles className="size-3.5" /> Core Philosophy
-              </div>
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
-                Billing software that adapts to the business —{" "}
+                Billing & POS software that adapts to the business —{" "}
                 <span className="text-primary">not a business that has to adapt to the software.</span>
               </h2>
               <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
-                From retail shops and supermarkets to restaurants, salons, pharmacies, workshops, service companies, wholesalers, and distributors — our billing software is configured around your specific workflow.
+                From retail shops and supermarkets to restaurants, salons, pharmacies, workshops, service companies, wholesalers, and distributors — Beep is configured around your specific workflow.
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-background/80 backdrop-blur-sm border hairline shadow-sm text-center min-w-[240px]">
-              <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Adaptation Flow</div>
-              <div className="mt-3 font-mono text-sm font-semibold text-foreground flex flex-col gap-1.5">
-                <span className="text-primary font-bold">Any Business</span>
-                <span className="text-xs text-muted-foreground">↓</span>
-                <span className="text-foreground">Any Workflow</span>
-                <span className="text-xs text-muted-foreground">↓</span>
-                <span className="text-primary font-bold">Customized Billing</span>
-              </div>
+            <div className="flex flex-col justify-center p-6 rounded-2xl bg-background/80 backdrop-blur-sm border hairline shadow-sm text-left max-w-sm">
+              <p className="text-sm text-foreground font-medium leading-relaxed">
+                Using the app, there are many more such custom features, tools, and tailored capabilities built around the app to fit your daily business operations.
+              </p>
             </div>
           </div>
         </div>
@@ -208,7 +200,7 @@ export function BillingShowcase({ product }: { product: Product }) {
                 <div className="flex items-center gap-3">
                   <span className="size-3 rounded-full bg-emerald-500 animate-pulse" />
                   <div className="font-semibold text-sm md:text-base text-foreground">
-                    Octapus POS Terminal — <span className="text-primary">{currentConfig.label} Mode</span>
+                    Beep POS Terminal — <span className="text-primary">{currentConfig.label} Mode</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -475,7 +467,7 @@ export function BillingShowcase({ product }: { product: Product }) {
 
       {/* SECTION: One Platform. Your Way. (STRONG EMPHASIS & CTA) */}
       <Container>
-        <div className="relative overflow-hidden rounded-3xl bg-surface-dark dark:bg-card text-foreground p-8 md:p-16 border hairline text-center space-y-8">
+        <div className="relative overflow-hidden rounded-3xl bg-surface dark:bg-surface-dark text-foreground p-8 md:p-16 border hairline text-center space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/20 px-4 py-1.5 text-xs font-bold text-primary">
             <Zap className="size-4" /> One Platform. Your Way.
           </div>

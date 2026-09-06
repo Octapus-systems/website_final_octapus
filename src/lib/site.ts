@@ -1,6 +1,9 @@
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
+import beepLogo from "@/assets/beep-logo.png";
+import outreachLogo from "@/assets/outreach-logo.png";
+import customBusinessSolutionsLogo from "@/assets/custom-business-solutions-logo.png";
 import odooProductVideo from "@/assets/odoo-product.mp4";
 import horusAiVideo from "@/assets/horus.mp4";
 import oisVideo from "@/assets/ois-v3.mp4";
@@ -107,8 +110,8 @@ export const obmsMetrics = [
 export const products: Product[] = [
   {
     slug: "billing-software",
-    name: "Billing Software",
-    headline: "Billing software that adapts to your business — not the other way around.",
+    name: "Beep",
+    headline: "Billing & POS software that adapts to your business — not the other way around.",
     customer:
       "Retail shops, supermarkets, restaurants, salons, pharmacies, workshops, service companies, wholesalers, and distributors.",
     problem:
@@ -116,6 +119,7 @@ export const products: Product[] = [
     outcome:
       "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
     tags: ["Billing", "POS", "Custom Workflows"],
+    image: beepLogo,
   },
 
   {
@@ -158,6 +162,7 @@ export const products: Product[] = [
       "You've been paying for the software you don't need to work around the software you do.",
     outcome: "A precise system built for your exact operation — nothing more, nothing less.",
     tags: ["Custom", "Software"],
+    image: customBusinessSolutionsLogo,
   },
   {
     slug: "odoo-custom-erp",
@@ -234,6 +239,7 @@ export const products: Product[] = [
     outcome:
       "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
+    image: outreachLogo,
   },
   {
     slug: "icon",
