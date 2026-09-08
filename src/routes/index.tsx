@@ -72,6 +72,7 @@ function Home() {
       title: p.name,
       subtitle: p.headline,
       meta: p.tags.slice(0, 3).map((tag) => ({ label: "Tag", value: tag })),
+      imageFit: p.image ? p.imageFit : "cover",
     }));
   }, []);
 

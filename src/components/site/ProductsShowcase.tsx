@@ -53,14 +53,40 @@ export function ProductsShowcase({
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-md">
                 {p.headline}
               </p>
-              {tall && p.image && (
-                <div className="mt-8 aspect-[16/9] overflow-hidden rounded-xl border hairline bg-[var(--color-surface)]">
-                  <img
-                    src={p.image}
-                    alt={`${p.name} interface preview`}
-                    loading="lazy"
-                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  />
+              {p.image && (
+                <div
+                  className={cn(
+                    "overflow-hidden rounded-xl border hairline",
+                    tall ? "mt-8 aspect-[16/9]" : "mt-6 aspect-[2/1]",
+                    p.imageFit === "contain" ? "bg-white" : "bg-[var(--color-surface)]"
+                  )}
+                >
+                  {p.image.endsWith(".mp4") || p.image.endsWith(".webm") ? (
+                    <video
+                      src={p.image}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="size-full object-cover"
+                    />
+                  ) : p.imageFit === "contain" ? (
+                    <div className="flex size-full items-center justify-center p-4 sm:p-5">
+                      <img
+                        src={p.image}
+                        alt={`${p.name} logo preview`}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                  ) : (
+                    <img
+                      src={p.image}
+                      alt={`${p.name} interface preview`}
+                      loading="lazy"
+                      className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                  )}
                 </div>
               )}
               {tall && (

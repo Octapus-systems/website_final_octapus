@@ -14,6 +14,7 @@ export interface CoverflowSlide {
   subtitle?: string;
   meta?: { label: string; value: string }[];
   href?: string;
+  imageFit?: "cover" | "contain";
 }
 
 export interface CoverflowCarouselProps {
@@ -305,7 +306,8 @@ export function CoverflowCarousel({
                   }
                 }}
                 className={cn(
-                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-muted shadow-xl will-change-transform",
+                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl shadow-xl will-change-transform",
+                  slide.imageFit === "contain" ? "bg-white" : "bg-muted",
                   index === selected && onSlideClick ? "cursor-pointer" : "",
                   cardClassName,
                 )}
@@ -320,6 +322,15 @@ export function CoverflowCarousel({
                     playsInline
                     className="h-full w-full select-none object-cover"
                   />
+                ) : slide.imageFit === "contain" ? (
+                  <div className="flex size-full items-center justify-center p-4 sm:p-5 select-none">
+                    <img
+                      src={slide.src}
+                      alt={slide.alt}
+                      draggable={false}
+                      className="max-h-full max-w-full object-contain select-none"
+                    />
+                  </div>
                 ) : (
                   <img
                     src={slide.src}

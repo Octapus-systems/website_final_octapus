@@ -5,7 +5,6 @@ import beepLogo from "@/assets/beep-logo.png";
 import outreachLogo from "@/assets/outreach-logo.png";
 import customBusinessSolutionsLogo from "@/assets/custom-business-solutions-logo.png";
 import odooProductVideo from "@/assets/odoo-product.mp4";
-import horusAiVideo from "@/assets/horus.mp4";
 import oisVideo from "@/assets/ois-v3.mp4";
 import customAiVideo from "@/assets/custom-ai-v2.mp4";
 
@@ -88,6 +87,7 @@ export type Product = {
   problem: string;
   outcome: string;
   image?: string;
+  imageFit?: "cover" | "contain";
   externalUrl?: string;
   tags: string[];
 };
@@ -120,6 +120,7 @@ export const products: Product[] = [
       "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
     tags: ["Billing", "POS", "Custom Workflows"],
     image: beepLogo,
+    imageFit: "contain",
   },
 
   {
@@ -163,6 +164,7 @@ export const products: Product[] = [
     outcome: "A precise system built for your exact operation — nothing more, nothing less.",
     tags: ["Custom", "Software"],
     image: customBusinessSolutionsLogo,
+    imageFit: "contain",
   },
   {
     slug: "odoo-custom-erp",
@@ -171,7 +173,8 @@ export const products: Product[] = [
     customer: "Companies choosing Odoo as their operating layer.",
     problem: "Standard Odoo covers most of the work; the rest is where the value is.",
     outcome: "Modules extended, integrations built, deployment operated and supported.",
-    image: odooProductVideo,
+    image: "/odoo-custom-erp-logo.jpeg",
+    imageFit: "contain",
     tags: ["Odoo", "ERP"],
   },
   {
@@ -205,7 +208,8 @@ export const products: Product[] = [
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome:
       "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
-    image: horusAiVideo,
+    image: "/horus-ai-logo.jpeg",
+    imageFit: "contain",
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
   },
@@ -240,6 +244,7 @@ export const products: Product[] = [
       "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
     image: outreachLogo,
+    imageFit: "contain",
   },
   {
     slug: "icon",
@@ -278,6 +283,7 @@ export const products: Product[] = [
     problem: "Most ERP projects fail on data, process and adoption, not software.",
     outcome:
       "Discovery, configuration, data migration, training, rehearsed cutover and post-launch support.",
+    image: "/erp-implementation-image.png",
     tags: ["ERP", "Deployment"],
   },
   {

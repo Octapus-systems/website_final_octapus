@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
 import FluidFlowGrid from "@/components/ui/fluid-flow-grid";
@@ -56,11 +56,28 @@ function ProductPage() {
   const isObms = p.slug === "obms-erp";
 
   const [isHovered, setIsHovered] = useState(false);
+  const [gifKey, setGifKey] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseEnter = () => {
-    if (p.slug !== "billing-software") return;
+  const heroVideoSrc =
+    p.slug === "outreach"
+      ? "/outreach-video.mp4"
+      : p.slug === "custom-business-solutions"
+      ? "/custom-business-solutions-video.mp4"
+      : p.slug === "billing-software"
+      ? "/beep-hero-video.mp4"
+      : p.slug === "odoo-custom-erp"
+      ? "/odoo-custom-erp-video.mp4"
+      : p.slug === "erp-implementation"
+      ? "/erp-implementation-video.mp4"
+      : p.slug === "horus-ai"
+      ? "/horus-ai-video.mp4"
+      : null;
+
+  const startPlayback = () => {
     setIsHovered(true);
+    setGifKey(Date.now());
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
       const playPromise = videoRef.current.play();
@@ -70,14 +87,57 @@ function ProductPage() {
     }
   };
 
-  const handleMouseLeave = () => {
-    if (p.slug !== "billing-software") return;
+  const stopPlayback = () => {
     setIsHovered(false);
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
   };
+
+  const handleMouseEnter = () => {
+    if (!heroVideoSrc) return;
+    const isFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (isFinePointer) {
+      startPlayback();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!heroVideoSrc) return;
+    const isFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (isFinePointer) {
+      stopPlayback();
+    }
+  };
+
+  useEffect(() => {
+    if (!heroVideoSrc || !cardRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const isTouchOrCoarse = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+        if (isTouchOrCoarse) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            startPlayback();
+          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.4) {
+            stopPlayback();
+          }
+        }
+      },
+      {
+        threshold: [0, 0.4, 0.5, 0.6, 1.0],
+      }
+    );
+
+    observer.observe(cardRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [heroVideoSrc]);
 
   return (
     <>
@@ -205,70 +265,55 @@ function ProductPage() {
           {!isObms && (
             <div className="lg:col-span-6">
               <div
+                ref={cardRef}
                 className={cn(
-                  "relative aspect-[4/3] rounded-3xl overflow-hidden border hairline bg-gradient-to-br from-primary/10 via-background to-muted/40 p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300",
-                  p.slug === "billing-software" && "cursor-pointer"
+                  "relative aspect-[4/3] rounded-3xl overflow-hidden border hairline bg-white p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300",
+                  heroVideoSrc && "cursor-pointer"
                 )}
-                onMouseEnter={p.slug === "billing-software" ? handleMouseEnter : undefined}
-                onMouseLeave={p.slug === "billing-software" ? handleMouseLeave : undefined}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
-                {/* Background ambient lighting */}
-                <div className="absolute -top-20 -right-20 size-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-20 -left-20 size-64 rounded-full bg-purple-500/15 blur-3xl pointer-events-none" />
-
-                {p.slug === "billing-software" && (
-                  <video
-                    ref={videoRef}
-                    src="/beep-hero-video.mp4"
-                    muted
-                    playsInline
-                    preload="auto"
-                    className={cn(
-                      "absolute inset-0 size-full object-cover rounded-3xl transition-all duration-500 z-20 pointer-events-none",
-                      isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105"
-                    )}
-                  />
-                )}
+                {heroVideoSrc &&
+                  (heroVideoSrc.endsWith(".gif") ? (
+                    <img
+                      key={gifKey}
+                      src={gifKey ? `${heroVideoSrc}?t=${gifKey}` : heroVideoSrc}
+                      alt={`${p.name} preview video`}
+                      className={cn(
+                        "absolute inset-0 size-full object-cover rounded-3xl transition-all duration-500 z-20 pointer-events-none",
+                        isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105"
+                      )}
+                    />
+                  ) : (
+                    <video
+                      ref={videoRef}
+                      src={heroVideoSrc}
+                      muted
+                      playsInline
+                      preload="auto"
+                      className={cn(
+                        "absolute inset-0 size-full object-cover rounded-3xl transition-opacity duration-300 z-20 pointer-events-none",
+                        isHovered ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  ))}
 
                 {p.image && !["custom-ai"].includes(p.slug) ? (
-                  ["billing-software", "outreach", "custom-business-solutions"].includes(p.slug) ? (
-                    <div
-                      className={cn(
-                        "relative z-10 flex flex-col items-center justify-center size-full gap-5 transition-all duration-500",
-                        p.slug === "billing-software" && isHovered
-                          ? "opacity-0 scale-95 pointer-events-none"
-                          : "opacity-100 scale-100"
-                      )}
-                    >
-                      {/* Sleek White App Badge Tile */}
-                      <div className="group relative rounded-3xl bg-white p-5 md:p-6 shadow-[0_20px_50px_-12px_rgba(79,70,229,0.25)] border border-slate-200/80 transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_25px_60px_-10px_rgba(79,70,229,0.35)]">
-                        <img
-                          src={p.image}
-                          alt={`${p.name} logo`}
-                          loading="lazy"
-                          className="h-32 md:h-40 w-auto object-contain rounded-xl"
-                        />
-                      </div>
-
-                      {/* Descriptive Text Capsule */}
-                      <div className="rounded-2xl bg-background/85 backdrop-blur-md border hairline p-4 max-w-md shadow-sm">
-                        <p className="text-xs md:text-sm text-foreground/90 font-medium leading-relaxed">
-                          {p.slug === "outreach"
-                            ? "Lead intelligence and CRM workflows built to capture, qualify, and convert opportunities faster."
-                            : p.slug === "custom-business-solutions"
-                            ? "Tailored software architecture engineered specifically around your unique business operations."
-                            : "Using the app, there are many more such custom features and tools built around the app to suit your business."}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
+                  <div
+                    className={cn(
+                      "relative z-10 flex items-center justify-center size-full p-6 md:p-10 transition-all duration-300",
+                      heroVideoSrc && isHovered
+                        ? "opacity-0 scale-95 pointer-events-none"
+                        : "opacity-100 scale-100"
+                    )}
+                  >
                     <img
                       src={p.image}
-                      alt={`${p.name} interface preview`}
-                      loading="lazy"
-                      className="size-full object-cover"
+                      alt={`${p.name} logo`}
+                      loading="eager"
+                      className="max-h-44 md:max-h-56 w-auto max-w-full object-contain"
                     />
-                  )
+                  </div>
                 ) : (
                   <div className="absolute inset-0 bg-muted/20 grid place-items-center">
                     <BentoCard />
