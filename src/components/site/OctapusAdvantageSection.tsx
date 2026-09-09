@@ -5,40 +5,102 @@ import { ArrowRight, CheckCircle2, Zap, ShieldCheck, Cpu, Code2, Sparkles } from
 import { cn } from "@/lib/utils";
 
 export function OctapusAdvantageSection() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  const card1Ref = React.useRef<HTMLDivElement | null>(null);
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const [isVideoHovered, setIsVideoHovered] = React.useState(false);
+  const [isCard1InEyeLevel, setIsCard1InEyeLevel] = React.useState(false);
 
+  const card2Ref = React.useRef<HTMLDivElement | null>(null);
   const engineerVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const [isEngineerVideoHovered, setIsEngineerVideoHovered] = React.useState(false);
+  const [isCard2InEyeLevel, setIsCard2InEyeLevel] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      const mobileQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
+      setIsMobile(mobileQuery.matches);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  React.useEffect(() => {
+    const observerOptions: IntersectionObserverInit = {
+      root: null,
+      rootMargin: "-35% 0px -35% 0px",
+      threshold: 0,
+    };
+
+    const observer1 = new IntersectionObserver(([entry]) => {
+      setIsCard1InEyeLevel(entry.isIntersecting);
+    }, observerOptions);
+
+    const observer2 = new IntersectionObserver(([entry]) => {
+      setIsCard2InEyeLevel(entry.isIntersecting);
+    }, observerOptions);
+
+    if (card1Ref.current) observer1.observe(card1Ref.current);
+    if (card2Ref.current) observer2.observe(card2Ref.current);
+
+    return () => {
+      observer1.disconnect();
+      observer2.disconnect();
+    };
+  }, []);
+
+  const isCard1Active = isMobile ? isCard1InEyeLevel : isVideoHovered;
+  const isCard2Active = isMobile ? isCard2InEyeLevel : isEngineerVideoHovered;
+
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isCard1Active) {
+      video.muted = true;
+      video.playsInline = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    } else {
+      video.pause();
+    }
+  }, [isCard1Active]);
+
+  React.useEffect(() => {
+    const video = engineerVideoRef.current;
+    if (!video) return;
+
+    if (isCard2Active) {
+      video.muted = true;
+      video.playsInline = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    } else {
+      video.pause();
+    }
+  }, [isCard2Active]);
 
   const handleCardMouseEnter = () => {
     setIsVideoHovered(true);
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {});
-    }
   };
 
   const handleCardMouseLeave = () => {
     setIsVideoHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
   };
 
   const handleEngineerCardMouseEnter = () => {
     setIsEngineerVideoHovered(true);
-    if (engineerVideoRef.current) {
-      engineerVideoRef.current.currentTime = 0;
-      engineerVideoRef.current.play().catch(() => {});
-    }
   };
 
   const handleEngineerCardMouseLeave = () => {
     setIsEngineerVideoHovered(false);
-    if (engineerVideoRef.current) {
-      engineerVideoRef.current.pause();
-    }
   };
 
   return (
@@ -77,6 +139,7 @@ export function OctapusAdvantageSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {/* Card 1: Speed & Generation */}
           <motion.div
+            ref={card1Ref}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -85,7 +148,7 @@ export function OctapusAdvantageSection() {
             onMouseLeave={handleCardMouseLeave}
             className="group relative rounded-[2.2rem] bg-gradient-to-br from-[#4F46E5] via-[#6366F1] to-[#7C3AED] p-8 sm:p-10 flex flex-col justify-between min-h-[340px] md:min-h-[380px] overflow-hidden shadow-2xl shadow-indigo-500/20 hover:shadow-indigo-500/35 hover:-translate-y-1.5 transition-all duration-500 border border-white/20"
           >
-            {/* Background Video Element (Plays only on hover, hidden/paused by default) */}
+            {/* Background Video Element (Plays on hover or when at eye level) */}
             <video
               ref={videoRef}
               src="/AI_building_software_rapidly_1080p_202608291401.mp4"
@@ -95,7 +158,7 @@ export function OctapusAdvantageSection() {
               preload="auto"
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
-                isVideoHovered ? "opacity-100" : "opacity-0"
+                isCard1Active ? "opacity-100" : "opacity-0"
               )}
             />
 
@@ -103,7 +166,7 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute inset-0 bg-gradient-to-t from-purple-950/85 via-indigo-950/65 to-purple-900/50 pointer-events-none transition-opacity duration-500 z-0",
-                isVideoHovered ? "opacity-100" : "opacity-0"
+                isCard1Active ? "opacity-100" : "opacity-0"
               )}
             />
 
@@ -115,7 +178,7 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute -right-6 -bottom-10 w-64 h-64 sm:w-72 sm:h-72 pointer-events-none transition-all duration-700 ease-out z-0",
-                isVideoHovered ? "opacity-0 scale-100" : "opacity-35 group-hover:opacity-50 group-hover:scale-105"
+                isCard1Active ? "opacity-0 scale-100" : "opacity-35 group-hover:opacity-50 group-hover:scale-105"
               )}
             >
               <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
@@ -183,6 +246,7 @@ export function OctapusAdvantageSection() {
 
           {/* Card 2: Precision & Validation */}
           <motion.div
+            ref={card2Ref}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -191,7 +255,7 @@ export function OctapusAdvantageSection() {
             onMouseLeave={handleEngineerCardMouseLeave}
             className="group relative rounded-[2.2rem] bg-gradient-to-br from-[#2563EB] via-[#3B82F6] to-[#6366F1] p-8 sm:p-10 flex flex-col justify-between min-h-[340px] md:min-h-[380px] overflow-hidden shadow-2xl shadow-blue-500/20 hover:shadow-blue-500/35 hover:-translate-y-1.5 transition-all duration-500 border border-white/20"
           >
-            {/* Background Video Element (Plays only on hover, hidden/paused by default) */}
+            {/* Background Video Element (Plays on hover or when at eye level) */}
             <video
               ref={engineerVideoRef}
               src="/Engineer_reviewing_code_at_works_202608291419.mp4"
@@ -201,7 +265,7 @@ export function OctapusAdvantageSection() {
               preload="auto"
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
-                isEngineerVideoHovered ? "opacity-100" : "opacity-0"
+                isCard2Active ? "opacity-100" : "opacity-0"
               )}
             />
 
@@ -209,7 +273,7 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute inset-0 bg-gradient-to-t from-blue-950/85 via-indigo-950/65 to-blue-900/50 pointer-events-none transition-opacity duration-500 z-0",
-                isEngineerVideoHovered ? "opacity-100" : "opacity-0"
+                isCard2Active ? "opacity-100" : "opacity-0"
               )}
             />
 
@@ -221,7 +285,7 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute -right-6 -bottom-10 w-64 h-64 sm:w-72 sm:h-72 pointer-events-none transition-all duration-700 ease-out z-0",
-                isEngineerVideoHovered ? "opacity-0 scale-100" : "opacity-35 group-hover:opacity-50 group-hover:scale-105"
+                isCard2Active ? "opacity-0 scale-100" : "opacity-35 group-hover:opacity-50 group-hover:scale-105"
               )}
             >
               <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
@@ -281,59 +345,9 @@ export function OctapusAdvantageSection() {
             </div>
           </motion.div>
         </div>
-
-        {/* ── Connecting Clean Curved Solid Hairlines ── */}
-        <div className="relative h-12 md:h-14 w-full max-w-5xl mx-auto pointer-events-none z-10">
-          <svg
-            className="w-full h-full text-primary/35 dark:text-primary/50"
-            viewBox="0 0 1000 50"
-            preserveAspectRatio="none"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Desktop Curve 1: Card 1 down to Result */}
-            <path
-              d="M 240 0 C 240 28, 500 20, 500 48"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="hidden md:block"
-              vectorEffect="non-scaling-stroke"
-            />
-
-            {/* Desktop Curve 2: Card 2 down to Result */}
-            <path
-              d="M 760 0 C 760 28, 500 20, 500 48"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="hidden md:block"
-              vectorEffect="non-scaling-stroke"
-            />
-
-            {/* Mobile Path */}
-            <path
-              d="M 500 0 L 500 48"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="md:hidden"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-        </div>
-
-        {/* ── Result Pill Banner ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center relative z-20 pt-1"
-        >
-          <span className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-surface/90 dark:bg-surface-dark/90 border border-primary/40 text-xs sm:text-sm font-mono font-semibold uppercase tracking-wider text-primary shadow-xl shadow-primary/10 backdrop-blur-md relative z-10">
-            <CheckCircle2 className="w-4 h-4 text-primary" /> Result: Production-Ready Software
-          </span>
-        </motion.div>
       </div>
     </Section>
   );
 }
+
 
