@@ -42,7 +42,7 @@ const PRODUCTS_ITEMS: SubItem[] = [
   { id: "all-products", label: "All Products", to: "/products" },
   { id: "billing-software", label: PM.get("billing-software")?.name ?? "Beep", to: "/products/billing-software" },
   { id: "obms-erp", label: PM.get("obms-erp")?.name ?? "O.B.M.S ERP", to: "/products/obms-erp" },
-  { id: "custom-ai", label: PM.get("custom-ai")?.name ?? "Custom AI", to: "/products/custom-ai" },
+  { id: "lms", label: PM.get("lms")?.name ?? "LMS", to: "/products/lms" },
   { id: "ois", label: "OIS", to: "/ois" },
 ];
 

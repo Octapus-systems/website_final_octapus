@@ -10,6 +10,7 @@ import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { OisConnection } from "@/components/site/OisConnection";
 import { ObmsShowcase } from "@/components/site/ObmsShowcase";
 import { BillingShowcase } from "@/components/site/BillingShowcase";
+import { LmsShowcase } from "@/components/site/LmsShowcase";
 import { HorusCard } from "@/components/site/HorusCard";
 import { products, productOisNotes, site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
@@ -61,7 +62,9 @@ function ProductPage() {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const heroVideoSrc =
-    p.slug === "outreach"
+    p.slug === "ois"
+      ? "/ois-video.mp4"
+      : p.slug === "outreach"
       ? "/outreach-video.mp4"
       : p.slug === "custom-business-solutions"
       ? "/custom-business-solutions-video.mp4"
@@ -73,6 +76,8 @@ function ProductPage() {
       ? "/erp-implementation-video.mp4"
       : p.slug === "horus-ai"
       ? "/horus-ai-video.mp4"
+      : p.slug === "lms"
+      ? "/lms-video.mp4"
       : null;
 
   const startPlayback = () => {
@@ -117,7 +122,9 @@ function ProductPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        const isTouchOrCoarse = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        const isTouchOrCoarse =
+          !window.matchMedia("(hover: hover) and (pointer: fine)").matches ||
+          window.innerWidth < 1024;
 
         if (isTouchOrCoarse) {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
@@ -288,17 +295,19 @@ function ProductPage() {
                     <video
                       ref={videoRef}
                       src={heroVideoSrc}
+                      autoPlay={p.slug === "lms"}
+                      loop={p.slug !== "ois"}
                       muted
                       playsInline
                       preload="auto"
                       className={cn(
-                        "absolute inset-0 size-full object-cover rounded-3xl transition-opacity duration-300 z-20 pointer-events-none",
-                        isHovered ? "opacity-100" : "opacity-0"
+                        "absolute inset-0 size-full object-cover rounded-3xl transition-opacity duration-500 z-20 pointer-events-none",
+                        p.slug === "lms" || p.slug === "ois" ? "opacity-100" : isHovered ? "opacity-100" : "opacity-0"
                       )}
                     />
                   ))}
 
-                {p.image && !["custom-ai"].includes(p.slug) ? (
+                {p.image && p.slug !== "lms" && p.slug !== "ois" ? (
                   <div
                     className={cn(
                       "relative z-10 flex items-center justify-center size-full p-6 md:p-10 transition-all duration-300",
@@ -314,7 +323,7 @@ function ProductPage() {
                       className="max-h-44 md:max-h-56 w-auto max-w-full object-contain"
                     />
                   </div>
-                ) : (
+                ) : p.slug === "lms" || p.slug === "ois" ? null : (
                   <div className="absolute inset-0 bg-muted/20 grid place-items-center">
                     <BentoCard />
                   </div>
@@ -329,6 +338,8 @@ function ProductPage() {
         <ObmsShowcase product={p} />
       ) : p.slug === "billing-software" ? (
         <BillingShowcase product={p} />
+      ) : p.slug === "lms" ? (
+        <LmsShowcase product={p} />
       ) : p.slug === "horus-ai" ? (
         <Section className="!pt-0">
           <div className="mx-auto max-w-4xl">

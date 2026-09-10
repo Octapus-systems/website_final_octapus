@@ -6,7 +6,6 @@ import outreachLogo from "@/assets/outreach-logo.png";
 import customBusinessSolutionsLogo from "@/assets/custom-business-solutions-logo.png";
 import odooProductVideo from "@/assets/odoo-product.mp4";
 import oisVideo from "@/assets/ois-v3.mp4";
-import customAiVideo from "@/assets/custom-ai-v2.mp4";
 
 export type TeamMember = {
   name: string;
@@ -137,14 +136,19 @@ export const products: Product[] = [
   },
 
   {
-    slug: "hub8",
-    name: "HUB8",
-    headline: "A control plane for connected business tools.",
-    customer: "Companies running eight-plus tools that don't talk to each other.",
-    problem: "Data trapped in silos, workflows stitched by hand.",
-    outcome: "Systems connected with defined contracts, visibility and monitoring.",
-    tags: ["Integration", "Platform"],
+    slug: "lms",
+    name: "Learning Management System",
+    headline: "One connected platform for managing education, learning and engagement.",
+    customer:
+      "Schools and educational institutions managing students, teachers, parents and academic operations.",
+    problem:
+      "Learning, administration, assessment, communication and parent engagement are often managed across disconnected systems.",
+    outcome:
+      "A role-based LMS connecting school administration, teaching, learning, assessments, communication, parent engagement and financial management in one platform.",
+    image: "/lms-preview.jpg",
+    tags: ["LMS", "Education", "Learning Management"],
   },
+
   {
     slug: "algorithem",
     name: "ALGORITHM",
@@ -176,17 +180,6 @@ export const products: Product[] = [
     image: "/odoo-custom-erp-logo.jpeg",
     imageFit: "contain",
     tags: ["Odoo", "ERP"],
-  },
-  {
-    slug: "custom-ai",
-    name: "Custom AI",
-    headline: "AI systems designed around your data and your decisions.",
-    customer: "Teams ready to move beyond generic chat tools.",
-    problem: "Off-the-shelf AI doesn't understand your business.",
-    outcome:
-      "Focused AI systems: retrieval on your knowledge, actions on your systems, evaluations you can trust.",
-    image: customAiVideo,
-    tags: ["AI", "Custom"],
   },
   {
     slug: "ois",
@@ -285,16 +278,6 @@ export const products: Product[] = [
       "Discovery, configuration, data migration, training, rehearsed cutover and post-launch support.",
     image: "/erp-implementation-image.png",
     tags: ["ERP", "Deployment"],
-  },
-  {
-    slug: "ai-business-automation",
-    name: "AI Business Automation",
-    headline: "Custom intelligent workflows across your systems.",
-    customer: "Teams repeating manual steps between tools every single day.",
-    problem: "People act as the integration layer between software.",
-    outcome:
-      "Automations with guardrails, audit trails and human overrides — measured on the hours they return.",
-    tags: ["Automation", "AI"],
   },
 ];
 
@@ -699,15 +682,11 @@ export const productOisNotes: Record<string, string> = {
     "OIS helps employees reach business intelligence inside the ERP instead of chasing reports.",
   "mr-crm":
     "OIS understands customer information and workflow, so the pipeline stays current without manual upkeep.",
-  "ai-business-automation":
-    "OIS coordinates intelligent workflows across the tools your team already uses.",
+  lms: "OIS connects learning, administration, assessment, communication and financial operations into one unified school intelligence network.",
   algorithem: "OIS applies your decision rules consistently and explains each outcome.",
-  hub8: "OIS reads across connected tools so one question does not require eight logins.",
   "odoo-custom-erp": "OIS layers intelligence over Odoo without changing the modules you rely on.",
   "erp-implementation":
     "OIS shortens adoption by answering process questions during and after rollout.",
-  "custom-ai":
-    "Custom AI systems are delivered on the OIS platform, with authorization and audit trails.",
   "horus-ai":
     "Horus AI is the first AI coworker inside the OIS ecosystem — powered by OIS, never above it.",
   outreach: "OIS scores and prioritizes leads using the context already inside your systems.",
