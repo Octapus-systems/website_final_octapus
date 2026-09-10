@@ -15,7 +15,7 @@ export const Route = createFileRoute("/products/")({
     buildMeta({
       title: "Products — The Octapus Software, ERP, CRM and AI Ecosystem",
       description:
-        "Explore the Octapus product ecosystem: O.B.M.S ERP, BUY, BLUEPRINT, ALGORITHM, OUTREACH, ICON, MR. CRM, OPRATE, HUB8, Custom AI and OIS.",
+        "Explore the Octapus product ecosystem: O.B.M.S ERP, Learning Management System (LMS), Beep, Odoo Custom ERP, Horus AI, and OIS.",
       path: "/products",
       ogType: "website",
       keywords: [
