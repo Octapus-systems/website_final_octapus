@@ -15,7 +15,6 @@ import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
-import { WhyItChangesSection } from "@/components/site/WhyItChangesSection";
 
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
@@ -103,23 +102,78 @@ function Home() {
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
 
       {/* ── 01. HERO ── */}
-      <Section className="py-20 md:py-28 bg-background relative overflow-hidden">
+      <Section className="min-h-[calc(100svh-4rem)] overflow-hidden bg-background !py-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-[12%] top-[15%] h-[56%] rounded-[50%] bg-primary/[0.055] blur-3xl"
+        />
         <DotPattern
+          width={22}
+          height={22}
+          cr={0.8}
           className={cn(
-            "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-            "animate-scrolling-dots"
+            "fill-neutral-400/45 dark:fill-white/10",
+            "[mask-image:radial-gradient(ellipse_68%_72%_at_50%_45%,black,transparent)]",
+            "animate-scrolling-dots motion-reduce:animate-none",
           )}
         />
-        <div className="mx-auto max-w-4xl text-center relative z-10 space-y-6">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background to-transparent"
+        />
 
-          <motion.h1
-            initial={{ opacity: 0, y: 25 }}
+        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col items-center justify-center py-20 text-center md:py-24">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1]"
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:text-xs"
           >
-            Custom Software + AI Systems + <span className="text-primary">Digital Platforms</span>
+            <span aria-hidden="true" className="h-px w-8 bg-primary/45 sm:w-12" />
+            Octapus / Software Engineering
+            <span aria-hidden="true" className="h-px w-8 bg-primary/45 sm:w-12" />
+          </motion.div>
+
+          <motion.h1
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.11, delayChildren: 0.12 } },
+            }}
+            className="mt-8 max-w-[11ch] text-balance font-display text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-foreground sm:max-w-none sm:whitespace-nowrap"
+          >
+            {["Build", "For"].map((part) => (
+              <motion.span
+                key={part}
+                variants={{
+                  hidden: { opacity: 0, y: 36 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+                  },
+                }}
+                className="inline-block"
+              >
+                {part}&nbsp;
+              </motion.span>
+            ))}
+            <motion.span
+              variants={{
+                hidden: { opacity: 0, y: 36 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+                },
+              }}
+              className="inline-block text-primary"
+            >
+              Today
+            </motion.span>
           </motion.h1>
 
           <motion.p
@@ -127,10 +181,10 @@ function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+            className="mx-auto mt-10 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
           >
-            AI-first development combined with experienced engineering to build production-ready
-            software faster.
+            AI-first development and experienced engineering, working together to move ambitious
+            software from idea to production.
           </motion.p>
 
           <motion.div
@@ -138,17 +192,43 @@ function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
-            <Button asChild size="lg" className="rounded-full px-8 h-12 text-base font-semibold shadow-lg shadow-primary/25">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-full px-8 h-12 text-base font-semibold shadow-lg shadow-primary/25"
+            >
               <Link to="/book">
                 Start Your Project <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-12 text-base font-medium">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full px-8 h-12 text-base font-medium"
+            >
               <Link to="/contact">Discuss Software Idea</Link>
             </Button>
           </motion.div>
+
+          <motion.ul
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.45 }}
+            className="mt-14 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground/75 sm:gap-x-6 sm:text-[0.7rem]"
+          >
+            {["Custom software", "AI systems", "Digital platforms"].map((capability, index) => (
+              <React.Fragment key={capability}>
+                {index > 0 && (
+                  <li aria-hidden="true" className="h-1 w-1 rounded-full bg-primary/55" />
+                )}
+                <li>{capability}</li>
+              </React.Fragment>
+            ))}
+          </motion.ul>
         </div>
       </Section>
 
@@ -161,7 +241,7 @@ function Home() {
       {/* ── 03. OUR PRODUCTS & TRUST PROOF ── */}
       <Section
         eyebrow="Proven Systems"
-        title="OUR PRODUCTS"
+        title="Our Products"
         intro="Real-world business systems designed, built, and deployed by Octapus."
         className="bg-background relative overflow-hidden"
       >
@@ -186,7 +266,9 @@ function Home() {
               <div className="text-xs font-mono font-bold tracking-wider uppercase text-primary">
                 {stat.label}
               </div>
-              <p className="text-xs text-muted-foreground max-w-[200px] mx-auto mt-1">{stat.detail}</p>
+              <p className="text-xs text-muted-foreground max-w-[200px] mx-auto mt-1">
+                {stat.detail}
+              </p>
             </div>
           ))}
         </div>
@@ -198,10 +280,7 @@ function Home() {
       {/* ── 05. OUR BUILD PROCESS ── */}
       <BuildProcessSection />
 
-      {/* ── 06. WHY THIS CHANGES SOFTWARE DEVELOPMENT ── */}
-      <WhyItChangesSection />
-
-      {/* ── 07. CLOSING CTA ── */}
+      {/* ── 06. CLOSING CTA ── */}
       <Section className="bg-surface dark:bg-surface-dark border-t border-hairline relative overflow-hidden py-24 md:py-32">
         <div className="mx-auto max-w-4xl text-center flex flex-col items-center relative z-10 space-y-8">
           <div className="space-y-4">
@@ -214,12 +293,21 @@ function Home() {
           </div>
 
           <div className="pt-6 flex flex-col sm:flex-row gap-4">
-            <Button asChild size="lg" className="rounded-full px-10 h-14 text-base font-semibold shadow-xl shadow-primary/25">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-full px-10 h-14 text-base font-semibold shadow-xl shadow-primary/25"
+            >
               <Link to="/book">
                 Start Your Project <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-medium">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full px-8 h-14 text-base font-medium"
+            >
               <Link to="/contact">Contact Sales</Link>
             </Button>
           </div>

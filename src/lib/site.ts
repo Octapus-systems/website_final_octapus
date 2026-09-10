@@ -1,11 +1,14 @@
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
-import beepLogo from "@/assets/beep-logo.png";
-import outreachLogo from "@/assets/outreach-logo.png";
-import customBusinessSolutionsLogo from "@/assets/custom-business-solutions-logo.png";
-import odooProductVideo from "@/assets/odoo-product.mp4";
+import odooProductImg from "@/assets/odoo-product.png";
+import horusAiVideo from "@/assets/horus.mp4";
 import oisVideo from "@/assets/ois-v3.mp4";
+import customAiVideo from "@/assets/custom-ai-v2.mp4";
+import outreachProductImg from "@/assets/outreach-product.png";
+import billingProductImg from "@/assets/billing-product.png";
+import aiBizAutoImg from "@/assets/ai-business-automation-product.png";
+import erpImplProductImg from "@/assets/erp-implementation-product.png";
 
 export type TeamMember = {
   name: string;
@@ -86,7 +89,6 @@ export type Product = {
   problem: string;
   outcome: string;
   image?: string;
-  imageFit?: "cover" | "contain";
   externalUrl?: string;
   tags: string[];
 };
@@ -109,8 +111,8 @@ export const obmsMetrics = [
 export const products: Product[] = [
   {
     slug: "billing-software",
-    name: "Beep",
-    headline: "Billing & POS software that adapts to your business — not the other way around.",
+    name: "Billing Software",
+    headline: "Billing software that adapts to your business — not the other way around.",
     customer:
       "Retail shops, supermarkets, restaurants, salons, pharmacies, workshops, service companies, wholesalers, and distributors.",
     problem:
@@ -118,8 +120,7 @@ export const products: Product[] = [
     outcome:
       "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
     tags: ["Billing", "POS", "Custom Workflows"],
-    image: beepLogo,
-    imageFit: "contain",
+    image: billingProductImg,
   },
 
   {
@@ -159,26 +160,13 @@ export const products: Product[] = [
     tags: ["Automation", "Rules"],
   },
   {
-    slug: "custom-business-solutions",
-    name: "Custom Business Solutions",
-    headline: "Software built for the systems that only your business has.",
-    customer: "Operators with a workflow that no off-the-shelf tool covers.",
-    problem:
-      "You've been paying for the software you don't need to work around the software you do.",
-    outcome: "A precise system built for your exact operation — nothing more, nothing less.",
-    tags: ["Custom", "Software"],
-    image: customBusinessSolutionsLogo,
-    imageFit: "contain",
-  },
-  {
     slug: "odoo-custom-erp",
     name: "Odoo Custom ERP",
     headline: "Odoo, extended and integrated to fit your operation.",
     customer: "Companies choosing Odoo as their operating layer.",
     problem: "Standard Odoo covers most of the work; the rest is where the value is.",
     outcome: "Modules extended, integrations built, deployment operated and supported.",
-    image: "/odoo-custom-erp-logo.jpeg",
-    imageFit: "contain",
+    image: odooProductImg,
     tags: ["Odoo", "ERP"],
   },
   {
@@ -194,6 +182,17 @@ export const products: Product[] = [
     tags: ["AI", "Platform"],
   },
   {
+    slug: "custom-ai",
+    name: "Custom AI",
+    headline: "AI systems designed around your data and your decisions.",
+    customer: "Teams ready to move beyond generic chat tools.",
+    problem: "Off-the-shelf AI doesn't understand your business.",
+    outcome:
+      "Focused AI systems: retrieval on your knowledge, actions on your systems, evaluations you can trust.",
+    image: customAiVideo,
+    tags: ["AI", "Custom"],
+  },
+  {
     slug: "horus-ai",
     name: "Horus AI",
     headline: "The AI coworker powered by OIS.",
@@ -201,8 +200,7 @@ export const products: Product[] = [
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome:
       "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
-    image: "/horus-ai-logo.jpeg",
-    imageFit: "contain",
+    image: horusAiVideo,
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
   },
@@ -236,8 +234,7 @@ export const products: Product[] = [
     outcome:
       "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
-    image: outreachLogo,
-    imageFit: "contain",
+    image: outreachProductImg,
   },
   {
     slug: "icon",
@@ -276,12 +273,32 @@ export const products: Product[] = [
     problem: "Most ERP projects fail on data, process and adoption, not software.",
     outcome:
       "Discovery, configuration, data migration, training, rehearsed cutover and post-launch support.",
-    image: "/erp-implementation-image.png",
+    image: erpImplProductImg,
     tags: ["ERP", "Deployment"],
+  },
+  {
+    slug: "ai-business-automation",
+    name: "AI Business Automation",
+    headline: "Custom intelligent workflows across your systems.",
+    customer: "Teams repeating manual steps between tools every single day.",
+    problem: "People act as the integration layer between software.",
+    outcome:
+      "Automations with guardrails, audit trails and human overrides — measured on the hours they return.",
+    tags: ["Automation", "AI"],
+    image: aiBizAutoImg,
   },
 ];
 
-export const hiddenProductSlugs = ["buy", "blueprint", "icon", "mr-crm", "oprate", "algorithem"];
+export const hiddenProductSlugs = [
+  "buy",
+  "blueprint",
+  "icon",
+  "mr-crm",
+  "oprate",
+  "algorithem",
+  "custom-ai",
+  "ai-business-automation",
+];
 
 export const services = [
   {

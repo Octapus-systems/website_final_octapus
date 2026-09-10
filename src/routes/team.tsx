@@ -55,11 +55,11 @@ function TeamPage() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground dark:text-silver uppercase">
-                Meet Experts
+                Human Insight.
                 <br />
-                Behind the
+                Technical
                 <br />
-                Innovation.
+                Precision.
               </h1>
             </div>
             <div className="lg:text-right lg:max-w-sm">

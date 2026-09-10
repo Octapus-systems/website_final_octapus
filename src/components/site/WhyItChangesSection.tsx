@@ -29,7 +29,7 @@ export function WhyItChangesSection() {
   return (
     <Section
       eyebrow="Business Advantage"
-      title="WHY THIS CHANGES SOFTWARE DEVELOPMENT"
+      title="Why This Changes Software Development"
       intro="Accelerating software delivery while maintaining uncompromising engineering standards."
       className="bg-background relative overflow-hidden py-24 md:py-32"
     >

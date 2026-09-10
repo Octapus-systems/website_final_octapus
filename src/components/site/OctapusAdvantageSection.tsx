@@ -106,7 +106,7 @@ export function OctapusAdvantageSection() {
   return (
     <Section
       eyebrow="The Octapus Advantage"
-      title="SOFTWARE, BUILT FASTER. BUILT BETTER."
+      title="Software, Built Faster. Built Better."
       intro="AI-first. Engineer-refined. Production-ready."
       className="bg-background relative overflow-hidden py-24 md:py-32"
     >
@@ -116,6 +116,7 @@ export function OctapusAdvantageSection() {
       <div className="max-w-6xl mx-auto space-y-12 relative z-10">
         {/* Core Narrative Card */}
         <motion.div
+          hidden
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

@@ -3,6 +3,7 @@
 @import "tw-animate-css";
 @import "cal-sans/index.css";
 
+
 @custom-variant dark (&:is(.dark *));
 @custom-variant motion-reduce (@media (prefers-reduced-motion: reduce));
 

@@ -15,6 +15,7 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
+import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { site } from "@/lib/site";
 import { getGstTheme, THEME_STORAGE_KEY } from "@/lib/theme";
 
@@ -112,6 +113,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "preload", href: "/loading-intro.mp4", as: "video", type: "video/mp4" },
       { rel: "preconnect", href: "https://rsms.me" },
       { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -247,6 +249,7 @@ function RootComponent() {
       />
 
       <div className="flex min-h-dvh flex-col">
+        <LoadingScreen />
         <Nav />
         {/* Floating light toggle — always on top, all pages */}
         <div className="fixed top-3 right-32 z-[100] md:hidden">

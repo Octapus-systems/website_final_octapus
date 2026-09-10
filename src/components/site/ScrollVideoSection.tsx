@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { DotPattern } from "@/components/ui/dot-pattern";
 
 type Props = {
   frameCount?: number;
@@ -26,57 +28,73 @@ export function ScrollVideoSection({
   const resolvedCountRef = useRef(frameCount);
 
   const [scrollPct, setScrollPct] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress: revealProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"],
+  });
+  const revealScale = useTransform(revealProgress, [0, 1], shouldReduceMotion ? [1, 1] : [0.82, 1]);
+  const revealRadius = useTransform(
+    revealProgress,
+    [0, 1],
+    shouldReduceMotion ? [32, 32] : [72, 32],
+  );
 
   useEffect(() => {
     let cancelled = false;
-    // Use portrait mobile frames on portrait/mobile screens,
-    // full landscape desktop frames on wider screens.
-    const isPortrait = window.matchMedia(
-      "(max-width: 768px), (orientation: portrait) and (max-width: 1024px)",
-    ).matches;
-    const dir = isPortrait ? "/frames-mobile" : "/frames-desktop";
-    const actualFrameCount = isPortrait && mobileFrameCount ? mobileFrameCount : frameCount;
-    resolvedCountRef.current = actualFrameCount;
-    const imgs: HTMLImageElement[] = [];
-    let loaded = 0;
+    const mobileQuery = window.matchMedia("(max-width: 1024px)");
+    let activeImages: HTMLImageElement[] = [];
 
-    const slowTimer = window.setTimeout(() => {
-      //
-    }, 6000);
+    const loadFrames = () => {
+      activeImages.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
 
-    for (let i = 1; i <= actualFrameCount; i++) {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = `${dir}/frame-${pad(i)}.jpg`;
-      const done = () => {
-        loaded += 1;
-        if (cancelled) return;
-        if (loaded === 1) draw();
-      };
-      img.onload = done;
-      img.onerror = done;
-      imgs.push(img);
-    }
-    imagesRef.current = imgs;
+      const useMobileFrames = mobileQuery.matches && Boolean(mobileFrameCount);
+      const dir = useMobileFrames ? "/frames-mobile" : "/frames-desktop";
+      const actualFrameCount = useMobileFrames ? mobileFrameCount! : frameCount;
+      resolvedCountRef.current = actualFrameCount;
+      currentRef.current = 0;
+      targetRef.current = 0;
+
+      activeImages = Array.from({ length: actualFrameCount }, (_, index) => {
+        const image = new Image();
+        image.decoding = "async";
+        image.src = `${dir}/frame-${pad(index + 1)}.jpg`;
+        const done = () => {
+          if (!cancelled && index === 0 && image.naturalWidth) draw();
+        };
+        image.onload = done;
+        image.onerror = done;
+        return image;
+      });
+      imagesRef.current = activeImages;
+    };
+
+    loadFrames();
+    mobileQuery.addEventListener("change", loadFrames);
 
     return () => {
       cancelled = true;
-      window.clearTimeout(slowTimer);
-      imgs.forEach((i) => {
-        i.onload = null;
-        i.onerror = null;
+      mobileQuery.removeEventListener("change", loadFrames);
+      activeImages.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [frameCount]);
+  }, [frameCount, mobileFrameCount]);
 
   function resize() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 3);
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = Math.max(1, Math.round(rect.width * dpr));
-    canvas.height = Math.max(1, Math.round(rect.height * dpr));
+    // Use layout dimensions rather than the transformed bounding box. The
+    // reveal animation scales the parent, and measuring that smaller box made
+    // the canvas backing store permanently softer once the screen expanded.
+    canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));
+    canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
     draw();
   }
 
@@ -162,23 +180,45 @@ export function ScrollVideoSection({
       style={{ height: `${heightMultiplier * 100}vh` }}
       aria-label="Octapus system animation"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
-        <canvas 
-          ref={canvasRef} 
-          className="block h-full w-full" 
-          style={{ 
-            filter: "contrast(1.15) brightness(1.2)",
-            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 85%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 85%)"
-          }}
-        />
+      <div className="sticky top-16 isolate h-[calc(100vh-4rem)] w-full overflow-hidden bg-background p-3 md:p-6">
+        <DotPattern className="z-0 fill-neutral-400/45 animate-scrolling-dots dark:fill-white/15" />
 
-        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-black/10">
-          <div
-            className="h-full bg-[oklch(0.62_0.2_285)]"
-            style={{ width: `${scrollPct * 100}%` }}
+        <motion.div
+          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-black bg-white will-change-transform md:border-[9px]"
+          style={{
+            scale: revealScale,
+            borderRadius: revealRadius,
+            transformOrigin: "center center",
+          }}
+        >
+          <canvas
+            ref={canvasRef}
+            className="block h-full w-full bg-white"
+            style={{ filter: "brightness(1.13) contrast(1.14) saturate(0.96)" }}
           />
-        </div>
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-px left-1/2 z-20 flex h-4 w-14 -translate-x-1/2 items-center justify-center rounded-b-[10px] bg-black md:h-5 md:w-[72px] md:rounded-b-xl"
+          >
+            <span className="h-[5px] w-[5px] rounded-full bg-[#101218] ring-1 ring-white/20 shadow-[inset_0_0_2px_rgba(80,160,255,0.7)]" />
+          </div>
+
+          {/* Scroll Indicator Guide */}
+          <div
+            className={cn(
+              "absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground transition-opacity duration-300 pointer-events-none",
+              scrollPct > 0.02 ? "opacity-0" : "opacity-100",
+            )}
+          >
+            <span className="text-xs uppercase tracking-[0.2em] font-mono opacity-60">
+              Scroll Down
+            </span>
+            <div className="w-5 h-8 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1">
+              <div className="w-1 h-2 bg-muted-foreground/50 rounded-full animate-bounce" />
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

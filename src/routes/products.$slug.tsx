@@ -65,20 +65,20 @@ function ProductPage() {
     p.slug === "ois"
       ? "/ois-video.mp4"
       : p.slug === "outreach"
-      ? "/outreach-video.mp4"
-      : p.slug === "custom-business-solutions"
-      ? "/custom-business-solutions-video.mp4"
-      : p.slug === "billing-software"
-      ? "/beep-hero-video.mp4"
-      : p.slug === "odoo-custom-erp"
-      ? "/odoo-custom-erp-video.mp4"
-      : p.slug === "erp-implementation"
-      ? "/erp-implementation-video.mp4"
-      : p.slug === "horus-ai"
-      ? "/horus-ai-video.mp4"
-      : p.slug === "lms"
-      ? "/lms-video.mp4"
-      : null;
+        ? "/outreach-video.mp4"
+        : p.slug === "custom-business-solutions"
+          ? "/custom-business-solutions-video.mp4"
+          : p.slug === "billing-software"
+            ? "/beep-hero-video.mp4"
+            : p.slug === "odoo-custom-erp"
+              ? "/odoo-custom-erp-video.mp4"
+              : p.slug === "erp-implementation"
+                ? "/erp-implementation-video.mp4"
+                : p.slug === "horus-ai"
+                  ? "/horus-ai-video.mp4"
+                  : p.slug === "lms"
+                    ? "/lms-video.mp4"
+                    : null;
 
   const startPlayback = () => {
     setIsHovered(true);
@@ -136,7 +136,7 @@ function ProductPage() {
       },
       {
         threshold: [0, 0.4, 0.5, 0.6, 1.0],
-      }
+      },
     );
 
     observer.observe(cardRef.current);
@@ -185,20 +185,22 @@ function ProductPage() {
         </Link>
       </Container>
 
-      <Section>
-        <div className="grid gap-12 lg:grid-cols-12 items-center">
+      <Section className="!pt-10 md:!pt-14">
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
           <div
             className={
               isObms
                 ? "lg:col-span-12 space-y-6 text-center max-w-3xl mx-auto"
-                : "lg:col-span-6 space-y-6"
+                : "min-w-0 space-y-6 lg:col-span-6"
             }
           >
             <div className="text-eyebrow">{p.tags.join(" · ")}</div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.02]">
+            <h1 className="max-w-[11ch] text-balance break-words text-5xl font-semibold leading-[0.96] tracking-[-0.045em] sm:text-6xl lg:text-6xl xl:text-7xl">
               {p.name}
             </h1>
-            <p className="text-xl leading-relaxed">{p.headline}</p>
+            <p className="max-w-[34rem] text-lg leading-relaxed text-muted-foreground sm:text-xl">
+              {p.headline}
+            </p>
             <div
               className={
                 isObms ? "flex flex-wrap gap-3 pt-2 justify-center" : "flex flex-wrap gap-3 pt-2"
@@ -234,7 +236,7 @@ function ProductPage() {
                   onClick={() => trackEvent("product_enquiry", { product: p.slug })}
                 >
                   <Link to="/contact">
-                    Talk about {p.name} <ArrowRight className="ml-1 size-4" />
+                    Discuss {p.name} <ArrowRight className="ml-1 size-4" />
                   </Link>
                 </Button>
               )}
@@ -270,12 +272,12 @@ function ProductPage() {
             </div>
           </div>
           {!isObms && (
-            <div className="lg:col-span-6">
+            <div className="min-w-0 lg:col-span-6">
               <div
                 ref={cardRef}
                 className={cn(
-                  "relative aspect-[4/3] rounded-3xl overflow-hidden border hairline bg-white p-6 md:p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300",
-                  heroVideoSrc && "cursor-pointer"
+                  "relative flex aspect-[4/3] w-full flex-col items-center justify-center overflow-hidden rounded-3xl border hairline bg-white p-6 text-center shadow-xl transition-[transform,box-shadow,border-color] duration-300 md:p-8",
+                  heroVideoSrc && "cursor-pointer",
                 )}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -288,7 +290,7 @@ function ProductPage() {
                       alt={`${p.name} preview video`}
                       className={cn(
                         "absolute inset-0 size-full object-cover rounded-3xl transition-all duration-500 z-20 pointer-events-none",
-                        isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105"
+                        isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105",
                       )}
                     />
                   ) : (
@@ -302,7 +304,11 @@ function ProductPage() {
                       preload="auto"
                       className={cn(
                         "absolute inset-0 size-full object-cover rounded-3xl transition-opacity duration-500 z-20 pointer-events-none",
-                        p.slug === "lms" || p.slug === "ois" ? "opacity-100" : isHovered ? "opacity-100" : "opacity-0"
+                        p.slug === "lms" || p.slug === "ois"
+                          ? "opacity-100"
+                          : isHovered
+                            ? "opacity-100"
+                            : "opacity-0",
                       )}
                     />
                   ))}
@@ -313,7 +319,7 @@ function ProductPage() {
                       "relative z-10 flex items-center justify-center size-full p-6 md:p-10 transition-all duration-300",
                       heroVideoSrc && isHovered
                         ? "opacity-0 scale-95 pointer-events-none"
-                        : "opacity-100 scale-100"
+                        : "opacity-100 scale-100",
                     )}
                   >
                     <img

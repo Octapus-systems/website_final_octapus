@@ -72,9 +72,14 @@ const CATEGORIES: Category[] = [
 // ---------------------------------------------------------------------------
 
 const panelVariants = {
-  hidden: { opacity: 0, y: -8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" as const } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.15, ease: "easeIn" as const } },
+  hidden: { opacity: 0, y: -12, scale: 0.985 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] as const },
+  },
+  exit: { opacity: 0, y: -8, scale: 0.99, transition: { duration: 0.18, ease: "easeIn" as const } },
 };
 
 const switchVariants = {
@@ -427,6 +432,8 @@ function usePanelScrollIdle(active: boolean, delay = 500) {
 export function Nav() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const isScrollIdle = usePanelScrollIdle(!!activeCategory);
 
   const headerRef = useRef<HTMLElement>(null);
@@ -466,6 +473,34 @@ export function Nav() {
     const unsub = router.subscribe("onLoad", closeMenu);
     return unsub;
   }, [router, closeMenu]);
+
+  useEffect(() => {
+    let previousY = window.scrollY;
+    let ticking = false;
+
+    const updateHeader = () => {
+      const nextY = window.scrollY;
+      const delta = nextY - previousY;
+      setIsScrolled(nextY > 12);
+      if (!activeCatRef.current && !mobileOpen && Math.abs(delta) > 6) {
+        setHeaderVisible(delta < 0 || nextY < 80);
+      } else if (activeCatRef.current || mobileOpen) {
+        setHeaderVisible(true);
+      }
+      previousY = nextY;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateHeader);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [mobileOpen]);
 
   // Escape key
   useEffect(() => {
@@ -529,14 +564,16 @@ export function Nav() {
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <header
+    <motion.header
       ref={headerRef}
       /*
        * z-[200] ensures the header and its absolutely-positioned mega-panel sit
        * above FloatingActions and any other fixed/sticky UI (which typically
        * use z-50 – z-[100]).
        */
-      className="sticky top-0 z-[200]"
+      animate={{ y: headerVisible ? 0 : -88 }}
+      transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+      className="sticky top-0 z-[200] px-3 pt-3 md:px-5"
       role="banner"
       onMouseEnter={handleNavEnter}
       onMouseLeave={handleNavLeave}
@@ -544,11 +581,12 @@ export function Nav() {
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
       <div
         className={cn(
-          "border-b hairline bg-background/90 backdrop-blur-md transition-colors duration-200",
-          activeCategory && "border-b-transparent",
+          "mx-auto max-w-[1440px] rounded-full bg-background/82 shadow-[0_1px_0_color-mix(in_oklab,var(--color-foreground)_8%,transparent),0_14px_40px_-30px_color-mix(in_oklab,var(--color-foreground)_45%,transparent)] backdrop-blur-2xl transition-all duration-300",
+          isScrolled && "bg-background/94 shadow-[0_1px_0_color-mix(in_oklab,var(--color-foreground)_10%,transparent),0_18px_46px_-28px_color-mix(in_oklab,var(--color-foreground)_50%,transparent)]",
+          activeCategory && "bg-background/96",
         )}
       >
-        <div className="container-page flex h-16 items-center justify-between">
+        <div className="flex h-14 items-center justify-between px-5 md:h-16 md:px-7">
           <Wordmark />
 
           {/* Desktop primary nav */}
@@ -566,8 +604,8 @@ export function Nav() {
                   onMouseEnter={() => handleCategoryEnter(cat)}
                   onClick={() => (isActive ? closeMenu() : handleCategoryEnter(cat))}
                   className={cn(
-                    "relative inline-flex items-center gap-1 px-3 py-2 rounded-lg",
-                    "text-sm transition-all duration-150 select-none",
+                    "relative inline-flex items-center gap-1 rounded-full px-4 py-2",
+                    "text-sm transition-all duration-200 select-none",
                     isActive
                       ? "text-foreground bg-accent"
                       : "text-muted-foreground hover:text-foreground hover:bg-accent/60",
@@ -662,8 +700,8 @@ export function Nav() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute inset-x-0 top-full border-b hairline bg-background backdrop-blur-md shadow-2xl shadow-foreground/10 overflow-hidden"
-            style={{ height: "calc(100vh - 4rem)" }}
+            className="absolute inset-x-3 top-full mx-auto mt-2 max-w-[1440px] overflow-hidden rounded-[2rem] border hairline bg-background/96 shadow-2xl shadow-foreground/10 backdrop-blur-2xl md:inset-x-5"
+            style={{ height: "min(36rem, calc(100vh - 6rem))" }}
           >
             {/* Inner layout: flex-col so the preview fills all remaining space */}
             <div className="container-page h-full flex flex-col py-5">
@@ -710,6 +748,6 @@ export function Nav() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
