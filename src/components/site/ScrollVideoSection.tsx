@@ -184,7 +184,7 @@ export function ScrollVideoSection({
         <DotPattern className="z-0 fill-neutral-400/45 animate-scrolling-dots dark:fill-white/15" />
 
         <motion.div
-          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-black bg-white will-change-transform md:border-[9px]"
+          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-black bg-white will-change-transform md:border-[9px] shadow-[0_25px_60px_-10px_rgba(0,0,0,0.35),0_12px_30px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.85),0_15px_35px_-5px_rgba(0,0,0,0.65)]"
           style={{
             scale: revealScale,
             borderRadius: revealRadius,
