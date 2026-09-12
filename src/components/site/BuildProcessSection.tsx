@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowUpRight,
   Check,
@@ -17,35 +17,41 @@ export const processSteps = [
     title: "Tell us your idea",
     icon: Lightbulb,
     description: "We decide together what to build.",
+    image: "/images/process/step-1.png",
   },
   {
     step: "02",
     title: "See a first version",
     icon: PanelsTopLeft,
     description: "AI quickly creates a working start.",
+    image: "/images/process/step-2.png",
   },
   {
     step: "03",
     title: "Make it work for you",
     icon: SlidersHorizontal,
     description: "Our developers refine it with you.",
+    image: "/images/process/step-3.png",
   },
   {
     step: "04",
     title: "Check every detail",
     icon: ShieldCheck,
     description: "We test quality, safety, and speed.",
+    image: "/images/process/step-4.png",
   },
   {
     step: "05",
     title: "Launch with support",
     icon: ArrowUpRight,
     description: "We go live and keep improving it.",
+    image: "/images/process/step-5.png",
   },
 ];
 
 export function BuildProcessSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
   const reducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -69,6 +75,7 @@ export function BuildProcessSection() {
           <ol aria-label="Build process stages">
             {processSteps.map((stage, index) => {
               const Icon = stage.icon;
+              const isActive = activeStep === index;
               return (
                 <motion.li
                   key={stage.step}
@@ -76,12 +83,22 @@ export function BuildProcessSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.8 }}
                   transition={{ duration: reducedMotion ? 0 : 0.38, delay: index * 0.04 }}
-                  className="grid grid-cols-[34px_minmax(0,1fr)] gap-x-3 py-3.5 sm:grid-cols-[34px_minmax(160px,0.8fr)_minmax(0,1fr)] sm:items-center"
+                  onMouseEnter={() => setActiveStep(index)}
+                  onFocus={() => setActiveStep(index)}
+                  onClick={() => setActiveStep(index)}
+                  tabIndex={0}
+                  className={`grid grid-cols-[34px_minmax(0,1fr)] gap-x-3 py-3.5 sm:grid-cols-[34px_minmax(160px,0.8fr)_minmax(0,1fr)] sm:items-center cursor-pointer transition-colors duration-200 outline-none rounded-md ${
+                    isActive ? "bg-muted/40 px-2 -mx-2" : ""
+                  }`}
                 >
-                  <span className="row-span-2 flex h-8 w-8 items-center justify-center text-primary sm:row-span-1">
+                  <span className={`row-span-2 flex h-8 w-8 items-center justify-center sm:row-span-1 transition-colors ${
+                    isActive ? "text-primary font-medium" : "text-primary/70"
+                  }`}>
                     <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={1.6} />
                   </span>
-                  <h3 className="text-sm font-semibold text-foreground">
+                  <h3 className={`text-sm font-semibold transition-colors ${
+                    isActive ? "text-foreground" : "text-foreground/80"
+                  }`}>
                     <span className="mr-2 font-mono text-[10px] font-normal text-muted-foreground">
                       {stage.step}
                     </span>
@@ -95,14 +112,144 @@ export function BuildProcessSection() {
             })}
           </ol>
 
-          <ProcessIllustration progress={scrollYProgress} reducedMotion={Boolean(reducedMotion)} />
+          <ProcessIllustration
+            activeStep={activeStep}
+            progress={scrollYProgress}
+            reducedMotion={Boolean(reducedMotion)}
+          />
         </div>
       </div>
     </Section>
   );
 }
 
+function ProjectedTypingText({
+  text,
+  stepKey,
+  reducedMotion,
+}: {
+  text: string;
+  stepKey: string;
+  reducedMotion: boolean;
+}) {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    setDisplayedText("");
+
+    if (reducedMotion) {
+      setDisplayedText(text);
+      return;
+    }
+
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex <= text.length) {
+        setDisplayedText(text.slice(0, currentIndex));
+      } else {
+        clearInterval(interval);
+      }
+    }, 45);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [text, stepKey, reducedMotion]);
+
+  return (
+    <motion.div
+      key={stepKey}
+      initial={{ opacity: 0, y: 3, filter: "blur(3px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -3, filter: "blur(2px)" }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="absolute top-4 left-5 sm:top-5 sm:left-6 z-20 pointer-events-none flex items-center gap-1.5"
+    >
+      <span className="font-sans text-base sm:text-lg md:text-xl font-normal leading-normal tracking-tight text-foreground [text-shadow:0_0_14px_rgba(147,51,234,0.35),0_0_2px_rgba(255,255,255,0.8)]">
+        {displayedText}
+      </span>
+      <motion.span
+        animate={{ opacity: [1, 0.1, 1] }}
+        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+        className="inline-block h-4 sm:h-5 w-1.5 rounded-xs bg-primary shadow-[0_0_8px_rgba(168,85,247,0.75)]"
+      />
+    </motion.div>
+  );
+}
+
 function ProcessIllustration({
+  activeStep,
+  progress,
+  reducedMotion,
+}: {
+  activeStep: number;
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  reducedMotion: boolean;
+}) {
+  const currentStep = processSteps[activeStep] || processSteps[0];
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
+  const currentImage = currentStep.image;
+  const hasFailed = Boolean(failedImages[currentImage]);
+
+  return (
+    <motion.figure
+      role="img"
+      aria-label="An idea moves through design, development, quality checks, and becomes a launched product."
+      initial={reducedMotion ? false : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ duration: reducedMotion ? 0 : 0.55, ease: "easeOut" }}
+      className="hidden lg:flex relative mx-auto h-[270px] w-full max-w-[560px] overflow-hidden rounded-lg border border-hairline bg-background md:h-[300px] items-center justify-center"
+    >
+      <ProjectedTypingText
+        text={currentStep.title}
+        stepKey={currentStep.step}
+        reducedMotion={Boolean(reducedMotion)}
+      />
+
+      <AnimatePresence mode="wait" initial={false}>
+        {currentImage && !hasFailed ? (
+          <motion.div
+            key={currentStep.step}
+            initial={reducedMotion ? false : { opacity: 0, y: 70 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reducedMotion ? undefined : { opacity: 0, y: -40 }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.55,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <img
+              src={currentImage}
+              alt={currentStep.title}
+              className="h-full w-full object-cover object-center"
+              onError={() => setFailedImages((prev) => ({ ...prev, [currentImage]: true }))}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key={`fallback-${activeStep}`}
+            initial={reducedMotion ? false : { opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reducedMotion ? undefined : { opacity: 0, y: -30 }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.45,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <FallbackIllustration progress={progress} reducedMotion={reducedMotion} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.figure>
+  );
+}
+
+function FallbackIllustration({
   progress,
   reducedMotion,
 }: {
@@ -115,15 +262,7 @@ function ProcessIllustration({
   const launchY = useTransform(progress, [0.65, 1], [10, 0]);
 
   return (
-    <motion.figure
-      role="img"
-      aria-label="An idea moves through design, development, quality checks, and becomes a launched product."
-      initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: reducedMotion ? 0 : 0.55, ease: "easeOut" }}
-      className="relative mx-auto h-[270px] w-full max-w-[560px] overflow-hidden rounded-lg border border-hairline bg-background md:h-[300px]"
-    >
+    <div className="relative w-full h-full">
       <motion.div
         aria-hidden="true"
         className="absolute left-[16%] top-[24%] h-1.5 w-1.5 rounded-full bg-primary/45"
@@ -189,6 +328,7 @@ function ProcessIllustration({
           <ArrowUpRight className="h-3.5 w-3.5" />
         </span>
       </motion.div>
-    </motion.figure>
+    </div>
   );
 }
+

@@ -70,7 +70,6 @@ function Home() {
       alt: p.name,
       title: p.name,
       subtitle: p.headline,
-      meta: p.tags.slice(0, 3).map((tag) => ({ label: "Tag", value: tag })),
       imageFit: p.image ? p.imageFit : "cover",
     }));
   }, []);
@@ -143,7 +142,7 @@ function Home() {
               hidden: {},
               visible: { transition: { staggerChildren: 0.11, delayChildren: 0.12 } },
             }}
-            className="mt-8 max-w-[11ch] text-balance font-display text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.065em] text-foreground sm:max-w-none sm:whitespace-nowrap"
+            className="mt-8 flex flex-row items-center justify-center gap-[0.2em] max-w-[11ch] text-balance font-display text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.038em] text-foreground [text-shadow:0_4px_24px_rgba(0,0,0,0.06)] dark:[text-shadow:0_4px_24px_rgba(255,255,255,0.08)] sm:max-w-none sm:whitespace-nowrap"
           >
             {["Build", "For"].map((part) => (
               <motion.span
@@ -158,7 +157,7 @@ function Home() {
                 }}
                 className="inline-block"
               >
-                {part}&nbsp;
+                {part}
               </motion.span>
             ))}
             <motion.span
@@ -183,7 +182,7 @@ function Home() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="mx-auto mt-10 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
           >
-            AI-first development and experienced engineering, working together to move ambitious
+            AI-first development and experienced engineering, working together to move scalable
             software from idea to production.
           </motion.p>
 
@@ -245,7 +244,7 @@ function Home() {
         intro="Real-world business systems designed, built, and deployed by Octapus."
         className="bg-background relative overflow-hidden"
       >
-        <div className="w-full overflow-hidden bg-surface dark:bg-surface-dark py-10 mt-6 rounded-3xl border border-hairline shadow-lg">
+        <div className="w-full overflow-hidden mt-4">
           <CoverflowCarousel
             slides={carouselSlides}
             showCaption

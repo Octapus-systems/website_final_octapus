@@ -56,9 +56,11 @@ export function ProductsShowcase({
               {p.image && (
                 <div
                   className={cn(
-                    "overflow-hidden rounded-xl border hairline",
+                    "overflow-hidden rounded-xl border hairline flex items-center justify-center",
                     tall ? "mt-8 aspect-[16/9]" : "mt-6 aspect-[2/1]",
-                    p.imageFit === "contain" ? "bg-white" : "bg-[var(--color-surface)]"
+                    p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png"))
+                      ? "bg-white"
+                      : "bg-[var(--color-surface)]"
                   )}
                 >
                   {p.image.endsWith(".mp4") || p.image.endsWith(".webm") ? (
@@ -70,7 +72,7 @@ export function ProductsShowcase({
                       playsInline
                       className="size-full object-cover"
                     />
-                  ) : p.imageFit === "contain" ? (
+                  ) : p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png")) ? (
                     <div className="flex size-full items-center justify-center p-4 sm:p-5">
                       <img
                         src={p.image}

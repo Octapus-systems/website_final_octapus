@@ -275,7 +275,7 @@ export function CoverflowCarousel({
             }
           }}
           // Vertical padding keeps the drop shadows clear of the overflow clip.
-          className="cursor-grab overflow-hidden py-10 outline-none ring-ring focus-visible:ring-2 active:cursor-grabbing"
+          className="cursor-grab overflow-hidden py-6 md:py-8 outline-none ring-ring focus-visible:ring-2 active:cursor-grabbing"
           style={{
             perspective: `calc(var(--cf-card) * ${perspective})`,
             // Horizontal drag is ours; the page keeps vertical scrolling.
@@ -369,14 +369,14 @@ export function CoverflowCarousel({
       {showCaption && active?.title && (
         <div
           key={selected}
-          className="mt-2 flex flex-col items-center px-6 duration-300 animate-in fade-in"
+          className="mt-3 flex flex-col items-center px-6 text-center duration-300 animate-in fade-in"
         >
-          <p className="text-[15px] font-semibold tracking-tight text-foreground">{active.title}</p>
+          <h3 className="text-base md:text-lg font-bold tracking-tight text-foreground">{active.title}</h3>
           {active.subtitle && (
-            <p className="mt-1 text-[13px] text-muted-foreground">{active.subtitle}</p>
+            <p className="mt-1 text-xs md:text-sm text-muted-foreground max-w-lg leading-relaxed">{active.subtitle}</p>
           )}
           {active.meta && active.meta.length > 0 && (
-            <dl className="mt-10 w-full max-w-[230px] text-[12px]">
+            <dl className="mt-6 w-full max-w-[230px] text-[12px]">
               {active.meta.map((row) => (
                 <div key={row.label} className="flex justify-between py-[5px]">
                   <dt className="text-muted-foreground">{row.label}</dt>

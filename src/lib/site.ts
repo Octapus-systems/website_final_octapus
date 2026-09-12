@@ -2,6 +2,7 @@ import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
 import odooProductImg from "@/assets/odoo-product.png";
+import horusAiLogo from "@/assets/horus-ai-logo.jpeg";
 import horusAiVideo from "@/assets/horus.mp4";
 import oisVideo from "@/assets/ois-v3.mp4";
 import customAiVideo from "@/assets/custom-ai-v2.mp4";
@@ -89,6 +90,7 @@ export type Product = {
   problem: string;
   outcome: string;
   image?: string;
+  imageFit?: "cover" | "contain";
   externalUrl?: string;
   tags: string[];
 };
@@ -111,7 +113,7 @@ export const obmsMetrics = [
 export const products: Product[] = [
   {
     slug: "billing-software",
-    name: "Billing Software",
+    name: "Beep",
     headline: "Billing software that adapts to your business — not the other way around.",
     customer:
       "Retail shops, supermarkets, restaurants, salons, pharmacies, workshops, service companies, wholesalers, and distributors.",
@@ -121,6 +123,7 @@ export const products: Product[] = [
       "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
     tags: ["Billing", "POS", "Custom Workflows"],
     image: billingProductImg,
+    imageFit: "contain",
   },
 
   {
@@ -132,6 +135,7 @@ export const products: Product[] = [
     outcome:
       "A single ledger for accounting, inventory, HR and reporting — with roles, approvals and audit trails.",
     image: productErpImg,
+    imageFit: "contain",
     externalUrl: "https://obms.erp.octapus.ae/",
     tags: ["ERP", "Finance", "Operations"],
   },
@@ -167,6 +171,7 @@ export const products: Product[] = [
     problem: "Standard Odoo covers most of the work; the rest is where the value is.",
     outcome: "Modules extended, integrations built, deployment operated and supported.",
     image: odooProductImg,
+    imageFit: "contain",
     tags: ["Odoo", "ERP"],
   },
   {
@@ -200,7 +205,8 @@ export const products: Product[] = [
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome:
       "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
-    image: horusAiVideo,
+    image: horusAiLogo,
+    imageFit: "contain",
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
   },
@@ -235,6 +241,7 @@ export const products: Product[] = [
       "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
     image: outreachProductImg,
+    imageFit: "contain",
   },
   {
     slug: "icon",
@@ -254,6 +261,7 @@ export const products: Product[] = [
     outcome:
       "Pipelines, fields, automations and reporting built around your motion — with forecasting leadership can trust.",
     image: productCrmImg,
+    imageFit: "contain",
     tags: ["CRM", "Sales"],
   },
   {
@@ -274,6 +282,7 @@ export const products: Product[] = [
     outcome:
       "Discovery, configuration, data migration, training, rehearsed cutover and post-launch support.",
     image: erpImplProductImg,
+    imageFit: "contain",
     tags: ["ERP", "Deployment"],
   },
   {
@@ -286,6 +295,7 @@ export const products: Product[] = [
       "Automations with guardrails, audit trails and human overrides — measured on the hours they return.",
     tags: ["Automation", "AI"],
     image: aiBizAutoImg,
+    imageFit: "contain",
   },
 ];
 
