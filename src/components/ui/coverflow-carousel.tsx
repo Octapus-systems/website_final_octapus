@@ -73,6 +73,7 @@ export function CoverflowCarousel({
   const targetRef = React.useRef(0);
   const widthRef = React.useRef(0);
   const rafRef = React.useRef<number | null>(null);
+  const didDragRef = React.useRef(false);
   const dragRef = React.useRef<{
     id: number;
     x: number;
@@ -178,6 +179,7 @@ export function CoverflowCarousel({
       rafRef.current = null;
     }
     event.currentTarget.setPointerCapture(event.pointerId);
+    didDragRef.current = false;
     targetRef.current = posRef.current;
     dragRef.current = {
       id: event.pointerId,
@@ -194,6 +196,7 @@ export function CoverflowCarousel({
 
     const pitch = widthRef.current * (1 + gap);
     if (!pitch) return;
+    if (Math.abs(event.clientX - drag.x) > 6) didDragRef.current = true;
 
     const now = performance.now();
     const previous = posRef.current;
@@ -299,7 +302,12 @@ export function CoverflowCarousel({
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}`}
                 onClick={() => {
-                  if (index === selected && onSlideClick) {
+                  if (didDragRef.current) {
+                    didDragRef.current = false;
+                    return;
+                  }
+
+                  if (onSlideClick) {
                     onSlideClick(index);
                   } else if (index !== selected) {
                     goTo(index);
@@ -308,7 +316,7 @@ export function CoverflowCarousel({
                 className={cn(
                   "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl shadow-xl will-change-transform",
                   slide.imageFit === "contain" ? "bg-white" : "bg-muted",
-                  index === selected && onSlideClick ? "cursor-pointer" : "",
+                  onSlideClick ? "cursor-pointer" : "",
                   cardClassName,
                 )}
                 style={{ width: "var(--cf-card)" }}
@@ -371,9 +379,13 @@ export function CoverflowCarousel({
           key={selected}
           className="mt-3 flex flex-col items-center px-6 text-center duration-300 animate-in fade-in"
         >
-          <h3 className="text-base md:text-lg font-bold tracking-tight text-foreground">{active.title}</h3>
+          <h3 className="text-base md:text-lg font-bold tracking-tight text-foreground">
+            {active.title}
+          </h3>
           {active.subtitle && (
-            <p className="mt-1 text-xs md:text-sm text-muted-foreground max-w-lg leading-relaxed">{active.subtitle}</p>
+            <p className="mt-1 text-xs md:text-sm text-muted-foreground max-w-lg leading-relaxed">
+              {active.subtitle}
+            </p>
           )}
           {active.meta && active.meta.length > 0 && (
             <dl className="mt-6 w-full max-w-[230px] text-[12px]">

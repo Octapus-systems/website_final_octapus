@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { DotPattern } from "@/components/ui/dot-pattern";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 
 import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
@@ -33,6 +32,25 @@ const FALLBACK_IMAGES = [
 ];
 
 const visibleProducts = products.filter((p) => !hiddenProductSlugs.includes(p.slug));
+
+const heroTitle = "Build For Today";
+
+const statGridVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+  },
+};
+
+const statItemVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,6 +81,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const navigate = useNavigate();
+  const reducedMotion = useReducedMotion();
 
   const carouselSlides = React.useMemo(() => {
     return visibleProducts.map((p, idx) => ({
@@ -106,20 +125,7 @@ function Home() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-[12%] top-[15%] h-[56%] rounded-[50%] bg-primary/[0.055] blur-3xl"
         />
-        <DotPattern
-          width={22}
-          height={22}
-          cr={0.8}
-          className={cn(
-            "fill-neutral-400/45 dark:fill-white/10",
-            "[mask-image:radial-gradient(ellipse_68%_72%_at_50%_45%,black,transparent)]",
-            "animate-scrolling-dots motion-reduce:animate-none",
-          )}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background to-transparent"
-        />
+        <DotPattern className="fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/10" />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col items-center justify-center py-20 text-center md:py-24">
           <motion.div
@@ -135,44 +141,44 @@ function Home() {
           </motion.div>
 
           <motion.h1
-            initial="hidden"
+            initial={reducedMotion ? false : "hidden"}
             whileInView="visible"
             viewport={{ once: true }}
             variants={{
               hidden: {},
-              visible: { transition: { staggerChildren: 0.11, delayChildren: 0.12 } },
+              visible: { transition: { staggerChildren: 0.065, delayChildren: 0.16 } },
             }}
-            className="mt-8 flex flex-row items-center justify-center gap-[0.2em] max-w-[11ch] text-balance font-display text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.038em] text-foreground [text-shadow:0_4px_24px_rgba(0,0,0,0.06)] dark:[text-shadow:0_4px_24px_rgba(255,255,255,0.08)] sm:max-w-none sm:whitespace-nowrap"
+            aria-label={heroTitle}
+            className="mt-8 flex flex-row items-center justify-center max-w-[11ch] text-balance font-display text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.038em] text-foreground [text-shadow:0_4px_24px_rgba(0,0,0,0.06)] dark:[text-shadow:0_4px_24px_rgba(255,255,255,0.08)] sm:max-w-none sm:whitespace-nowrap"
           >
-            {["Build", "For"].map((part) => (
+            {Array.from(heroTitle).map((character, index) => (
               <motion.span
-                key={part}
+                key={`${character}-${index}`}
+                aria-hidden="true"
                 variants={{
-                  hidden: { opacity: 0, y: 36 },
+                  hidden: {
+                    opacity: character === " " ? 0 : 0.16,
+                    filter: "blur(12px)",
+                    scale: 1.025,
+                  },
                   visible: {
                     opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+                    filter: "blur(0px)",
+                    scale: 1,
+                    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
-                className="inline-block"
+                className={
+                  character === " "
+                    ? "inline-block w-[0.2em]"
+                    : index >= 10
+                      ? "inline-block text-primary"
+                      : "inline-block"
+                }
               >
-                {part}
+                {character === " " ? "\u00a0" : character}
               </motion.span>
             ))}
-            <motion.span
-              variants={{
-                hidden: { opacity: 0, y: 36 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
-                },
-              }}
-              className="inline-block text-primary"
-            >
-              Today
-            </motion.span>
           </motion.h1>
 
           <motion.p
@@ -256,21 +262,37 @@ function Home() {
         </div>
 
         {/* Integrated Trust Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10 max-w-5xl mx-auto text-center mt-16 pt-12 border-t border-hairline">
+        <motion.div
+          initial={reducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          variants={statGridVariants}
+          className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10 max-w-5xl mx-auto text-center mt-16 pt-12 border-t border-hairline"
+        >
           {stats.map((stat, idx) => (
-            <div key={idx} className="space-y-1">
-              <div className="font-display text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+            <motion.div key={idx} variants={statItemVariants} className="space-y-1">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, scale: 0.82 },
+                  visible: {
+                    opacity: 1,
+                    scale: 1,
+                    transition: { type: "spring", stiffness: 280, damping: 22 },
+                  },
+                }}
+                className="font-display text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+              >
                 {stat.value}
-              </div>
+              </motion.div>
               <div className="text-xs font-mono font-bold tracking-wider uppercase text-primary">
                 {stat.label}
               </div>
               <p className="text-xs text-muted-foreground max-w-[200px] mx-auto mt-1">
                 {stat.detail}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Section>
 
       {/* ── 04. THE OCTAPUS ADVANTAGE ── */}

@@ -150,7 +150,8 @@ export const products: Product[] = [
       "Learning, administration, assessment, communication and parent engagement are often managed across disconnected systems.",
     outcome:
       "A role-based LMS connecting school administration, teaching, learning, assessments, communication, parent engagement and financial management in one platform.",
-    image: "/lms-preview.jpg",
+    image: "/lms-logo.svg",
+    imageFit: "contain",
     tags: ["LMS", "Education", "Learning Management"],
   },
 
