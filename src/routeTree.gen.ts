@@ -34,6 +34,7 @@ import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ProductsConnectRouteImport } from './routes/products.connect'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 
 const IndexRoute = IndexRouteImport.update({
@@ -161,6 +162,11 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ProductsRoute,
 } as any)
+const ProductsConnectRoute = ProductsConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
+  getParentRoute: () => ProductsRoute,
+} as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -192,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/connect': typeof ProductsConnectRoute
   '/products/': typeof ProductsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
@@ -219,6 +226,7 @@ export interface FileRoutesByTo {
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/connect': typeof ProductsConnectRoute
   '/products': typeof ProductsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
@@ -248,6 +256,7 @@ export interface FileRoutesById {
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/products/connect': typeof ProductsConnectRoute
   '/products/': typeof ProductsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/terms'
     | '/products/$slug'
+    | '/products/connect'
     | '/products/'
     | '/api/public/contact'
   fileRoutesByTo: FileRoutesByTo
@@ -305,6 +315,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/terms'
     | '/products/$slug'
+    | '/products/connect'
     | '/products'
     | '/api/public/contact'
   id:
@@ -333,6 +344,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/terms'
     | '/products/$slug'
+    | '/products/connect'
     | '/products/'
     | '/api/public/contact'
   fileRoutesById: FileRoutesById
@@ -541,6 +553,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/products/connect': {
+      id: '/products/connect'
+      path: '/connect'
+      fullPath: '/products/connect'
+      preLoaderRoute: typeof ProductsConnectRouteImport
+      parentRoute: typeof ProductsRoute
+    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -553,11 +572,13 @@ declare module '@tanstack/react-router' {
 
 interface ProductsRouteChildren {
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ProductsConnectRoute: typeof ProductsConnectRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
   ProductsSlugRoute: ProductsSlugRoute,
+  ProductsConnectRoute: ProductsConnectRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }
 

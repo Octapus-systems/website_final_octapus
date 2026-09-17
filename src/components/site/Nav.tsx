@@ -40,6 +40,7 @@ const COMPANY_ITEMS: SubItem[] = [
 
 const PRODUCTS_ITEMS: SubItem[] = [
   { id: "all-products", label: "All Products", to: "/products" },
+  { id: "connect", label: "Octapus Connect", to: "/products/connect" },
   { id: "billing-software", label: PM.get("billing-software")?.name ?? "Beep", to: "/products/billing-software" },
   { id: "obms-erp", label: PM.get("obms-erp")?.name ?? "O.B.M.S ERP", to: "/products/obms-erp" },
   { id: "lms", label: PM.get("lms")?.name ?? "LMS", to: "/products/lms" },

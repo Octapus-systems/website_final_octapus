@@ -112,6 +112,15 @@ export const obmsMetrics = [
 
 export const products: Product[] = [
   {
+    slug: "connect",
+    name: "Octapus Connect",
+    headline: "The systems behind your business. Connected.",
+    customer: "Businesses using multiple software tools that don't talk to each other.",
+    problem: "Data lives in disconnected silos, forcing employees into tedious manual copy-pasting across CRM, ERP, spreadsheets, and messaging.",
+    outcome: "An enterprise integration & workflow layer that connects your existing tools and automates your business processes.",
+    tags: ["Integration", "Workflow", "Automation"],
+  },
+  {
     slug: "billing-software",
     name: "Beep",
     headline: "Billing software that adapts to your business — not the other way around.",
@@ -704,6 +713,8 @@ export const disciplineTracks: DisciplineTrack[] = [
 
 /** One-line OIS relationship for products that carry an intelligence layer. */
 export const productOisNotes: Record<string, string> = {
+  connect:
+    "OIS acts as the intelligence brain for Octapus Connect, providing AI parsing, automated routing, and audit logs across all your connected software.",
   "billing-software":
     "OIS connects billing data with inventory, customer history, and financial reporting across all your locations.",
   "obms-erp":
