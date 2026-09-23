@@ -704,6 +704,8 @@ export const disciplineTracks: DisciplineTrack[] = [
 
 /** One-line OIS relationship for products that carry an intelligence layer. */
 export const productOisNotes: Record<string, string> = {
+  connect:
+    "OIS acts as the intelligence brain for Octapus Connect, providing AI parsing, automated routing, and audit logs across all your connected software.",
   "billing-software":
     "OIS connects billing data with inventory, customer history, and financial reporting across all your locations.",
   "obms-erp":

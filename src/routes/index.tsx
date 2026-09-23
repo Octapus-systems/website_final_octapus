@@ -295,7 +295,8 @@ function Home() {
         </motion.div>
       </Section>
 
-      {/* ── 04. THE OCTAPUS ADVANTAGE ── */}
+
+      {/* ── 05. THE OCTAPUS ADVANTAGE ── */}
       <OctapusAdvantageSection />
 
       {/* ── 05. OUR BUILD PROCESS ── */}
