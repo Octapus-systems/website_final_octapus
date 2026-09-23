@@ -12,7 +12,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 
 import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
-import { OctapusConnectTeaser } from "@/components/site/OctapusConnectTeaser";
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
 
@@ -296,8 +295,6 @@ function Home() {
         </motion.div>
       </Section>
 
-      {/* ── 04. OCTAPUS CONNECT TEASER ── */}
-      <OctapusConnectTeaser />
 
       {/* ── 05. THE OCTAPUS ADVANTAGE ── */}
       <OctapusAdvantageSection />

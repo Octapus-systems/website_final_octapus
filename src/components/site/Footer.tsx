@@ -17,7 +17,6 @@ const columns = [
     label: "Products",
     links: [
       { to: "/products", text: "All products" },
-      { to: "/products/$slug", params: { slug: "connect" }, text: "Octapus Connect" },
       { to: "/products/$slug", params: { slug: "billing-software" }, text: "Beep" },
       { to: "/products/$slug", params: { slug: "obms-erp" }, text: "O.B.M.S ERP" },
       { to: "/products/$slug", params: { slug: "lms" }, text: "LMS" },

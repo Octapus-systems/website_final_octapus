@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useRouter, useNavigate } from "@tanstack/react-router";
-import { Menu, X, ChevronRight, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronRight, ChevronDown, CalendarClock } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "./Wordmark";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { RevealButton } from "@/components/site/RevealButton";
+import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { products } from "@/lib/site";
 
@@ -40,7 +42,6 @@ const COMPANY_ITEMS: SubItem[] = [
 
 const PRODUCTS_ITEMS: SubItem[] = [
   { id: "all-products", label: "All Products", to: "/products" },
-  { id: "connect", label: "Octapus Connect", to: "/products/connect" },
   { id: "billing-software", label: PM.get("billing-software")?.name ?? "Beep", to: "/products/billing-software" },
   { id: "obms-erp", label: PM.get("obms-erp")?.name ?? "O.B.M.S ERP", to: "/products/obms-erp" },
   { id: "lms", label: PM.get("lms")?.name ?? "LMS", to: "/products/lms" },
@@ -631,9 +632,16 @@ export function Nav() {
           {/* Desktop right actions */}
           <div className="hidden lg:flex items-center gap-2">
             <ThemeToggle className="-translate-x-1" />
-            <Button asChild size="sm" className="rounded-full px-5">
-              <Link to="/book">Book a Strategy Call</Link>
-            </Button>
+            <div className="relative h-9 w-9 shrink-0">
+              <div className="absolute right-0 top-0 z-10">
+                <RevealButton
+                  to="/book"
+                  icon={CalendarClock}
+                  label="Book a Strategy Call"
+                  onClick={() => trackEvent("strategy_call_click", { source: "nav" })}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Mobile: hamburger + Sheet */}
