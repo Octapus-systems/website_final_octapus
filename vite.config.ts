@@ -14,5 +14,17 @@ export default defineConfig({
   },
   nitro: {
     preset: process.env.VERCEL ? "vercel" : "node-server",
+    routeRules: {
+      "/**": {
+        headers: {
+          "cache-control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
+        },
+      },
+      "/api/**": {
+        headers: {
+          "cache-control": "no-cache",
+        },
+      },
+    },
   },
 });
