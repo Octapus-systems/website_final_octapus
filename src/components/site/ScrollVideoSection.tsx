@@ -51,12 +51,24 @@ export function ScrollVideoSection({
       Math.max(0, Math.round(currentRef.current)),
     );
     const exactImage = imagesRef.current[targetIndex];
-    const image = exactImage?.naturalWidth
-      ? exactImage
-      : imagesRef.current.find((candidate, index) => {
-          const distance = Math.abs(index - targetIndex);
-          return candidate?.naturalWidth && distance < 4;
-        });
+    let image = exactImage?.naturalWidth ? exactImage : null;
+
+    if (!image) {
+      const images = imagesRef.current;
+      for (let offset = 1; offset < images.length; offset++) {
+        const prev = images[targetIndex - offset];
+        if (prev?.naturalWidth) {
+          image = prev;
+          break;
+        }
+        const next = images[targetIndex + offset];
+        if (next?.naturalWidth) {
+          image = next;
+          break;
+        }
+      }
+    }
+
     if (!image?.naturalWidth) return;
     if (exactImage?.naturalWidth && lastDrawnFrameRef.current === targetIndex) return;
 
@@ -84,7 +96,7 @@ export function ScrollVideoSection({
       ["slow-2g", "2g", "3g"].includes(navConn?.effectiveType ?? "");
     let activeImages: HTMLImageElement[] = [];
 
-    const loadFrames = (loadAll: boolean) => {
+    const loadFrames = () => {
       activeImages.forEach((image) => {
         image.onload = null;
         image.onerror = null;
@@ -115,10 +127,8 @@ export function ScrollVideoSection({
       activeImages[0] = firstImage;
       firstImage.src = `${dir}/frame-001.jpg`;
 
-      if (!loadAll) return;
-
       let nextFrame = 1;
-      const concurrency = mobileQuery.matches ? 2 : 4;
+      const concurrency = mobileQuery.matches ? 4 : 6;
       const loadNext = () => {
         if (cancelled || nextFrame >= actualFrameCount) return;
         const index = nextFrame++;
@@ -141,30 +151,14 @@ export function ScrollVideoSection({
       Array.from({ length: concurrency }, loadNext);
     };
 
-    // Load poster frame immediately
-    loadFrames(false);
+    // Pre-warm frames immediately on mount so the 2.4s splash window buffers them
+    loadFrames();
 
-    // Watch for proximity before loading all remaining frames
-    const proximityObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !cancelled) {
-          loadFrames(true);
-          proximityObserver.disconnect();
-        }
-      },
-      { rootMargin: "450px" },
-    );
-
-    if (sectionRef.current) {
-      proximityObserver.observe(sectionRef.current);
-    }
-
-    const onMediaChange = () => loadFrames(true);
+    const onMediaChange = () => loadFrames();
     mobileQuery.addEventListener("change", onMediaChange);
 
     return () => {
       cancelled = true;
-      proximityObserver.disconnect();
       mobileQuery.removeEventListener("change", onMediaChange);
       activeImages.forEach((image) => {
         image.onload = null;

@@ -321,13 +321,14 @@ export function CoverflowCarousel({
                 )}
                 style={{ width: "var(--cf-card)" }}
               >
-                {slide.src.endsWith(".mp4") || slide.src.endsWith(".webm") ? (
+                {/\.(mp4|webm)($|\?)/i.test(slide.src) ? (
                   <video
                     src={slide.src}
                     autoPlay
                     muted
                     loop
                     playsInline
+                    preload="auto"
                     className="h-full w-full select-none object-cover"
                   />
                 ) : slide.imageFit === "contain" ? (
