@@ -73,13 +73,18 @@ export function ScrollVideoSection({
   useEffect(() => {
     let cancelled = false;
     const mobileQuery = window.matchMedia("(max-width: 1024px)");
+    const navConn = (
+      navigator as unknown as {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
     const reducedData =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      navigator.connection?.saveData ||
-      ["slow-2g", "2g", "3g"].includes(navigator.connection?.effectiveType ?? "");
+      Boolean(navConn?.saveData) ||
+      ["slow-2g", "2g", "3g"].includes(navConn?.effectiveType ?? "");
     let activeImages: HTMLImageElement[] = [];
 
-    const loadFrames = () => {
+    const loadFrames = (loadAll: boolean) => {
       activeImages.forEach((image) => {
         image.onload = null;
         image.onerror = null;
@@ -91,8 +96,8 @@ export function ScrollVideoSection({
       const actualFrameCount = reducedData
         ? Math.min(fullCount, 72)
         : mobileQuery.matches
-          ? Math.min(fullCount, 240)
-          : fullCount;
+          ? Math.min(fullCount, 180)
+          : Math.min(fullCount, 260);
       resolvedCountRef.current = actualFrameCount;
       currentRef.current = 0;
       targetRef.current = 0;
@@ -101,8 +106,19 @@ export function ScrollVideoSection({
       activeImages = new Array(actualFrameCount);
       imagesRef.current = activeImages;
 
-      let nextFrame = 0;
-      const concurrency = mobileQuery.matches ? 3 : 5;
+      // Always load the very first frame immediately for instant visual
+      const firstImage = new Image();
+      firstImage.decoding = "async";
+      firstImage.onload = () => {
+        if (!cancelled) draw();
+      };
+      activeImages[0] = firstImage;
+      firstImage.src = `${dir}/frame-001.jpg`;
+
+      if (!loadAll) return;
+
+      let nextFrame = 1;
+      const concurrency = mobileQuery.matches ? 2 : 4;
       const loadNext = () => {
         if (cancelled || nextFrame >= actualFrameCount) return;
         const index = nextFrame++;
@@ -125,12 +141,31 @@ export function ScrollVideoSection({
       Array.from({ length: concurrency }, loadNext);
     };
 
-    loadFrames();
-    mobileQuery.addEventListener("change", loadFrames);
+    // Load poster frame immediately
+    loadFrames(false);
+
+    // Watch for proximity before loading all remaining frames
+    const proximityObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !cancelled) {
+          loadFrames(true);
+          proximityObserver.disconnect();
+        }
+      },
+      { rootMargin: "450px" },
+    );
+
+    if (sectionRef.current) {
+      proximityObserver.observe(sectionRef.current);
+    }
+
+    const onMediaChange = () => loadFrames(true);
+    mobileQuery.addEventListener("change", onMediaChange);
 
     return () => {
       cancelled = true;
-      mobileQuery.removeEventListener("change", loadFrames);
+      proximityObserver.disconnect();
+      mobileQuery.removeEventListener("change", onMediaChange);
       activeImages.forEach((image) => {
         image.onload = null;
         image.onerror = null;
