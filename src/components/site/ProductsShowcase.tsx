@@ -63,13 +63,14 @@ export function ProductsShowcase({
                       : "bg-[var(--color-surface)]",
                   )}
                 >
-                  {p.image.endsWith(".mp4") || p.image.endsWith(".webm") ? (
+                  {/\.(mp4|webm)($|\?)/i.test(p.image) ? (
                     <video
                       src={p.image}
                       autoPlay
                       muted
                       loop
                       playsInline
+                      preload="auto"
                       className="size-full object-cover"
                     />
                   ) : p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png")) ? (
