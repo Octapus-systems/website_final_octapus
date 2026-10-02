@@ -49,7 +49,30 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+
+      // Edge CDN Caching: Cache successful HTML page responses at Cloudflare Edge (SSG equivalent performance)
+      if (
+        request.method === "GET" &&
+        normalized.status === 200 &&
+        !new URL(request.url).pathname.startsWith("/api/")
+      ) {
+        const contentType = normalized.headers.get("content-type") ?? "";
+        if (contentType.includes("text/html")) {
+          const headers = new Headers(normalized.headers);
+          headers.set(
+            "Cache-Control",
+            "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
+          );
+          return new Response(normalized.body, {
+            status: normalized.status,
+            statusText: normalized.statusText,
+            headers,
+          });
+        }
+      }
+
+      return normalized;
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
