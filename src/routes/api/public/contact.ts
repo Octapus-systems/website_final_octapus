@@ -120,18 +120,39 @@ export const Route = createFileRoute("/api/public/contact")({
           }
         }
 
+function loadEnv() {
+  if (typeof process === "undefined" || !process.env) return;
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) return;
+
+  if (typeof process.loadEnvFile === "function") {
+    try {
+      process.loadEnvFile();
+    } catch {
+      // Ignore if .env is missing or already loaded
+    }
+  }
+}
+
+        loadEnv();
+
         const routedTo = routeEnquiryTo(data.enquiryType);
         const recipientEmail =
           data.enquiryType === "career" ? "hr@octapus.ae" : process.env.SMTP_TO || routedTo;
 
         try {
+          const smtpPort = Number(process.env.SMTP_PORT) || 465;
+          const isSecure = smtpPort === 465 || process.env.SMTP_PORT === "465";
+
           const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT) || 465,
-            secure: process.env.SMTP_PORT === "465" || Number(process.env.SMTP_PORT) === 465,
+            host: process.env.SMTP_HOST || "mail.octapus.ae",
+            port: smtpPort,
+            secure: isSecure,
             auth: {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASS,
+              user: process.env.SMTP_USER || "info@octapus.ae",
+              pass: process.env.SMTP_PASS || "Octapos@info666",
+            },
+            tls: {
+              rejectUnauthorized: false,
             },
           });
 
