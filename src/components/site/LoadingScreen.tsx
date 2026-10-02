@@ -32,16 +32,28 @@ const loadingIcons = [
 
 export function LoadingScreen() {
   const [isVisible, setIsVisible] = useState(() => {
-    if (typeof window !== "undefined") return window.self === window.top;
+    if (typeof window !== "undefined") {
+      try {
+        if (sessionStorage.getItem("octapus_intro_seen")) return false;
+      } catch {
+        // Ignore session storage errors
+      }
+      return window.self === window.top;
+    }
     return true;
   });
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!isVisible) return;
+    try {
+      sessionStorage.setItem("octapus_intro_seen", "1");
+    } catch {
+      // Ignore session storage errors
+    }
     const timeout = window.setTimeout(
       () => setIsVisible(false),
-      reducedMotion ? 250 : LOAD_DURATION_MS,
+      reducedMotion ? 150 : LOAD_DURATION_MS,
     );
     return () => window.clearTimeout(timeout);
   }, [isVisible, reducedMotion]);

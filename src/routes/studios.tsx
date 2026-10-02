@@ -1,12 +1,16 @@
+import { lazy, Suspense } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/site/JsonLd";
 import { Container, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
-import { Skiper39 } from "@/components/ui/skiper39";
 import { RevealButton } from "@/components/site/RevealButton";
 import { OisConnection } from "@/components/site/OisConnection";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
+
+const Skiper39 = lazy(() =>
+  import("@/components/ui/skiper39").then((m) => ({ default: m.Skiper39 })),
+);
 import { StudiosLeadForm } from "@/components/site/StudiosLeadForm";
 import { trackEvent } from "@/lib/analytics";
 import { studios, site } from "@/lib/site";
@@ -92,7 +96,9 @@ function StudiosPage() {
         </div>
       </Container>
 
-      <Skiper39 />
+      <Suspense fallback={<div className="h-64 w-full" aria-hidden="true" />}>
+        <Skiper39 />
+      </Suspense>
 
       <Section
         eyebrow="What Octapus Studios provides"
