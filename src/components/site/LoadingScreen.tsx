@@ -14,7 +14,7 @@ import {
   UsersRound,
 } from "lucide-react";
 
-const LOAD_DURATION_MS = 2400;
+const LOAD_DURATION_MS = 400;
 
 const loadingIcons = [
   BrainCircuit,
