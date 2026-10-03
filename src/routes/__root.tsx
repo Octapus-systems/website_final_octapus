@@ -19,6 +19,7 @@ import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { site } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
+import { isProductionHost } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -166,6 +167,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !isProductionHost(window.location.hostname)) {
+      if (!document.querySelector('meta[name="robots"]')) {
+        const meta = document.createElement("meta");
+        meta.name = "robots";
+        meta.content = "noindex,nofollow";
+        document.head.appendChild(meta);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]');

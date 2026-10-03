@@ -58,7 +58,7 @@ export function ProductsShowcase({
                   className={cn(
                     "overflow-hidden rounded-xl border hairline flex items-center justify-center",
                     tall ? "mt-8 aspect-[16/9]" : "mt-6 aspect-[2/1]",
-                    p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png"))
+                    p.imageFit === "contain" || (!p.imageFit && /\.(png|webp)$/i.test(p.image))
                       ? "bg-white"
                       : "bg-[var(--color-surface)]",
                   )}
@@ -73,12 +73,14 @@ export function ProductsShowcase({
                       preload="auto"
                       className="size-full object-cover"
                     />
-                  ) : p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png")) ? (
+                  ) : p.imageFit === "contain" || (!p.imageFit && /\.(png|webp)$/i.test(p.image)) ? (
                     <div className="flex size-full items-center justify-center p-4 sm:p-5">
                       <img
                         src={p.image}
                         alt={`${p.name} logo preview`}
                         loading="lazy"
+                        width={600}
+                        height={600}
                         className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     </div>
@@ -87,6 +89,8 @@ export function ProductsShowcase({
                       src={p.image}
                       alt={`${p.name} interface preview`}
                       loading="lazy"
+                      width={800}
+                      height={450}
                       className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                     />
                   )}

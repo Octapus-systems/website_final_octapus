@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
 import { Section } from "@/components/site/Section";
 import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_URL } from "@/lib/seo";
 import { ArrowRight, Grid3X3, Mail } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
@@ -18,7 +18,7 @@ import { servicePages } from "@/lib/service-pages";
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
-import heroLaptop from "@/assets/hero-laptop.png";
+import heroLaptop from "@/assets/hero-laptop.webp";
 import obmsBusiness from "@/assets/obms-business.jpg";
 import oisNetwork from "@/assets/ois-network.png";
 
@@ -74,7 +74,6 @@ export const Route = createFileRoute("/")({
         "creative production",
       ],
     }),
-    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Home,
 });
@@ -100,7 +99,7 @@ function Home() {
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Octapus",
-          url: "/",
+          url: `${SITE_URL}/`,
           publisher: { "@type": "Organization", name: site.legalName },
         }}
       />
@@ -221,7 +220,7 @@ function Home() {
       </header>
 
       {/* ── 02. VIDEO SECTION ── */}
-      <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
+      <ScrollVideoSection frameCount={200} mobileFrameCount={177} heightMultiplier={4} />
 
       {/* ── 03. WHAT WE BUILD ── */}
       <WhatWeBuildSection />

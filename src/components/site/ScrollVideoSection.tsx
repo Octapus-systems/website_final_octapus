@@ -13,8 +13,8 @@ type Props = {
 const pad = (n: number) => String(n).padStart(3, "0");
 
 export function ScrollVideoSection({
-  frameCount = 300,
-  mobileFrameCount,
+  frameCount = 200,
+  mobileFrameCount = 177,
   heightMultiplier = 4,
   className,
 }: Props) {
@@ -105,13 +105,11 @@ export function ScrollVideoSection({
       });
 
       const useMobileFrames = mobileQuery.matches && Boolean(mobileFrameCount);
-      const dir = useMobileFrames ? "/frames-mobile" : "/frames-desktop";
-      const fullCount = useMobileFrames ? mobileFrameCount! : frameCount;
+      const dir = useMobileFrames ? "/frames-mobile-webp" : "/frames-desktop-webp";
+      const totalFrames = useMobileFrames ? (mobileFrameCount ?? 177) : frameCount;
       const actualFrameCount = reducedData
-        ? Math.min(fullCount, 72)
-        : mobileQuery.matches
-          ? Math.min(fullCount, 180)
-          : Math.min(fullCount, 260);
+        ? Math.min(totalFrames, 60)
+        : totalFrames;
       resolvedCountRef.current = actualFrameCount;
       currentRef.current = 0;
       targetRef.current = 0;
@@ -120,23 +118,25 @@ export function ScrollVideoSection({
       activeImages = new Array(actualFrameCount);
       imagesRef.current = activeImages;
 
-      // Always load the very first frame immediately for instant visual
+      // FIX 1: On first page load, download ONLY the first visible frame
       const firstImage = new Image();
       firstImage.decoding = "async";
       firstImage.onload = () => {
         if (!cancelled) draw();
       };
       activeImages[0] = firstImage;
-      firstImage.src = `${dir}/frame-001.jpg`;
+      firstImage.src = `${dir}/frame-001.webp`;
 
+      let lazyLoadStarted = false;
       let nextFrame = 1;
-      const concurrency = mobileQuery.matches ? 4 : 6;
+      const concurrency = mobileQuery.matches ? 3 : 5;
+
       const loadNext = () => {
         if (cancelled || nextFrame >= actualFrameCount) return;
         const index = nextFrame++;
         const image = new Image();
         const sourceFrame =
-          Math.round((index / Math.max(1, actualFrameCount - 1)) * (fullCount - 1)) + 1;
+          Math.round((index / Math.max(1, actualFrameCount - 1)) * (totalFrames - 1)) + 1;
         image.decoding = "async";
         image.onload = () => {
           if (!cancelled) {
@@ -148,19 +148,56 @@ export function ScrollVideoSection({
           if (!cancelled) loadNext();
         };
         activeImages[index] = image;
-        image.src = `${dir}/frame-${pad(sourceFrame)}.jpg`;
+        image.src = `${dir}/frame-${pad(sourceFrame)}.webp`;
       };
-      Array.from({ length: concurrency }, loadNext);
+
+      const startLazyLoad = () => {
+        if (lazyLoadStarted || cancelled) return;
+        lazyLoadStarted = true;
+        Array.from({ length: concurrency }, loadNext);
+      };
+
+      // Load remaining frames lazily when browser is idle or when user scrolls
+      let idleId: number | null = null;
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+      if ("requestIdleCallback" in window) {
+        idleId = (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(startLazyLoad, { timeout: 3000 });
+      } else {
+        timeoutId = setTimeout(startLazyLoad, 1500);
+      }
+
+      const onScrollTrigger = () => {
+        startLazyLoad();
+        window.removeEventListener("scroll", onScrollTrigger);
+        window.removeEventListener("touchstart", onScrollTrigger);
+      };
+      window.addEventListener("scroll", onScrollTrigger, { passive: true, once: true });
+      window.addEventListener("touchstart", onScrollTrigger, { passive: true, once: true });
+
+      return () => {
+        if (idleId !== null && "cancelIdleCallback" in window) {
+          (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
+        }
+        if (timeoutId !== null) {
+          clearTimeout(timeoutId);
+        }
+        window.removeEventListener("scroll", onScrollTrigger);
+        window.removeEventListener("touchstart", onScrollTrigger);
+      };
     };
 
-    // Pre-warm frames immediately on mount so the 2.4s splash window buffers them
-    loadFrames();
+    let cleanupLazy = loadFrames();
 
-    const onMediaChange = () => loadFrames();
+    const onMediaChange = () => {
+      cleanupLazy?.();
+      cleanupLazy = loadFrames();
+    };
     mobileQuery.addEventListener("change", onMediaChange);
 
     return () => {
       cancelled = true;
+      cleanupLazy?.();
       mobileQuery.removeEventListener("change", onMediaChange);
       activeImages.forEach((image) => {
         image.onload = null;

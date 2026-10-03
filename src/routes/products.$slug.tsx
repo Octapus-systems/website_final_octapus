@@ -318,6 +318,8 @@ function ProductPage() {
                       src={p.image}
                       alt={`${p.name} logo`}
                       loading="eager"
+                      width={600}
+                      height={600}
                       className="max-h-44 md:max-h-56 w-auto max-w-full object-contain"
                     />
                   </div>

@@ -8,7 +8,7 @@ import {
   TrendingDown,
   Building2,
 } from "lucide-react";
-import oisImg from "@/assets/ois-horus-ai-mobile-workforce.png";
+import oisImg from "@/assets/ois-horus-ai-mobile-workforce.webp";
 import { Container, Section } from "@/components/site/Section";
 import { HorusCard } from "@/components/site/HorusCard";
 import Avatar from "@/components/ui/components-primitives-avatar";
@@ -116,6 +116,8 @@ function OIS() {
               src={oisImg}
               alt="Horus AI preparing and sending a business quotation through a mobile conversation"
               loading="lazy"
+              width={1672}
+              height={941}
               className="aspect-video h-auto w-full object-cover"
             />
           </div>

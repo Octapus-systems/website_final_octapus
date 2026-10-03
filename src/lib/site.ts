@@ -3,7 +3,7 @@ import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
 import horusAiVideo from "@/assets/horus.mp4";
 import customAiVideo from "@/assets/custom-ai-v2.mp4";
-import aiBizAutoImg from "@/assets/ai-business-automation-product.png";
+import aiBizAutoImg from "@/assets/ai-business-automation-product.webp";
 import erpImplProductImg from "@/assets/erp-implementation-product.png";
 
 export type TeamMember = {
@@ -117,7 +117,7 @@ export const products: Product[] = [
     outcome:
       "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
     tags: ["Billing", "POS", "Custom Workflows"],
-    image: "/beep-billing-blue-logo.png",
+    image: "/beep-billing-blue-logo.webp",
     imageFit: "contain",
   },
 
@@ -145,7 +145,7 @@ export const products: Product[] = [
       "Learning, administration, assessment, communication and parent engagement are often managed across disconnected systems.",
     outcome:
       "A role-based LMS connecting school administration, teaching, learning, assessments, communication, parent engagement and financial management in one platform.",
-    image: "/lms-green-graduation-logo.png",
+    image: "/lms-green-graduation-logo.webp",
     imageFit: "contain",
     tags: ["LMS", "Education", "Learning Management"],
   },
@@ -166,7 +166,7 @@ export const products: Product[] = [
     customer: "Companies choosing Odoo as their operating layer.",
     problem: "Standard Odoo covers most of the work; the rest is where the value is.",
     outcome: "Modules extended, integrations built, deployment operated and supported.",
-    image: "/odoo-purple-gray-logo.png",
+    image: "/odoo-purple-gray-logo.webp",
     imageFit: "contain",
     tags: ["Odoo", "ERP"],
   },
@@ -179,7 +179,7 @@ export const products: Product[] = [
     problem: "AI assistants sit next to the work rather than participating in it.",
     outcome:
       "An intelligence layer over the systems you already run: existing systems → OIS → AI agents → employees → business actions. No rip-and-replace.",
-    image: "/ois-gradient-network-logo.png",
+    image: "/ois-gradient-network-logo.webp",
     imageFit: "contain",
     tags: ["AI", "Platform"],
   },
@@ -202,7 +202,7 @@ export const products: Product[] = [
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome:
       "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
-    image: "/horus-ai-agent-gradient-logo.png",
+    image: "/horus-ai-agent-gradient-logo.webp",
     imageFit: "contain",
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
@@ -237,7 +237,7 @@ export const products: Product[] = [
     outcome:
       "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
-    image: "/outreach-crm-gold-logo.png",
+    image: "/outreach-crm-gold-logo.webp",
     imageFit: "contain",
   },
   {

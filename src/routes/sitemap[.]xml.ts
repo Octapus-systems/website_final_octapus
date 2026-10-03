@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { products } from "@/lib/site";
 import { servicePages } from "@/lib/service-pages";
+import { SITE_URL } from "@/lib/seo";
 
-const BASE_URL = "https://octapus.ae";
+const BASE_URL = SITE_URL;
 
 const staticPaths = [
   "/",
