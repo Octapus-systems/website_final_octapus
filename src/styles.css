@@ -842,6 +842,12 @@
     linear-gradient(135deg, #ffffff 0%, #f1f2f4 58%, #fafafa 100%);
 }
 
+.dark .service-hero {
+  background:
+    radial-gradient(circle at 76% 35%, rgba(124, 58, 237, 0.08), transparent 45%),
+    linear-gradient(135deg, color-mix(in oklab, var(--color-background) 96%, #6366f1 4%) 0%, var(--color-background) 100%);
+}
+
 .silver-scene-card {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(220, 223, 228, 0.9)),
