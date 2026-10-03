@@ -52,6 +52,7 @@ export function ScrollVideoSection({
     );
     const exactImage = imagesRef.current[targetIndex];
     let image = exactImage?.naturalWidth ? exactImage : null;
+    let drawnIndex = targetIndex;
 
     if (!image) {
       const images = imagesRef.current;
@@ -59,21 +60,22 @@ export function ScrollVideoSection({
         const prev = images[targetIndex - offset];
         if (prev?.naturalWidth) {
           image = prev;
+          drawnIndex = targetIndex - offset;
           break;
         }
         const next = images[targetIndex + offset];
         if (next?.naturalWidth) {
           image = next;
+          drawnIndex = targetIndex + offset;
           break;
         }
       }
     }
 
     if (!image?.naturalWidth) return;
-    if (exactImage?.naturalWidth && lastDrawnFrameRef.current === targetIndex) return;
+    if (lastDrawnFrameRef.current === drawnIndex) return;
 
-    lastDrawnFrameRef.current = exactImage?.naturalWidth ? targetIndex : -1;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    lastDrawnFrameRef.current = drawnIndex;
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
     const scale = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
@@ -172,12 +174,13 @@ export function ScrollVideoSection({
     if (!canvas) return;
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, coarsePointer ? 2 : 3);
-    // Use layout dimensions rather than the transformed bounding box. The
-    // reveal animation scales the parent, and measuring that smaller box made
-    // the canvas backing store permanently softer once the screen expanded.
-    canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));
-    canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
-    lastDrawnFrameRef.current = -1;
+    const newWidth = Math.max(1, Math.round(canvas.clientWidth * dpr));
+    const newHeight = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width !== newWidth || canvas.height !== newHeight) {
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+      lastDrawnFrameRef.current = -1;
+    }
     draw();
   }
 
@@ -257,7 +260,7 @@ export function ScrollVideoSection({
         <DotPattern className="z-0 fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/10" />
 
         <motion.div
-          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-foreground bg-card will-change-transform md:border-[9px] shadow-[0_25px_60px_-10px_color-mix(in_oklab,var(--color-foreground)_35%,transparent),0_12px_30px_-5px_color-mix(in_oklab,var(--color-foreground)_20%,transparent)]"
+          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-foreground bg-[#d5d8de] will-change-transform md:border-[9px] shadow-[0_25px_60px_-10px_color-mix(in_oklab,var(--color-foreground)_35%,transparent),0_12px_30px_-5px_color-mix(in_oklab,var(--color-foreground)_20%,transparent)]"
           style={{
             scale: revealScale,
             borderRadius: revealRadius,
@@ -266,7 +269,7 @@ export function ScrollVideoSection({
         >
           <canvas
             ref={canvasRef}
-            className="block h-full w-full bg-card"
+            className="block h-full w-full bg-[#d5d8de]"
             style={{ filter: "brightness(1.13) contrast(1.14) saturate(0.96)" }}
           />
 
