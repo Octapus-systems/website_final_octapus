@@ -279,7 +279,7 @@ function ProductPage() {
                     <img
                       key={gifKey}
                       src={gifKey ? `${heroVideoSrc}?t=${gifKey}` : heroVideoSrc}
-                      alt={`${p.name} preview video`}
+                      alt={`${p.name} animated demonstration`}
                       className={cn(
                         "absolute inset-0 size-full object-cover rounded-3xl transition-all duration-500 z-20 pointer-events-none",
                         isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105",

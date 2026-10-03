@@ -335,7 +335,7 @@ export function CoverflowCarousel({
                   <div className="flex size-full items-center justify-center p-4 sm:p-5 select-none">
                     <img
                       src={slide.src}
-                      alt={slide.alt}
+                      alt={slide.alt || slide.title || "Product showcase"}
                       draggable={false}
                       className="max-h-full max-w-full object-contain select-none"
                     />
@@ -343,7 +343,7 @@ export function CoverflowCarousel({
                 ) : (
                   <img
                     src={slide.src}
-                    alt={slide.alt}
+                    alt={slide.alt || slide.title || "Product showcase"}
                     draggable={false}
                     className="h-full w-full select-none object-cover"
                   />

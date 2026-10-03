@@ -77,7 +77,7 @@ export function ProductsShowcase({
                     <div className="flex size-full items-center justify-center p-4 sm:p-5">
                       <img
                         src={p.image}
-                        alt={`${p.name} logo preview`}
+                        alt={`${p.name} logo`}
                         loading="lazy"
                         width={600}
                         height={600}
@@ -87,7 +87,7 @@ export function ProductsShowcase({
                   ) : (
                     <img
                       src={p.image}
-                      alt={`${p.name} interface preview`}
+                      alt={`${p.name} platform interface`}
                       loading="lazy"
                       width={800}
                       height={450}

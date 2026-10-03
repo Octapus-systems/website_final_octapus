@@ -85,7 +85,7 @@ function Home() {
   const carouselSlides = React.useMemo(() => {
     return visibleProducts.map((p, idx) => ({
       src: p.image || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length],
-      alt: p.name,
+      alt: p.imageFit === "contain" ? `${p.name} logo` : `${p.name} platform interface`,
       title: p.name,
       subtitle: p.headline,
       imageFit: p.image ? p.imageFit : "cover",
