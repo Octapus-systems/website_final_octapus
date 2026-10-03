@@ -1,17 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SITE_URL, isProductionHost } from "@/lib/seo";
+import { SITE_URL, isAllowedRobotsHost } from "@/lib/seo";
 
 export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
       GET: async ({ request }: { request?: Request } = {}) => {
-        const host =
+        const rawHost =
           request?.headers?.get("x-forwarded-host") ||
           request?.headers?.get("host") ||
           "";
-        const isOctapus = isProductionHost(host);
+        const host = rawHost.split(",")[0].trim();
+        const isAllowed = isAllowedRobotsHost(host);
 
-        if (!isOctapus && host !== "") {
+        if (!isAllowed && host !== "") {
           const body = ["User-agent: *", "Disallow: /"].join("\n");
           return new Response(body, {
             headers: {

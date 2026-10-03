@@ -10,6 +10,12 @@ export const SITE_URL =
     ? process.env.SITE_URL.replace(/\/+$/, "")
     : "https://octapus.ae";
 
+export const ALLOWED_ROBOTS_HOSTS = new Set([
+  "octapus.ae",
+  "www.octapus.ae",
+  "website-final-octapus.vercel.app",
+]);
+
 export function isProductionHost(hostOrUrl?: string): boolean {
   if (!hostOrUrl) {
     if (typeof window !== "undefined") {
@@ -22,9 +28,40 @@ export function isProductionHost(hostOrUrl?: string): boolean {
       }
     }
   }
-  const clean = hostOrUrl.replace(/^https?:\/\//i, "").split("/")[0].split(":")[0].toLowerCase();
+  const clean = hostOrUrl
+    .split(",")[0]
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .split("/")[0]
+    .split(":")[0]
+    .toLowerCase();
   return clean === "octapus.ae" || clean === "www.octapus.ae";
 }
+
+export function isAllowedRobotsHost(hostOrUrl?: string): boolean {
+  if (!hostOrUrl) {
+    if (typeof window !== "undefined") {
+      hostOrUrl = window.location.hostname;
+    } else {
+      try {
+        hostOrUrl = new URL(SITE_URL).hostname;
+      } catch {
+        hostOrUrl = "octapus.ae";
+      }
+    }
+  }
+  const clean = hostOrUrl
+    .split(",")[0]
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .split("/")[0]
+    .split(":")[0]
+    .toLowerCase();
+  return isProductionHost(clean) || ALLOWED_ROBOTS_HOSTS.has(clean);
+}
+
+export const isCrawlableHost = isAllowedRobotsHost;
+
 
 export function absoluteUrl(path: string) {
   if (!path || path === "/") return `${SITE_URL}/`;
