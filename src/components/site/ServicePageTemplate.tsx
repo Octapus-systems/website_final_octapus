@@ -5,6 +5,7 @@ import { Container } from "@/components/site/Section";
 import { serviceBySlug, type ServiceIcon, type ServicePageData } from "@/lib/service-pages";
 import { site } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/seo";
+import { MobileAppsHeroVisual } from "@/components/site/MobileAppsHeroVisual";
 
 const icons: Record<ServiceIcon, typeof Monitor> = {
   screen: Monitor,
@@ -42,7 +43,8 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
       />
 
       <header className="service-hero relative isolate overflow-hidden border-b border-border bg-background text-foreground">
-        <Container className="flex min-h-[min(680px,calc(100svh-4rem))] items-center py-20 sm:py-24 lg:py-28">
+        {service.slug === "mobile-apps" && <MobileAppsHeroVisual />}
+        <Container className="relative z-10 flex min-h-[min(680px,calc(100svh-4rem))] items-center py-20 sm:py-24 lg:py-28">
           <div className="relative z-10 max-w-4xl">
             <Link
               to="/services"
@@ -69,7 +71,7 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
         </Container>
       </header>
 
-      <section aria-labelledby="what-heading" className="bg-background py-20 sm:py-28">
+      <section aria-labelledby="what-heading" className="relative z-10 bg-background py-20 sm:py-28">
         <Container className="grid gap-10 lg:grid-cols-[0.62fr_1.38fr] lg:gap-20">
           <div>
             <p className="text-eyebrow text-primary">What it is</p>
@@ -90,7 +92,7 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
 
       <section
         aria-labelledby="build-heading"
-        className="border-y border-border bg-card/50 py-20 sm:py-28"
+        className="relative z-10 border-y border-border bg-card/50 py-20 sm:py-28"
       >
         <Container>
           <p className="text-eyebrow text-primary">What we build</p>
