@@ -1,7 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/site/Section";
-import { Workflow, Layers, LayoutTemplate, CheckCircle2, XCircle, ArrowRight, Network, Zap } from "lucide-react";
+import {
+  Workflow,
+  Layers,
+  LayoutTemplate,
+  CheckCircle2,
+  XCircle,
+  ArrowRight,
+  Network,
+  Zap,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function CustomApproachSection() {
@@ -44,18 +53,17 @@ export function CustomApproachSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-4 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto"
           >
-            A system that works perfectly for one company doesn’t automatically make sense for another.
-            Every business has its own workflows, products, operations, team structure, and way of getting things done.
-            Adopting someone else’s system often means forcing your business to adapt to their way of working.
+            A system that works perfectly for one company doesn’t automatically make sense for
+            another. Every business has its own workflows, products, operations, team structure, and
+            way of getting things done. Adopting someone else’s system often means forcing your
+            business to adapt to their way of working.
           </motion.p>
         </div>
 
         {/* ── Main Editorial Content & Visual Workflow Grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-6xl mx-auto mb-12 md:mb-16">
-          
           {/* Left Column: The Approach & Interface Philosophy */}
           <div className="lg:col-span-7 flex flex-col justify-between gap-6">
-            
             {/* Card 1: We Take a Different Approach */}
             <motion.div
               initial={{ opacity: 0, y: 25 }}
@@ -65,7 +73,7 @@ export function CustomApproachSection() {
               className="p-8 md:p-10 rounded-3xl bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-md border border-hairline hover:border-primary/40 transition-all duration-300 relative group overflow-hidden shadow-lg shadow-black/5"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500" />
-              
+
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-xl bg-primary/15 flex items-center justify-center text-primary">
                   <Workflow className="h-5 w-5" />
@@ -74,9 +82,12 @@ export function CustomApproachSection() {
                   We take a different approach.
                 </span>
               </div>
-              
+
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                We first understand how your business actually operates — what makes it efficient, where the bottlenecks are, and which processes can be improved. Then we build a system around your real workflow, adding automation where it genuinely improves performance.
+                We first understand how your business actually operates — what makes it efficient,
+                where the bottlenecks are, and which processes can be improved. Then we build a
+                system around your real workflow, adding automation where it genuinely improves
+                performance.
               </p>
             </motion.div>
 
@@ -96,9 +107,11 @@ export function CustomApproachSection() {
                   The interface matters too.
                 </h3>
               </div>
-              
+
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                Your employees shouldn’t have to relearn how to work just because you introduced new software. We design familiar, intuitive interfaces that feel natural from day one, making adoption faster and everyday work easier.
+                Your employees shouldn’t have to relearn how to work just because you introduced new
+                software. We design familiar, intuitive interfaces that feel natural from day one,
+                making adoption faster and everyday work easier.
               </p>
             </motion.div>
           </div>
@@ -113,12 +126,14 @@ export function CustomApproachSection() {
           >
             {/* Ambient Background Grid Pattern inside card */}
             <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.07] bg-[radial-gradient(#601CE6_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-            
+
             <div>
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
                   <Network className="h-5 w-5 text-primary" />
-                  <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Connected Architecture</span>
+                  <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                    Connected Architecture
+                  </span>
                 </div>
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-mono text-emerald-500">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -135,8 +150,12 @@ export function CustomApproachSection() {
                       01
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-foreground">Your Operations & Team</div>
-                      <div className="text-xs text-muted-foreground">Existing workflows & logic mapped</div>
+                      <div className="text-sm font-semibold text-foreground">
+                        Your Operations & Team
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Existing workflows & logic mapped
+                      </div>
                     </div>
                   </div>
                   <Zap className="h-4 w-4 text-primary opacity-60 group-hover:opacity-100 transition-opacity" />
@@ -155,7 +174,9 @@ export function CustomApproachSection() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-foreground">Octapus Custom Engine</div>
-                      <div className="text-xs text-primary font-medium">Built around your real workflow</div>
+                      <div className="text-xs text-primary font-medium">
+                        Built around your real workflow
+                      </div>
                     </div>
                   </div>
                   <div className="h-2 w-2 rounded-full bg-primary animate-ping" />
@@ -173,8 +194,12 @@ export function CustomApproachSection() {
                       03
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-foreground">Frictionless Adoption</div>
-                      <div className="text-xs text-muted-foreground">Intuitive UX + Automated performance</div>
+                      <div className="text-sm font-semibold text-foreground">
+                        Frictionless Adoption
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Intuitive UX + Automated performance
+                      </div>
                     </div>
                   </div>
                   <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -196,7 +221,6 @@ export function CustomApproachSection() {
               </div>
             </div>
           </motion.div>
-
         </div>
 
         {/* ── Key Emphasized Statement Card ── */}
@@ -217,7 +241,7 @@ export function CustomApproachSection() {
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-foreground leading-tight">
                 One business. One workflow. One system — built specifically for it.
               </h3>
-              
+
               <div className="pt-2 flex flex-col sm:flex-row gap-4 sm:gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <XCircle className="h-4 w-4 text-red-400/80 shrink-0" />
@@ -232,14 +256,15 @@ export function CustomApproachSection() {
 
             {/* Final Positioning Highlight */}
             <div className="shrink-0 bg-background/90 dark:bg-background/80 p-6 rounded-2xl border border-primary/30 shadow-lg flex flex-col justify-center max-w-md">
-              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">Core Philosophy</span>
+              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-2">
+                Core Philosophy
+              </span>
               <p className="text-lg md:text-xl font-display font-bold bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">
                 Your business logic, built into your own system.
               </p>
             </div>
           </div>
         </motion.div>
-
       </Container>
     </section>
   );

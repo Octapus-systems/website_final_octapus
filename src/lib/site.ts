@@ -1,14 +1,9 @@
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
-import odooProductImg from "@/assets/odoo-product.png";
-import horusAiLogo from "@/assets/horus-ai-logo.jpeg";
 import horusAiVideo from "@/assets/horus.mp4";
-import oisVideo from "@/assets/ois-v3.mp4";
 import customAiVideo from "@/assets/custom-ai-v2.mp4";
-import outreachProductImg from "@/assets/outreach-product.png";
-import billingProductImg from "@/assets/billing-product.png";
-import aiBizAutoImg from "@/assets/ai-business-automation-product.png";
+import aiBizAutoImg from "@/assets/ai-business-automation-product.webp";
 import erpImplProductImg from "@/assets/erp-implementation-product.png";
 
 export type TeamMember = {
@@ -122,7 +117,7 @@ export const products: Product[] = [
     outcome:
       "A customized billing and POS system configured around your exact products, pricing, taxes, discounts, users, printers, reports, inventory, and payment methods.",
     tags: ["Billing", "POS", "Custom Workflows"],
-    image: billingProductImg,
+    image: "/beep-billing-blue-logo.webp",
     imageFit: "contain",
   },
 
@@ -150,7 +145,7 @@ export const products: Product[] = [
       "Learning, administration, assessment, communication and parent engagement are often managed across disconnected systems.",
     outcome:
       "A role-based LMS connecting school administration, teaching, learning, assessments, communication, parent engagement and financial management in one platform.",
-    image: "/lms-logo.svg",
+    image: "/lms-green-graduation-logo.webp",
     imageFit: "contain",
     tags: ["LMS", "Education", "Learning Management"],
   },
@@ -171,7 +166,7 @@ export const products: Product[] = [
     customer: "Companies choosing Odoo as their operating layer.",
     problem: "Standard Odoo covers most of the work; the rest is where the value is.",
     outcome: "Modules extended, integrations built, deployment operated and supported.",
-    image: odooProductImg,
+    image: "/odoo-purple-gray-logo.webp",
     imageFit: "contain",
     tags: ["Odoo", "ERP"],
   },
@@ -184,7 +179,8 @@ export const products: Product[] = [
     problem: "AI assistants sit next to the work rather than participating in it.",
     outcome:
       "An intelligence layer over the systems you already run: existing systems → OIS → AI agents → employees → business actions. No rip-and-replace.",
-    image: oisVideo,
+    image: "/ois-gradient-network-logo.webp",
+    imageFit: "contain",
     tags: ["AI", "Platform"],
   },
   {
@@ -206,7 +202,7 @@ export const products: Product[] = [
     problem: "Knowledge lives in people's heads, threads and files nobody can search.",
     outcome:
       "An AI coworker that answers questions, remembers context, coordinates tasks and moves work forward — helping people work smarter, not replacing them.",
-    image: horusAiLogo,
+    image: "/horus-ai-agent-gradient-logo.webp",
     imageFit: "contain",
     externalUrl: "https://horus.octapus.ae/",
     tags: ["AI", "Agents"],
@@ -241,7 +237,7 @@ export const products: Product[] = [
     outcome:
       "Structured capture, enrichment and prioritization with a clean handoff into the pipeline.",
     tags: ["Sales", "AI"],
-    image: outreachProductImg,
+    image: "/outreach-crm-gold-logo.webp",
     imageFit: "contain",
   },
   {
@@ -704,6 +700,8 @@ export const disciplineTracks: DisciplineTrack[] = [
 
 /** One-line OIS relationship for products that carry an intelligence layer. */
 export const productOisNotes: Record<string, string> = {
+  connect:
+    "OIS acts as the intelligence brain for Octapus Connect, providing AI parsing, automated routing, and audit logs across all your connected software.",
   "billing-software":
     "OIS connects billing data with inventory, customer history, and financial reporting across all your locations.",
   "obms-erp":

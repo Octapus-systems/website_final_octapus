@@ -12,7 +12,7 @@ import {
   FileCheck,
 } from "lucide-react";
 import { Container } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import type { Product } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 
@@ -84,10 +84,26 @@ const userRoles = [
 ];
 
 const platformHighlights = [
-  { icon: Building2, label: "Multi-Campus Ready", desc: "Scale across schools, branches, and academic boards seamlessly." },
-  { icon: MessageSquare, label: "Unified Communication", desc: "In-app announcements, SMS, email, and doubt forums." },
-  { icon: CreditCard, label: "Integrated Fee Ledger", desc: "Automated invoicing, reminders, and online payment gateways." },
-  { icon: FileCheck, label: "Assessment Engine", desc: "Custom rubrics, offline exam entry, and digital report cards." },
+  {
+    icon: Building2,
+    label: "Multi-Campus Ready",
+    desc: "Scale across schools, branches, and academic boards seamlessly.",
+  },
+  {
+    icon: MessageSquare,
+    label: "Unified Communication",
+    desc: "In-app announcements, SMS, email, and doubt forums.",
+  },
+  {
+    icon: CreditCard,
+    label: "Integrated Fee Ledger",
+    desc: "Automated invoicing, reminders, and online payment gateways.",
+  },
+  {
+    icon: FileCheck,
+    label: "Assessment Engine",
+    desc: "Custom rubrics, offline exam entry, and digital report cards.",
+  },
 ];
 
 export function LmsShowcase({ product }: { product: Product }) {
@@ -107,7 +123,8 @@ export function LmsShowcase({ product }: { product: Product }) {
                 Ecosystem
               </div>
               <p className="text-sm text-foreground font-medium leading-relaxed">
-                Administration, teaching, learning, assessment, communication, and finance connected in one ecosystem.
+                Administration, teaching, learning, assessment, communication, and finance connected
+                in one ecosystem.
               </p>
             </div>
 
@@ -115,9 +132,7 @@ export function LmsShowcase({ product }: { product: Product }) {
               <div className="text-xs font-mono font-bold uppercase tracking-wider text-amber-500">
                 The Problem
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {product.problem}
-              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{product.problem}</p>
             </div>
 
             <div className="rounded-2xl bg-background/80 backdrop-blur-sm p-6 border hairline space-y-2">
@@ -140,7 +155,8 @@ export function LmsShowcase({ product }: { product: Product }) {
             Four Connected User Roles
           </h2>
           <p className="text-muted-foreground text-base md:text-lg">
-            Every user receives a tailored role-based experience connected to one shared real-time ledger.
+            Every user receives a tailored role-based experience connected to one shared real-time
+            ledger.
           </p>
         </div>
 
@@ -151,18 +167,16 @@ export function LmsShowcase({ product }: { product: Product }) {
                 <div className={`grid size-12 place-items-center rounded-2xl ${r.iconBg}`}>
                   <r.icon className="size-6" />
                 </div>
-                <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold border ${r.badgeColor}`}>
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold border ${r.badgeColor}`}
+                >
                   Role 0{i + 1}
                 </span>
               </div>
 
-              <h3 className="text-2xl font-bold tracking-tight text-foreground">
-                {r.role}
-              </h3>
+              <h3 className="text-2xl font-bold tracking-tight text-foreground">{r.role}</h3>
               <div className="text-xs font-medium text-primary mt-1">{r.title}</div>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                {r.summary}
-              </p>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{r.summary}</p>
 
               <div className="mt-6 border-t hairline pt-5">
                 <div className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-3 font-semibold">
@@ -192,16 +206,13 @@ export function LmsShowcase({ product }: { product: Product }) {
                 Built for scaling educational institutions
               </h3>
             </div>
-            <Button
-              asChild
-              size="lg"
-              className="rounded-full"
+            <RevealButton
+              to="/contact"
+              icon={ArrowRight}
+              label="Deploy LMS for Your School"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
               onClick={() => trackEvent("product_enquiry", { product: "lms" })}
-            >
-              <Link to="/contact">
-                Deploy LMS for Your School <ArrowRight className="ml-2 size-4" />
-              </Link>
-            </Button>
+            />
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 border-t hairline pt-8">

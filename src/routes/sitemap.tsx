@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { products } from "@/lib/site";
+import { servicePages } from "@/lib/service-pages";
 
 const staticRoutes = [
   { to: "/", label: "Home" },
@@ -33,7 +34,7 @@ export const Route = createFileRoute("/sitemap")({
 
   component: () => (
     <Section titleAs="h1" eyebrow="Sitemap" title="All Octapus pages.">
-      <div className="mx-auto max-w-3xl grid gap-8 md:grid-cols-2">
+      <div className="mx-auto max-w-5xl grid gap-8 md:grid-cols-3">
         <div>
           <div className="text-eyebrow mb-3">Pages</div>
           <ul className="space-y-2">
@@ -41,6 +42,22 @@ export const Route = createFileRoute("/sitemap")({
               <li key={r.to}>
                 <Link to={r.to} className="text-sm hover:text-primary">
                   {r.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div className="text-eyebrow mb-3">Services</div>
+          <ul className="space-y-2">
+            {servicePages.map((service) => (
+              <li key={service.slug}>
+                <Link
+                  to="/services/$slug"
+                  params={{ slug: service.slug }}
+                  className="text-sm hover:text-primary"
+                >
+                  {service.title}
                 </Link>
               </li>
             ))}

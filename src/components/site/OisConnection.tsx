@@ -1,7 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 
 /**
  * Reusable OIS ecosystem band.
@@ -39,11 +38,7 @@ export function OisConnection({
               {title}
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">{body}</p>
-            <Button asChild className="mt-7 rounded-full">
-              <Link to="/ois">
-                {cta} <ArrowRight className="ml-1 size-4" />
-              </Link>
-            </Button>
+            <RevealButton to="/ois" icon={ArrowRight} label={cta} className="mt-7" />
           </div>
           {chain?.length ? (
             <div className="md:col-span-6">

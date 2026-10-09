@@ -1,3 +1,9 @@
+try {
+  process.loadEnvFile?.();
+} catch {
+  // Ignore in environments where .env is absent or pre-injected
+}
+
 import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
@@ -49,7 +55,66 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+
+      const host =
+        request.headers.get("x-forwarded-host") ||
+        request.headers.get("host") ||
+        new URL(request.url).host;
+      const hostname = host.split(":")[0].toLowerCase();
+      const isOctapus = hostname === "octapus.ae" || hostname === "www.octapus.ae";
+
+      const headers = new Headers(normalized.headers);
+
+      // On non-octapus hosts, enforce X-Robots-Tag: noindex, nofollow header
+      if (!isOctapus && hostname !== "") {
+        headers.set("X-Robots-Tag", "noindex, nofollow");
+      }
+
+      const contentType = normalized.headers.get("content-type") ?? "";
+      const isHtml = contentType.includes("text/html");
+
+      // For HTML pages on non-octapus hosts, ensure meta robots noindex is injected
+      if (!isOctapus && hostname !== "" && isHtml) {
+        let html = await normalized.text();
+        if (!html.includes('name="robots"')) {
+          html = html.replace("<head>", '<head>\n    <meta name="robots" content="noindex,nofollow" />');
+        }
+        return new Response(html, {
+          status: normalized.status,
+          statusText: normalized.statusText,
+          headers,
+        });
+      }
+
+      // Edge CDN Caching: Cache successful HTML page responses at Cloudflare Edge (SSG equivalent performance)
+      if (
+        request.method === "GET" &&
+        normalized.status === 200 &&
+        !new URL(request.url).pathname.startsWith("/api/")
+      ) {
+        if (isHtml) {
+          headers.set(
+            "Cache-Control",
+            "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
+          );
+          return new Response(normalized.body, {
+            status: normalized.status,
+            statusText: normalized.statusText,
+            headers,
+          });
+        }
+      }
+
+      if (!isOctapus && hostname !== "") {
+        return new Response(normalized.body, {
+          status: normalized.status,
+          statusText: normalized.statusText,
+          headers,
+        });
+      }
+
+      return normalized;
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {

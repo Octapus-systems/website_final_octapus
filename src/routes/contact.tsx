@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Loader2, Mail, Phone, MapPin, Upload } from "lucide-react";
+import { CheckCircle2, Mail, Phone, MapPin, Upload, Send } from "lucide-react";
 import { Section, Container } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealActionButton } from "@/components/site/RevealButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -155,7 +155,9 @@ function ContactPage() {
       trackEvent("form_submit", { enquiry_type: data.enquiryType });
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong while sending your enquiry");
+      setErrorMsg(
+        err instanceof Error ? err.message : "Something went wrong while sending your enquiry",
+      );
       trackEvent("form_error");
     }
   }
@@ -323,7 +325,9 @@ function ContactPage() {
                     {cvFile && (
                       <p className="text-xs text-muted-foreground flex items-center gap-1.5 pt-1">
                         <Upload className="size-3.5 text-primary" />
-                        Selected file: <span className="font-medium text-foreground">{cvFile.name}</span> ({(cvFile.size / (1024 * 1024)).toFixed(2)} MB)
+                        Selected file:{" "}
+                        <span className="font-medium text-foreground">{cvFile.name}</span> (
+                        {(cvFile.size / (1024 * 1024)).toFixed(2)} MB)
                       </p>
                     )}
                   </Field>
@@ -343,10 +347,18 @@ function ContactPage() {
                       </select>
                     </Field>
                     <Field label="Budget (optional)" htmlFor="c-budget">
-                      <Input id="c-budget" {...register("budget")} placeholder="e.g. AED 50k–150k" />
+                      <Input
+                        id="c-budget"
+                        {...register("budget")}
+                        placeholder="e.g. AED 50k–150k"
+                      />
                     </Field>
                     <Field label="Timeline (optional)" htmlFor="c-timeline">
-                      <Input id="c-timeline" {...register("timeline")} placeholder="e.g. Q3 launch" />
+                      <Input
+                        id="c-timeline"
+                        {...register("timeline")}
+                        placeholder="e.g. Q3 launch"
+                      />
                     </Field>
                   </div>
                 )}
@@ -360,20 +372,15 @@ function ContactPage() {
                   </div>
                 )}
 
-                <Button
+                <RevealActionButton
                   type="submit"
-                  size="lg"
-                  className="rounded-full w-full md:w-auto"
+                  icon={Send}
+                  label="Send enquiry"
+                  loadingLabel="Sending"
+                  loading={status === "loading"}
+                  className="w-full md:w-auto"
                   disabled={status === "loading"}
-                >
-                  {status === "loading" ? (
-                    <>
-                      <Loader2 className="mr-2 size-4 animate-spin" /> Sending…
-                    </>
-                  ) : (
-                    "Send enquiry"
-                  )}
-                </Button>
+                />
                 <p className="text-xs text-muted-foreground">
                   By submitting you agree to our privacy policy. Octapus never share your
                   information.

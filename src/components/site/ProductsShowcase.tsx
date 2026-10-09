@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { cn } from "@/lib/utils";
 import { products } from "@/lib/site";
 
@@ -58,34 +58,39 @@ export function ProductsShowcase({
                   className={cn(
                     "overflow-hidden rounded-xl border hairline flex items-center justify-center",
                     tall ? "mt-8 aspect-[16/9]" : "mt-6 aspect-[2/1]",
-                    p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png"))
+                    p.imageFit === "contain" || (!p.imageFit && /\.(png|webp)$/i.test(p.image))
                       ? "bg-white"
-                      : "bg-[var(--color-surface)]"
+                      : "bg-[var(--color-surface)]",
                   )}
                 >
-                  {p.image.endsWith(".mp4") || p.image.endsWith(".webm") ? (
+                  {/\.(mp4|webm)($|\?)/i.test(p.image) ? (
                     <video
                       src={p.image}
                       autoPlay
                       muted
                       loop
                       playsInline
+                      preload="auto"
                       className="size-full object-cover"
                     />
-                  ) : p.imageFit === "contain" || (!p.imageFit && p.image.endsWith(".png")) ? (
+                  ) : p.imageFit === "contain" || (!p.imageFit && /\.(png|webp)$/i.test(p.image)) ? (
                     <div className="flex size-full items-center justify-center p-4 sm:p-5">
                       <img
                         src={p.image}
-                        alt={`${p.name} logo preview`}
+                        alt={`${p.name} logo`}
                         loading="lazy"
+                        width={600}
+                        height={600}
                         className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     </div>
                   ) : (
                     <img
                       src={p.image}
-                      alt={`${p.name} interface preview`}
+                      alt={`${p.name} platform interface`}
                       loading="lazy"
+                      width={800}
+                      height={450}
                       className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                     />
                   )}
@@ -119,11 +124,13 @@ export function ProductsShowcase({
       </div>
       {showViewAll && (
         <div className="mt-10 text-center">
-          <Button asChild variant="outline" size="lg" className="rounded-full">
-            <Link to="/products">
-              Every Octapus product <ArrowRight className="ml-1 size-4" />
-            </Link>
-          </Button>
+          <RevealButton
+            to="/products"
+            icon={ArrowRight}
+            label="Every Octapus product"
+            variant="outline"
+            className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+          />
         </div>
       )}
     </Section>

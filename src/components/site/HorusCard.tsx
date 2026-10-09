@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { RevealButton } from "@/components/site/RevealButton";
 import { site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
@@ -99,16 +98,15 @@ export function HorusCard({
       </div>
 
       <div className="relative mt-6 flex flex-wrap items-center gap-3">
-        <Button
-          asChild
-          size="sm"
-          className="rounded-full bg-white text-[#0b1b3a] hover:bg-white/90 font-medium"
+        <RevealButton
+          to={site.horusExternalUrl}
+          external
+          icon={ExternalLink}
+          label="Visit the Horus AI website"
+          variant="white"
+          className="bg-white text-[#0b1b3a] hover:bg-white/90"
           onClick={() => trackEvent("horus_external_click", { source })}
-        >
-          <a href={site.horusExternalUrl} target="_blank" rel="noopener noreferrer">
-            Visit the Horus AI website <ExternalLink className="ml-1 size-3.5" />
-          </a>
-        </Button>
+        />
         {showExploreLink && <RevealButton to="/ois" icon={ArrowRight} label="Explore OIS" />}
       </div>
     </div>

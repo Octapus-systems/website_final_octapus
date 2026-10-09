@@ -34,6 +34,8 @@ import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 
 const IndexRoute = IndexRouteImport.update({
@@ -161,6 +163,16 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ProductsRoute,
 } as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServicesRoute,
+} as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -183,7 +195,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studios': typeof StudiosRoute
@@ -192,7 +204,9 @@ export interface FileRoutesByFullPath {
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/products/': typeof ProductsIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesByTo {
@@ -210,7 +224,6 @@ export interface FileRoutesByTo {
   '/ois': typeof OisRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
-  '/services': typeof ServicesRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studios': typeof StudiosRoute
@@ -219,7 +232,9 @@ export interface FileRoutesByTo {
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/products': typeof ProductsIndexRoute
+  '/services': typeof ServicesIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRoutesById {
@@ -239,7 +254,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
-  '/services': typeof ServicesRoute
+  '/services': typeof ServicesRouteWithChildren
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studios': typeof StudiosRoute
@@ -248,7 +263,9 @@ export interface FileRoutesById {
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/products/': typeof ProductsIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
 }
 export interface FileRouteTypes {
@@ -278,7 +295,9 @@ export interface FileRouteTypes {
     | '/technology'
     | '/terms'
     | '/products/$slug'
+    | '/services/$slug'
     | '/products/'
+    | '/services/'
     | '/api/public/contact'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -296,7 +315,6 @@ export interface FileRouteTypes {
     | '/ois'
     | '/privacy'
     | '/robots.txt'
-    | '/services'
     | '/sitemap'
     | '/sitemap.xml'
     | '/studios'
@@ -305,7 +323,9 @@ export interface FileRouteTypes {
     | '/technology'
     | '/terms'
     | '/products/$slug'
+    | '/services/$slug'
     | '/products'
+    | '/services'
     | '/api/public/contact'
   id:
     | '__root__'
@@ -333,7 +353,9 @@ export interface FileRouteTypes {
     | '/technology'
     | '/terms'
     | '/products/$slug'
+    | '/services/$slug'
     | '/products/'
+    | '/services/'
     | '/api/public/contact'
   fileRoutesById: FileRoutesById
 }
@@ -353,7 +375,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
-  ServicesRoute: typeof ServicesRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
   SitemapRoute: typeof SitemapRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StudiosRoute: typeof StudiosRoute
@@ -541,6 +563,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/services/': {
+      id: '/services/'
+      path: '/'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof ServicesRoute
+    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -565,6 +601,20 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
   ProductsRouteChildren,
 )
 
+interface ServicesRouteChildren {
+  ServicesSlugRoute: typeof ServicesSlugRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesSlugRoute: ServicesSlugRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -581,7 +631,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
-  ServicesRoute: ServicesRoute,
+  ServicesRoute: ServicesRouteWithChildren,
   SitemapRoute: SitemapRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StudiosRoute: StudiosRoute,

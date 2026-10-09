@@ -9,16 +9,16 @@
 
 ## 1. Company Overview
 
-| Field | Value |
-| --- | --- |
-| Legal name | Octapus L.L.C. |
-| Brand name | Octapus |
-| Tagline | The Final Software Destination |
-| Sub-tagline | The systems behind your business. Connected. |
-| Origin line | Designed in the UAE — Built for the world. |
-| Headquarters | United Arab Emirates |
-| Offices | Business Village, Dubai, UAE · Amper Gem Tower, Khalifa Street, Ajman, UAE |
-| Markets | UAE, GCC, international |
+| Field        | Value                                                                      |
+| ------------ | -------------------------------------------------------------------------- |
+| Legal name   | Octapus L.L.C.                                                             |
+| Brand name   | Octapus                                                                    |
+| Tagline      | The Final Software Destination                                             |
+| Sub-tagline  | The systems behind your business. Connected.                               |
+| Origin line  | Designed in the UAE — Built for the world.                                 |
+| Headquarters | United Arab Emirates                                                       |
+| Offices      | Business Village, Dubai, UAE · Amper Gem Tower, Khalifa Street, Ajman, UAE |
+| Markets      | UAE, GCC, international                                                    |
 
 ### 1.1 Positioning
 
@@ -30,23 +30,24 @@ The single message the site communicates without repeating it:
 
 ### 1.2 The five capabilities
 
-| Capability | Meaning |
-| --- | --- |
-| Build | The custom software your operation needs. |
-| Operate | The systems that run the business day to day. |
-| Automate | The repeatable decisions that slow the team down. |
-| Understand | The data that already tells the story. |
-| Grow | The channels connected to the systems that convert. |
+| Capability | Meaning                                             |
+| ---------- | --------------------------------------------------- |
+| Build      | The custom software your operation needs.           |
+| Operate    | The systems that run the business day to day.       |
+| Automate   | The repeatable decisions that slow the team down.   |
+| Understand | The data that already tells the story.              |
+| Grow       | The channels connected to the systems that convert. |
 
 ### 1.3 Two tracks, six disciplines
 
-**Octapus Technology** — *Engineering intelligent digital systems*
+**Octapus Technology** — _Engineering intelligent digital systems_
+
 1. **Engineering** — custom software, web apps, mobile apps, enterprise systems, APIs, cloud architecture
 2. **Business Systems** — ERP, CRM, business automation, system integration, digital workflows
 3. **AI & Data** — AI solutions, AI agents, OIS platform, machine learning, data intelligence
 4. **Operate** — cloud management, maintenance, support, optimization
 
-**Octapus Marketing / Studios** — *Building digital presence and business growth*
+**Octapus Marketing / Studios** — _Building digital presence and business growth_
 
 5. **Design & Brand** — logo design, brand identity, visual systems, creative direction, content design
 6. **Growth** — digital marketing, social strategy, content, video, advertising, SEO, campaign management
@@ -59,9 +60,10 @@ OIS is the intelligence layer that sits **on top of** the systems Octapus connec
 Existing systems → OIS → AI agents → employees → business actions
 ```
 
-Positioning: *Your business already uses AI. Now give AI a job.*
+Positioning: _Your business already uses AI. Now give AI a job._
 
 Three ways to start:
+
 - **AI Your Employee** — turn repetitive employee workflows into intelligent automated processes.
 - **AI Your Software** — connect intelligence to the CRM, ERP and systems already in use.
 - **Hire an OIS Agent** — deploy a dedicated AI agent designed, trained and integrated for one role.
@@ -74,15 +76,16 @@ External OIS application: `https://your-whisper-employee.lovable.app` (opens in 
 
 ### 1.5 Contact matrix
 
-| Purpose | Email | Phone |
-| --- | --- | --- |
-| Sales | sales@octapus.ae | +971 50 266 1088 |
-| General / info | info@octapus.ae | +971 50 862 1612 |
-| Careers | hr@octapus.ae | — |
+| Purpose           | Email             | Phone            |
+| ----------------- | ----------------- | ---------------- |
+| Sales             | sales@octapus.ae  | +971 50 266 1088 |
+| General / info    | info@octapus.ae   | +971 50 862 1612 |
+| Careers           | hr@octapus.ae     | —                |
 | Technical support | code@octapus.info | +971 50 292 0388 |
-| WhatsApp | — | 971 50 862 1612 |
+| WhatsApp          | —                 | 971 50 862 1612  |
 
 **Contact routing rules (server side):**
+
 - Sales / Product / Custom software / ERP-CRM / AI / Website → `sales@octapus.ae`
 - General / Other → `info@octapus.ae`
 - Career → `hr@octapus.ae`
@@ -94,24 +97,24 @@ External OIS application: `https://your-whisper-employee.lovable.app` (opens in 
 
 Every product is written as: customer → problem → outcome. No fabricated metrics.
 
-| # | Product | Slug | One-line headline |
-| --- | --- | --- | --- |
-| 1 | O.B.M.S ERP | `obms-erp` | One operating layer for finance, operations and reporting. |
-| 2 | HUB8 | `hub8` | A control plane for connected business tools. |
-| 3 | ALGORITHM | `algorithem` | Rules and automations for repeatable business decisions. |
-| 4 | Custom Business Solutions | `custom-business-solutions` | Software built for the systems only your business has. |
-| 5 | Odoo Custom ERP | `odoo-custom-erp` | Odoo, extended and integrated to fit your operation. |
-| 6 | Custom AI | `custom-ai` | AI systems designed around your data and your decisions. |
-| 7 | OIS | `ois` | Give your existing systems intelligence. |
-| 8 | Hermes AI | `hermes-ai` | The AI coworker powered by OIS. |
-| 9 | BUY | `buy` | Commerce that stays connected to the rest of the business. |
-| 10 | BLUEPRINT | `blueprint` | Project management built around delivery, not to-do lists. |
-| 11 | OUTREACH | `outreach` | Lead intelligence that tells you who is worth calling. |
-| 12 | ICON | `icon` | Marketing operations for teams that actually ship. |
-| 13 | MR. CRM | `mr-crm` | Sales management shaped to how your team sells. |
-| 14 | OPRATE | `oprate` | Business management systems for day-to-day operations. |
-| 15 | ERP Implementation | `erp-implementation` | Enterprise deployment, migration and adoption — done properly. |
-| 16 | AI Business Automation | `ai-business-automation` | Custom intelligent workflows across your systems. |
+| #   | Product                   | Slug                        | One-line headline                                              |
+| --- | ------------------------- | --------------------------- | -------------------------------------------------------------- |
+| 1   | O.B.M.S ERP               | `obms-erp`                  | One operating layer for finance, operations and reporting.     |
+| 2   | HUB8                      | `hub8`                      | A control plane for connected business tools.                  |
+| 3   | ALGORITHM                 | `algorithem`                | Rules and automations for repeatable business decisions.       |
+| 4   | Custom Business Solutions | `custom-business-solutions` | Software built for the systems only your business has.         |
+| 5   | Odoo Custom ERP           | `odoo-custom-erp`           | Odoo, extended and integrated to fit your operation.           |
+| 6   | Custom AI                 | `custom-ai`                 | AI systems designed around your data and your decisions.       |
+| 7   | OIS                       | `ois`                       | Give your existing systems intelligence.                       |
+| 8   | Hermes AI                 | `hermes-ai`                 | The AI coworker powered by OIS.                                |
+| 9   | BUY                       | `buy`                       | Commerce that stays connected to the rest of the business.     |
+| 10  | BLUEPRINT                 | `blueprint`                 | Project management built around delivery, not to-do lists.     |
+| 11  | OUTREACH                  | `outreach`                  | Lead intelligence that tells you who is worth calling.         |
+| 12  | ICON                      | `icon`                      | Marketing operations for teams that actually ship.             |
+| 13  | MR. CRM                   | `mr-crm`                    | Sales management shaped to how your team sells.                |
+| 14  | OPRATE                    | `oprate`                    | Business management systems for day-to-day operations.         |
+| 15  | ERP Implementation        | `erp-implementation`        | Enterprise deployment, migration and adoption — done properly. |
+| 16  | AI Business Automation    | `ai-business-automation`    | Custom intelligent workflows across your systems.              |
 
 Each product page also carries an **OIS relationship note** explaining how the intelligence layer applies to that product (stored in `productOisNotes`).
 
@@ -164,9 +167,11 @@ Machine routes
 ## 4. Page-by-Page Specification
 
 ### 4.1 Home `/`
-**Goal:** establish the single idea and drive to *Start a Project* / *Book a Strategy Call*.
+
+**Goal:** establish the single idea and drive to _Start a Project_ / _Book a Strategy Call_.
 
 Sections in order:
+
 1. **Hero** — dark surface, silver-shimmer headline **"Your Systems. Automated."**, pill badge with brand positioning, fluid `clamp()` type so nothing overflows at 375px, reveal-style CTAs (icon that expands to label on hover/focus).
 2. **Start a Project CTA band** — placed high, immediately under the hero.
 3. **OIS section** — second section on the page; auto-playing looped ecosystem video (watermark removed), OIS chain explanation, link to `/ois`.
@@ -180,51 +185,67 @@ Sections in order:
 Floating layer: scroll-idle CTA (appears only when scrolling stops) + WhatsApp action, keyboard accessible.
 
 ### 4.2 Products index `/products`
+
 Two views toggled by the user: editorial list and **bento grid** (`ProductsShowcase`). Each card states name, tags, headline; links to detail.
 
 ### 4.3 Product detail `/products/$slug`
+
 Sections: hero (name + headline), Customer, Problem, Outcome, OIS note, related products, CTA to contact with the enquiry type pre-framed. Schema: `SoftwareApplication` / `Product` + `BreadcrumbList`.
 
 ### 4.4 Engineering `/engineering`
+
 Position: **"The warehouse for tuning your business."** Six bays: Build, Integration, Tuning, Infrastructure, Data, Service — each with a summary and four capability items.
 
 ### 4.5 Studios `/studios`
+
 Position: **"Let's build your reputation."** Six offerings: Brand Identity, Web & Digital Design, Content Production, Social & Community, Campaigns & Performance, Reputation & PR. Includes the **Start a Studios Project** lead form with conversion tracking.
 
 ### 4.6 Technology `/technology` and Marketing `/marketing`
+
 Shared `TrackPage` template: hero, discipline cards with capability lists, an OIS relationship block with the value chain, a three-point approach block (Discovery first · Short cycles · Operated after launch), and related links.
 
 ### 4.7 Services `/services`
+
 Six capabilities: Engineering, Business Systems, AI & Data, Studios (Design & Brand), Growth, Operate — each with an answer-first summary paragraph for AEO. Schema: `Service` + `OfferCatalog`.
 
 ### 4.8 OIS `/ois`
-Hero: *Your Business Already Uses AI. Now Give AI a Job.* Then: the explanation of AI employees vs AI tools, five-pillar benefits grid, **Three Ways to Start**, agent role coverage (sales, support, operations, admin, finance, marketing, CRM, internal workflows), closing line *From Artificial Intelligence to Actual Workforce*, and the external OIS app CTA in a new tab.
+
+Hero: _Your Business Already Uses AI. Now Give AI a Job._ Then: the explanation of AI employees vs AI tools, five-pillar benefits grid, **Three Ways to Start**, agent role coverage (sales, support, operations, admin, finance, marketing, CRM, internal workflows), closing line _From Artificial Intelligence to Actual Workforce_, and the external OIS app CTA in a new tab.
 
 ### 4.9 Industries `/industries`
+
 Twelve industries in a responsive grid, six with dedicated OIS use cases. No false specialist claims.
 
 ### 4.10 About `/about`
+
 Company story, origin line, operating philosophy, the two tracks, offices, and how Octapus differs from a traditional agency (accountability stays with one team).
 
 ### 4.11 Contact `/contact`
+
 Fields: name, company, work email, phone, enquiry type (9 options), description, preferred contact method, optional budget, optional timeline. Client validation with zod + react-hook-form; server validation and routing in `/api/public/contact`. Honeypot and basic rate limiting. Loading, validation, error and success states plus post-submit expectation copy. Offices and phone numbers displayed.
 
 ### 4.12 Book `/book`
+
 Single-purpose conversion page for a 30-minute strategy call.
 
 ### 4.13 Support `/support`
+
 Two contact blocks — Technical (`code@octapus.info`) and General (`info@octapus.ae`) — with a CTA into the contact form. Schema: `ContactPage` with two `ContactPoint` entries.
 
 ### 4.14 Careers `/careers`
+
 Production-ready shell; applications route to `hr@octapus.ae`, `career_apply` event tracked.
 
 ### 4.15 Blog `/blog`
+
 Content-ready shell with an empty state, prepared for `Article`/`TechArticle` schema per post.
 
 ### 4.16 Legal `/privacy`, `/terms`
+
 UAE-appropriate boilerplate, marked for legal review before publication.
 
 ### 4.17 `/sitemap` and `/mcp`
+
 Human-readable route index, and a documented placeholder describing MCP endpoint intent.
 
 ---
@@ -303,11 +324,11 @@ Human-readable route index, and a documented placeholder describing MCP endpoint
 
 ## 11. Open Items
 
-| Item | Owner | Status |
-| --- | --- | --- |
-| Verified stats and case-study numbers | Octapus | [NEEDS CLIENT INPUT] |
-| Named customer testimonials with consent | Octapus | [NEEDS CLIENT INPUT] |
-| Email provider for contact routing (Resend / SES) | Octapus | Seam in place, provider not chosen |
-| GTM / GA4 / Ads container IDs | Octapus | Placeholders in root |
-| Legal review of privacy and terms | Octapus counsel | Pending |
-| Blog and careers content | Octapus | Shells ready |
+| Item                                              | Owner           | Status                             |
+| ------------------------------------------------- | --------------- | ---------------------------------- |
+| Verified stats and case-study numbers             | Octapus         | [NEEDS CLIENT INPUT]               |
+| Named customer testimonials with consent          | Octapus         | [NEEDS CLIENT INPUT]               |
+| Email provider for contact routing (Resend / SES) | Octapus         | Seam in place, provider not chosen |
+| GTM / GA4 / Ads container IDs                     | Octapus         | Placeholders in root               |
+| Legal review of privacy and terms                 | Octapus counsel | Pending                            |
+| Blog and careers content                          | Octapus         | Shells ready                       |

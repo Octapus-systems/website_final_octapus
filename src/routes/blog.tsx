@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
@@ -53,9 +53,7 @@ function BlogPage() {
       >
         <div className="mx-auto max-w-2xl text-center">
           <div className="mt-8">
-            <Button asChild variant="outline" className="rounded-full">
-              <Link to="/contact">Get in touch</Link>
-            </Button>
+            <RevealButton to="/contact" label="Get in touch" variant="outline" />
           </div>
         </div>
       </Section>

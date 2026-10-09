@@ -36,9 +36,13 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const jitter = (ms: number) => ms + Math.random() * ms * 0.6;
 
 export function LoadingScreen() {
-  // Initialize to true ONLY if we are NOT inside an iframe (like the nav mega-menu)
   const [isVisible, setIsVisible] = useState(() => {
     if (typeof window !== "undefined") {
+      try {
+        if (sessionStorage.getItem("octapus_intro_seen")) return false;
+      } catch {
+        // Ignore session storage errors
+      }
       return window.self === window.top;
     }
     return true;

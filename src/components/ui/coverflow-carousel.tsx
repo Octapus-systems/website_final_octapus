@@ -321,20 +321,21 @@ export function CoverflowCarousel({
                 )}
                 style={{ width: "var(--cf-card)" }}
               >
-                {slide.src.endsWith(".mp4") || slide.src.endsWith(".webm") ? (
+                {/\.(mp4|webm)($|\?)/i.test(slide.src) ? (
                   <video
                     src={slide.src}
                     autoPlay
                     muted
                     loop
                     playsInline
+                    preload="auto"
                     className="h-full w-full select-none object-cover"
                   />
                 ) : slide.imageFit === "contain" ? (
                   <div className="flex size-full items-center justify-center p-4 sm:p-5 select-none">
                     <img
                       src={slide.src}
-                      alt={slide.alt}
+                      alt={slide.alt || slide.title || "Product showcase"}
                       draggable={false}
                       className="max-h-full max-w-full object-contain select-none"
                     />
@@ -342,7 +343,7 @@ export function CoverflowCarousel({
                 ) : (
                   <img
                     src={slide.src}
-                    alt={slide.alt}
+                    alt={slide.alt || slide.title || "Product showcase"}
                     draggable={false}
                     className="h-full w-full select-none object-cover"
                   />

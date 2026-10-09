@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DotPattern } from "@/components/ui/dot-pattern";
@@ -13,8 +13,8 @@ type Props = {
 const pad = (n: number) => String(n).padStart(3, "0");
 
 export function ScrollVideoSection({
-  frameCount = 300,
-  mobileFrameCount,
+  frameCount = 200,
+  mobileFrameCount = 177,
   heightMultiplier = 4,
   className,
 }: Props) {
@@ -26,8 +26,9 @@ export function ScrollVideoSection({
   const rafRef = useRef<number | null>(null);
   const visibleRef = useRef(false);
   const resolvedCountRef = useRef(frameCount);
+  const lastDrawnFrameRef = useRef(-1);
 
-  const [scrollPct, setScrollPct] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress: revealProgress } = useScroll({
     target: sectionRef,
@@ -40,9 +41,61 @@ export function ScrollVideoSection({
     shouldReduceMotion ? [32, 32] : [72, 32],
   );
 
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const targetIndex = Math.min(
+      imagesRef.current.length - 1,
+      Math.max(0, Math.round(currentRef.current)),
+    );
+    const exactImage = imagesRef.current[targetIndex];
+    let image = exactImage?.naturalWidth ? exactImage : null;
+    let drawnIndex = targetIndex;
+
+    if (!image) {
+      const images = imagesRef.current;
+      for (let offset = 1; offset < images.length; offset++) {
+        const prev = images[targetIndex - offset];
+        if (prev?.naturalWidth) {
+          image = prev;
+          drawnIndex = targetIndex - offset;
+          break;
+        }
+        const next = images[targetIndex + offset];
+        if (next?.naturalWidth) {
+          image = next;
+          drawnIndex = targetIndex + offset;
+          break;
+        }
+      }
+    }
+
+    if (!image?.naturalWidth) return;
+    if (lastDrawnFrameRef.current === drawnIndex) return;
+
+    lastDrawnFrameRef.current = drawnIndex;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    const scale = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
+    const width = image.naturalWidth * scale;
+    const height = image.naturalHeight * scale;
+    ctx.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     const mobileQuery = window.matchMedia("(max-width: 1024px)");
+    const navConn = (
+      navigator as unknown as {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    const reducedData =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      Boolean(navConn?.saveData) ||
+      ["slow-2g", "2g", "3g"].includes(navConn?.effectiveType ?? "");
     let activeImages: HTMLImageElement[] = [];
 
     const loadFrames = () => {
@@ -52,90 +105,150 @@ export function ScrollVideoSection({
       });
 
       const useMobileFrames = mobileQuery.matches && Boolean(mobileFrameCount);
-      const dir = useMobileFrames ? "/frames-mobile" : "/frames-desktop";
-      const actualFrameCount = useMobileFrames ? mobileFrameCount! : frameCount;
+      const dir = useMobileFrames ? "/frames-mobile-webp" : "/frames-desktop-webp";
+      const totalFrames = useMobileFrames ? (mobileFrameCount ?? 177) : frameCount;
+      const actualFrameCount = reducedData
+        ? Math.min(totalFrames, 60)
+        : totalFrames;
       resolvedCountRef.current = actualFrameCount;
       currentRef.current = 0;
       targetRef.current = 0;
+      lastDrawnFrameRef.current = -1;
 
-      activeImages = Array.from({ length: actualFrameCount }, (_, index) => {
-        const image = new Image();
-        image.decoding = "async";
-        image.src = `${dir}/frame-${pad(index + 1)}.jpg`;
-        const done = () => {
-          if (!cancelled && index === 0 && image.naturalWidth) draw();
-        };
-        image.onload = done;
-        image.onerror = done;
-        return image;
-      });
+      activeImages = new Array(actualFrameCount);
       imagesRef.current = activeImages;
+
+      // FIX 1: On first page load, download ONLY the first visible frame
+      const firstImage = new Image();
+      firstImage.decoding = "async";
+      firstImage.onload = () => {
+        if (!cancelled) draw();
+      };
+      activeImages[0] = firstImage;
+      firstImage.src = `${dir}/frame-001.webp`;
+
+      let lazyLoadStarted = false;
+      let nextFrame = 1;
+      const concurrency = mobileQuery.matches ? 3 : 5;
+
+      const loadNext = () => {
+        if (cancelled || nextFrame >= actualFrameCount) return;
+        const index = nextFrame++;
+        const image = new Image();
+        const sourceFrame =
+          Math.round((index / Math.max(1, actualFrameCount - 1)) * (totalFrames - 1)) + 1;
+        image.decoding = "async";
+        image.onload = () => {
+          if (!cancelled) {
+            draw();
+            loadNext();
+          }
+        };
+        image.onerror = () => {
+          if (!cancelled) loadNext();
+        };
+        activeImages[index] = image;
+        image.src = `${dir}/frame-${pad(sourceFrame)}.webp`;
+      };
+
+      const startLazyLoad = () => {
+        if (lazyLoadStarted || cancelled) return;
+        lazyLoadStarted = true;
+        Array.from({ length: concurrency }, loadNext);
+      };
+
+      // Load remaining frames lazily when browser is idle or when user scrolls
+      let idleId: number | null = null;
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+      if ("requestIdleCallback" in window) {
+        idleId = (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(startLazyLoad, { timeout: 3000 });
+      } else {
+        timeoutId = setTimeout(startLazyLoad, 1500);
+      }
+
+      const onScrollTrigger = () => {
+        startLazyLoad();
+        window.removeEventListener("scroll", onScrollTrigger);
+        window.removeEventListener("touchstart", onScrollTrigger);
+      };
+      window.addEventListener("scroll", onScrollTrigger, { passive: true, once: true });
+      window.addEventListener("touchstart", onScrollTrigger, { passive: true, once: true });
+
+      return () => {
+        if (idleId !== null && "cancelIdleCallback" in window) {
+          (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(idleId);
+        }
+        if (timeoutId !== null) {
+          clearTimeout(timeoutId);
+        }
+        window.removeEventListener("scroll", onScrollTrigger);
+        window.removeEventListener("touchstart", onScrollTrigger);
+      };
     };
 
-    loadFrames();
-    mobileQuery.addEventListener("change", loadFrames);
+    let cleanupLazy = loadFrames();
+
+    const onMediaChange = () => {
+      cleanupLazy?.();
+      cleanupLazy = loadFrames();
+    };
+    mobileQuery.addEventListener("change", onMediaChange);
 
     return () => {
       cancelled = true;
-      mobileQuery.removeEventListener("change", loadFrames);
+      cleanupLazy?.();
+      mobileQuery.removeEventListener("change", onMediaChange);
       activeImages.forEach((image) => {
         image.onload = null;
         image.onerror = null;
       });
     };
-  }, [frameCount, mobileFrameCount]);
+  }, [draw, frameCount, mobileFrameCount]);
 
   function resize() {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 3);
-    // Use layout dimensions rather than the transformed bounding box. The
-    // reveal animation scales the parent, and measuring that smaller box made
-    // the canvas backing store permanently softer once the screen expanded.
-    canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));
-    canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, coarsePointer ? 2 : 3);
+    const newWidth = Math.max(1, Math.round(canvas.clientWidth * dpr));
+    const newHeight = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width !== newWidth || canvas.height !== newHeight) {
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+      lastDrawnFrameRef.current = -1;
+    }
     draw();
-  }
-
-  function draw() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const idx = Math.min(imagesRef.current.length - 1, Math.max(0, Math.round(currentRef.current)));
-    const img = imagesRef.current[idx];
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (!img || !img.naturalWidth) return;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    const cw = canvas.width;
-    const ch = canvas.height;
-    // Use cover behavior to prevent letterboxing on mobile
-    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-    const w = img.naturalWidth * scale;
-    const h = img.naturalHeight * scale;
-    ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
   }
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
+    const scheduleFrame = () => {
+      if (!visibleRef.current || document.hidden || rafRef.current !== null) return;
+      const tick = () => {
+        const difference = targetRef.current - currentRef.current;
+        if (Math.abs(difference) <= 0.15) {
+          currentRef.current = targetRef.current;
+          draw();
+          rafRef.current = null;
+          return;
+        }
+        currentRef.current += difference * 0.22;
+        draw();
+        rafRef.current = requestAnimationFrame(tick);
+      };
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
     const computeTarget = () => {
       const rect = section.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
       targetRef.current = p * (resolvedCountRef.current - 1);
-      setScrollPct(p);
-    };
-
-    const tick = () => {
-      const diff = targetRef.current - currentRef.current;
-      if (Math.abs(diff) > 0.01) {
-        currentRef.current += diff * 0.15;
-        draw();
-      }
-      rafRef.current = visibleRef.current ? requestAnimationFrame(tick) : null;
+      if (p > 0.02) setHasScrolled(true);
+      scheduleFrame();
     };
 
     const onScroll = () => {
@@ -148,7 +261,6 @@ export function ScrollVideoSection({
         visibleRef.current = entry.isIntersecting;
         if (entry.isIntersecting) {
           computeTarget();
-          if (rafRef.current === null) rafRef.current = requestAnimationFrame(tick);
         } else if (rafRef.current !== null) {
           cancelAnimationFrame(rafRef.current);
           rafRef.current = null;
@@ -161,29 +273,31 @@ export function ScrollVideoSection({
     resize();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", scheduleFrame);
 
     return () => {
       io.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", scheduleFrame);
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [frameCount]);
+  }, [draw, frameCount]);
 
   return (
     <section
       ref={sectionRef}
       className={cn("relative w-full bg-background", className)}
-      style={{ height: `${heightMultiplier * 100}vh` }}
+      style={{ height: `${heightMultiplier * 100}svh` }}
       aria-label="Octapus system animation"
     >
-      <div className="sticky top-16 isolate h-[calc(100vh-4rem)] w-full overflow-hidden bg-background p-3 md:p-6">
+      <div className="sticky top-16 isolate h-[calc(100svh-4rem)] w-full overflow-hidden bg-background p-3 md:p-6">
         <DotPattern className="z-0 fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/10" />
 
         <motion.div
-          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-black bg-white will-change-transform md:border-[9px] shadow-[0_25px_60px_-10px_rgba(0,0,0,0.35),0_12px_30px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_30px_70px_-10px_rgba(0,0,0,0.85),0_15px_35px_-5px_rgba(0,0,0,0.65)]"
+          className="relative z-10 h-full w-full overflow-hidden border-[7px] border-foreground bg-[#d5d8de] will-change-transform md:border-[9px] shadow-[0_25px_60px_-10px_color-mix(in_oklab,var(--color-foreground)_35%,transparent),0_12px_30px_-5px_color-mix(in_oklab,var(--color-foreground)_20%,transparent)]"
           style={{
             scale: revealScale,
             borderRadius: revealRadius,
@@ -192,13 +306,13 @@ export function ScrollVideoSection({
         >
           <canvas
             ref={canvasRef}
-            className="block h-full w-full bg-white"
+            className="block h-full w-full bg-[#d5d8de]"
             style={{ filter: "brightness(1.13) contrast(1.14) saturate(0.96)" }}
           />
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-px left-1/2 z-20 flex h-4 w-14 -translate-x-1/2 items-center justify-center rounded-b-[10px] bg-black md:h-5 md:w-[72px] md:rounded-b-xl"
+            className="pointer-events-none absolute -top-px left-1/2 z-20 flex h-4 w-14 -translate-x-1/2 items-center justify-center rounded-b-[10px] bg-foreground md:h-5 md:w-[72px] md:rounded-b-xl"
           >
             <span className="h-[5px] w-[5px] rounded-full bg-[#101218] ring-1 ring-white/20 shadow-[inset_0_0_2px_rgba(80,160,255,0.7)]" />
           </div>
@@ -207,7 +321,7 @@ export function ScrollVideoSection({
           <div
             className={cn(
               "absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground transition-opacity duration-300 pointer-events-none",
-              scrollPct > 0.02 ? "opacity-0" : "opacity-100",
+              hasScrolled ? "opacity-0" : "opacity-100",
             )}
           >
             <span className="text-xs uppercase tracking-[0.2em] font-mono opacity-60">

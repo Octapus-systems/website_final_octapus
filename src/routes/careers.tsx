@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
@@ -57,9 +57,7 @@ function CareersPage() {
           <div className="rounded-2xl border hairline p-6 bg-[var(--color-surface)] text-sm text-muted-foreground">
             Career enquiries: {site.emails.hr}
           </div>
-          <Button asChild className="rounded-full">
-            <Link to="/contact">Apply</Link>
-          </Button>
+          <RevealButton to="/contact" label="Apply" />
         </div>
       </Section>
 

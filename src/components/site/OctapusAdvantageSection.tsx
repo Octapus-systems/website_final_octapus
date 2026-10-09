@@ -178,7 +178,7 @@ export function OctapusAdvantageSection() {
               preload="auto"
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
-                isCard1Active ? "opacity-100" : "opacity-0"
+                isCard1Active ? "opacity-100" : "opacity-0",
               )}
             />
 
@@ -186,7 +186,7 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute inset-0 bg-gradient-to-t from-purple-950/85 via-indigo-950/65 to-purple-900/50 pointer-events-none transition-opacity duration-500 z-0",
-                isCard1Active ? "opacity-100" : "opacity-0"
+                isCard1Active ? "opacity-100" : "opacity-0",
               )}
             />
 
@@ -198,17 +198,38 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute -right-6 -bottom-10 w-64 h-64 sm:w-72 sm:h-72 pointer-events-none transition-all duration-700 ease-out z-0",
-                isCard1Active ? "opacity-0 scale-100" : "opacity-35 group-hover:opacity-50 group-hover:scale-105"
+                isCard1Active
+                  ? "opacity-0 scale-100"
+                  : "opacity-35 group-hover:opacity-50 group-hover:scale-105",
               )}
             >
-              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
+              <svg
+                viewBox="0 0 200 200"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full drop-shadow-2xl"
+              >
                 <defs>
-                  <linearGradient id="speedRibbonGrad1" x1="20" y1="20" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    id="speedRibbonGrad1"
+                    x1="20"
+                    y1="20"
+                    x2="180"
+                    y2="180"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop stopColor="#FFFFFF" stopOpacity="0.9" />
                     <stop offset="0.5" stopColor="#A855F7" stopOpacity="0.6" />
                     <stop offset="1" stopColor="#4338CA" stopOpacity="0.2" />
                   </linearGradient>
-                  <linearGradient id="speedRibbonGrad2" x1="180" y1="40" x2="20" y2="160" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    id="speedRibbonGrad2"
+                    x1="180"
+                    y1="40"
+                    x2="20"
+                    y2="160"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop stopColor="#E0E7FF" stopOpacity="0.8" />
                     <stop offset="1" stopColor="#6366F1" stopOpacity="0.1" />
                   </linearGradient>
@@ -252,7 +273,8 @@ export function OctapusAdvantageSection() {
                 AI builds fast.
               </h3>
               <p className="text-white/85 text-sm sm:text-base font-sans font-normal leading-relaxed max-w-sm">
-                Instant architecture, rapid initial codebase, interface scaffolding, and protocol integration.
+                Instant architecture, rapid initial codebase, interface scaffolding, and protocol
+                integration.
               </p>
             </div>
 
@@ -285,7 +307,7 @@ export function OctapusAdvantageSection() {
               preload="auto"
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
-                isCard2Active ? "opacity-100" : "opacity-0"
+                isCard2Active ? "opacity-100" : "opacity-0",
               )}
             />
 
@@ -293,7 +315,7 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute inset-0 bg-gradient-to-t from-blue-950/85 via-indigo-950/65 to-blue-900/50 pointer-events-none transition-opacity duration-500 z-0",
-                isCard2Active ? "opacity-100" : "opacity-0"
+                isCard2Active ? "opacity-100" : "opacity-0",
               )}
             />
 
@@ -305,17 +327,38 @@ export function OctapusAdvantageSection() {
             <div
               className={cn(
                 "absolute -right-6 -bottom-10 w-64 h-64 sm:w-72 sm:h-72 pointer-events-none transition-all duration-700 ease-out z-0",
-                isCard2Active ? "opacity-0 scale-100" : "opacity-35 group-hover:opacity-50 group-hover:scale-105"
+                isCard2Active
+                  ? "opacity-0 scale-100"
+                  : "opacity-35 group-hover:opacity-50 group-hover:scale-105",
               )}
             >
-              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
+              <svg
+                viewBox="0 0 200 200"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full drop-shadow-2xl"
+              >
                 <defs>
-                  <linearGradient id="gearGrad1" x1="10" y1="10" x2="190" y2="190" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    id="gearGrad1"
+                    x1="10"
+                    y1="10"
+                    x2="190"
+                    y2="190"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop stopColor="#FFFFFF" stopOpacity="0.95" />
                     <stop offset="0.6" stopColor="#60A5FA" stopOpacity="0.5" />
                     <stop offset="1" stopColor="#1E3A8A" stopOpacity="0.2" />
                   </linearGradient>
-                  <linearGradient id="gearGrad2" x1="180" y1="20" x2="20" y2="180" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    id="gearGrad2"
+                    x1="180"
+                    y1="20"
+                    x2="20"
+                    y2="180"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop stopColor="#93C5FD" stopOpacity="0.8" />
                     <stop offset="1" stopColor="#2563EB" stopOpacity="0.1" />
                   </linearGradient>
@@ -326,7 +369,16 @@ export function OctapusAdvantageSection() {
                   fill="url(#gearGrad1)"
                 />
                 {/* Gear Center Cutout */}
-                <circle cx="100" cy="105" r="32" fill="#1E40AF" fillOpacity="0.4" stroke="white" strokeWidth="6" strokeOpacity="0.4" />
+                <circle
+                  cx="100"
+                  cy="105"
+                  r="32"
+                  fill="#1E40AF"
+                  fillOpacity="0.4"
+                  stroke="white"
+                  strokeWidth="6"
+                  strokeOpacity="0.4"
+                />
                 {/* Inner Shield / Check Badge */}
                 <path
                   d="M100 88L112 94V106C112 114 107 121 100 124C93 121 88 114 88 106V94L100 88Z"
@@ -353,7 +405,8 @@ export function OctapusAdvantageSection() {
                 Engineers make it right.
               </h3>
               <p className="text-white/85 text-sm sm:text-base font-sans font-normal leading-relaxed max-w-sm">
-                Rigorous code audit, optimized data models, edge-case security, and production readiness.
+                Rigorous code audit, optimized data models, edge-case security, and production
+                readiness.
               </p>
             </div>
 
@@ -369,5 +422,3 @@ export function OctapusAdvantageSection() {
     </Section>
   );
 }
-
-

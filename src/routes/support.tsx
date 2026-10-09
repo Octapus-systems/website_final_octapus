@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
@@ -80,9 +80,7 @@ function SupportPage() {
           </div>
         </div>
         <div className="mt-10 text-center">
-          <Button asChild className="rounded-full">
-            <Link to="/contact">Open a support request</Link>
-          </Button>
+          <RevealButton to="/contact" label="Open a support request" />
         </div>
       </Section>
 

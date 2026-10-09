@@ -4,7 +4,6 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Octapus3DSection } from "@/components/site/Octapus3DSection";
 import { useLoadingDone } from "@/components/site/LoadingScreen";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
 import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
@@ -21,11 +20,13 @@ import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
+import { RevealButton } from "@/components/site/RevealButton";
+import { servicePages } from "@/lib/service-pages";
 
 import productErpImg from "@/assets/product-erp.png";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
-import heroLaptop from "@/assets/hero-laptop.png";
+import heroLaptop from "@/assets/hero-laptop.webp";
 import obmsBusiness from "@/assets/obms-business.jpg";
 import oisNetwork from "@/assets/ois-network.png";
 
@@ -39,8 +40,6 @@ const FALLBACK_IMAGES = [
 ];
 
 const visibleProducts = products.filter((p) => !hiddenProductSlugs.includes(p.slug));
-
-const heroTitle = "Build For Today";
 
 const statGridVariants = {
   hidden: {},
@@ -113,24 +112,25 @@ export const Route = createFileRoute("/")({
     ...buildMeta({
       title: "Octapus — Custom Software, AI Systems and Digital Platforms",
       description:
-        "Octapus is an AI-first software company combining AI development speed with experienced human engineering to deliver production-ready software, AI systems, and business platforms.",
+        "Octapus designs and develops mobile apps, custom software, ERP systems, business automation, web platforms and creative production around real business requirements.",
       path: "/",
       ogType: "website",
       keywords: [
         "Octapus",
         "custom software development",
-        "AI systems",
-        "AI-powered software",
-        "digital platforms",
-        "business software",
+        "software development company",
+        "mobile app development",
+        "iOS app development",
+        "Android app development",
+        "ERP development",
+        "custom ERP systems",
         "business automation",
-        "ERP",
-        "CRM",
-        "AI agents",
-        "custom business software",
+        "custom business systems",
+        "web application development",
+        "technology consulting",
+        "creative production",
       ],
     }),
-    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Home,
 });
@@ -144,7 +144,7 @@ function Home() {
   const carouselSlides = React.useMemo(() => {
     return visibleProducts.map((p, idx) => ({
       src: p.image || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length],
-      alt: p.name,
+      alt: p.imageFit === "contain" ? `${p.name} logo` : `${p.name} platform interface`,
       title: p.name,
       subtitle: p.headline,
       imageFit: p.image ? p.imageFit : "cover",
@@ -158,8 +158,26 @@ function Home() {
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Octapus",
-          url: "/",
+          url: `${SITE_URL}/`,
           publisher: { "@type": "Organization", name: site.legalName },
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Octapus software and digital services",
+          itemListElement: servicePages.map((service, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+              "@type": "Service",
+              name: service.title,
+              description: service.summary,
+              url: `/services/${service.slug}`,
+              provider: { "@type": "Organization", name: site.legalName },
+            },
+          })),
         }}
       />
       <JsonLd
@@ -178,10 +196,18 @@ function Home() {
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
 
       {/* ── 01. HERO ── */}
-      <Section className="min-h-[calc(100svh-4rem)] overflow-hidden bg-background !py-0">
+      <header className="relative isolate overflow-hidden border-b border-border bg-background text-foreground">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-[12%] top-[15%] h-[56%] rounded-[50%] bg-primary/[0.055] blur-3xl"
+          className="absolute inset-0 bg-[radial-gradient(circle,currentColor_0.7px,transparent_0.8px)] bg-[size:24px_24px] opacity-[0.12]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-1/2 aspect-square w-[min(82vw,48rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.055]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute left-1/2 top-1/2 aspect-square w-[min(60vw,35rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.055]"
         />
         <DotPattern className="fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/10" />
 
@@ -288,7 +314,7 @@ function Home() {
             ))}
           </motion.ul>
         </div>
-      </Section>
+      </header>
 
       {/* ── 02. EVERYTHING CONNECTED (3D) ── */}
       <Octapus3DSection />
@@ -345,7 +371,7 @@ function Home() {
         </motion.div>
       </Section>
 
-      {/* ── 04. THE OCTAPUS ADVANTAGE ── */}
+      {/* ── 05. THE OCTAPUS ADVANTAGE ── */}
       <OctapusAdvantageSection />
 
       {/* ── 05. OUR BUILD PROCESS ── */}

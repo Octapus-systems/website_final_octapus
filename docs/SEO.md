@@ -16,25 +16,25 @@ from `src/lib/seo.ts`. Every page emits:
 
 ## JSON-LD schema per route
 
-| Route | Schema type(s) |
-|---|---|
-| `__root.tsx` (all pages) | `Organization` (with two `PostalAddress`, email, telephone) |
-| `/` | `WebSite` (+ `SearchAction`), `ItemList` of products, `FAQPage`, `BreadcrumbList` |
-| `/about` | `AboutPage` (with nested Organization + addresses), `BreadcrumbList` |
-| `/services` | `ItemList` of `Service` items, `BreadcrumbList` |
-| `/products` | `CollectionPage` (with `hasPart` `SoftwareApplication[]`), `BreadcrumbList` |
-| `/products/$slug` | `SoftwareApplication` (Offer, provider, keywords), `BreadcrumbList` (3 levels) |
-| `/industries` | `ItemList` of industry names, `BreadcrumbList` |
-| `/ois` | `TechArticle`, `BreadcrumbList` |
-| `/blog` | `Blog`, `BreadcrumbList` |
-| `/book` | `Service`, `BreadcrumbList` |
-| `/careers` | `CollectionPage`, `BreadcrumbList` |
-| `/contact` | `ContactPage` (4 `ContactPoint`), `BreadcrumbList` |
-| `/support` | `ContactPage` (2 `ContactPoint`), `BreadcrumbList` |
-| `/privacy` | `WebPage`, `BreadcrumbList` |
-| `/terms` | `WebPage`, `BreadcrumbList` |
-| `/mcp` | none (noindex) |
-| `/sitemap` | none |
+| Route                    | Schema type(s)                                                                    |
+| ------------------------ | --------------------------------------------------------------------------------- |
+| `__root.tsx` (all pages) | `Organization` (with two `PostalAddress`, email, telephone)                       |
+| `/`                      | `WebSite` (+ `SearchAction`), `ItemList` of products, `FAQPage`, `BreadcrumbList` |
+| `/about`                 | `AboutPage` (with nested Organization + addresses), `BreadcrumbList`              |
+| `/services`              | `ItemList` of `Service` items, `BreadcrumbList`                                   |
+| `/products`              | `CollectionPage` (with `hasPart` `SoftwareApplication[]`), `BreadcrumbList`       |
+| `/products/$slug`        | `SoftwareApplication` (Offer, provider, keywords), `BreadcrumbList` (3 levels)    |
+| `/industries`            | `ItemList` of industry names, `BreadcrumbList`                                    |
+| `/ois`                   | `TechArticle`, `BreadcrumbList`                                                   |
+| `/blog`                  | `Blog`, `BreadcrumbList`                                                          |
+| `/book`                  | `Service`, `BreadcrumbList`                                                       |
+| `/careers`               | `CollectionPage`, `BreadcrumbList`                                                |
+| `/contact`               | `ContactPage` (4 `ContactPoint`), `BreadcrumbList`                                |
+| `/support`               | `ContactPage` (2 `ContactPoint`), `BreadcrumbList`                                |
+| `/privacy`               | `WebPage`, `BreadcrumbList`                                                       |
+| `/terms`                 | `WebPage`, `BreadcrumbList`                                                       |
+| `/mcp`                   | none (noindex)                                                                    |
+| `/sitemap`               | none                                                                              |
 
 All schema is emitted via `<JsonLd data={...} />` (see `src/components/site/JsonLd.tsx`).
 
@@ -61,6 +61,7 @@ without relying on the footer alone.
 ```
 
 Additional hub-and-spoke reinforcement:
+
 - The persistent `<Nav>` links Home, Products, Services, Industries, OIS, About, Contact.
 - The `<Footer>` links every route including legal, careers, support, sitemap.
 - The homepage `<ProductsShowcase>` deep-links to each `/products/$slug`.

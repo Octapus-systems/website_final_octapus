@@ -13,13 +13,15 @@ export const pillars = [
   },
   {
     title: "Engineer-refined execution",
-    description: "Expert code review, system hardening, architecture tuning, and database optimization.",
+    description:
+      "Expert code review, system hardening, architecture tuning, and database optimization.",
     icon: UserCheck,
     color: "from-primary/20 to-purple-500/10 text-primary",
   },
   {
     title: "Production-grade results",
-    description: "Enterprise reliability, zero-compromise security, scalable infrastructure, and complete quality assurance.",
+    description:
+      "Enterprise reliability, zero-compromise security, scalable infrastructure, and complete quality assurance.",
     icon: ShieldCheck,
     color: "from-emerald-500/20 to-teal-500/10 text-emerald-400",
   },
@@ -66,7 +68,7 @@ export function WhyItChangesSection() {
                   <div
                     className={cn(
                       "w-12 h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center mb-6 border border-hairline",
-                      p.color
+                      p.color,
                     )}
                   >
                     <Icon className="w-6 h-6" />

@@ -57,39 +57,21 @@ export function BuildIcon({ className, ...props }: IconProps) {
       {/* BOTTOM LEFT BLOCK */}
       <g>
         {/* Top Face */}
-        <path
-          d="M 18 36 L 27 31.5 L 36 36 L 27 40.5 Z"
-          fill={`url(#${id}-purple-mid)`}
-        />
+        <path d="M 18 36 L 27 31.5 L 36 36 L 27 40.5 Z" fill={`url(#${id}-purple-mid)`} />
         {/* Left Face */}
-        <path
-          d="M 18 36 L 27 40.5 L 27 47 L 18 42.5 Z"
-          fill={`url(#${id}-graphite)`}
-        />
+        <path d="M 18 36 L 27 40.5 L 27 47 L 18 42.5 Z" fill={`url(#${id}-graphite)`} />
         {/* Right Face */}
-        <path
-          d="M 27 40.5 L 36 36 L 36 42.5 L 27 47 Z"
-          fill={`url(#${id}-side-dark)`}
-        />
+        <path d="M 27 40.5 L 36 36 L 36 42.5 L 27 47 Z" fill={`url(#${id}-side-dark)`} />
       </g>
 
       {/* BOTTOM RIGHT BLOCK */}
       <g>
         {/* Top Face */}
-        <path
-          d="M 28 36 L 37 31.5 L 46 36 L 37 40.5 Z"
-          fill={`url(#${id}-purple-mid)`}
-        />
+        <path d="M 28 36 L 37 31.5 L 46 36 L 37 40.5 Z" fill={`url(#${id}-purple-mid)`} />
         {/* Left Face */}
-        <path
-          d="M 28 36 L 37 40.5 L 37 47 L 28 42.5 Z"
-          fill={`url(#${id}-side-dark)`}
-        />
+        <path d="M 28 36 L 37 40.5 L 37 47 L 28 42.5 Z" fill={`url(#${id}-side-dark)`} />
         {/* Right Face */}
-        <path
-          d="M 37 40.5 L 46 36 L 46 42.5 L 37 47 Z"
-          fill={`url(#${id}-graphite)`}
-        />
+        <path d="M 37 40.5 L 46 36 L 46 42.5 L 37 47 Z" fill={`url(#${id}-graphite)`} />
       </g>
 
       {/* TOP HOVERING / ASSEMBLING BLOCK */}
@@ -104,20 +86,11 @@ export function BuildIcon({ className, ...props }: IconProps) {
         />
 
         {/* Top Face - Glowing */}
-        <path
-          d="M 23 21 L 32 16.5 L 41 21 L 32 25.5 Z"
-          fill={`url(#${id}-top-bright)`}
-        />
+        <path d="M 23 21 L 32 16.5 L 41 21 L 32 25.5 Z" fill={`url(#${id}-top-bright)`} />
         {/* Left Face - Rich Lavender */}
-        <path
-          d="M 23 21 L 32 25.5 L 32 32 L 23 27.5 Z"
-          fill={`url(#${id}-purple-mid)`}
-        />
+        <path d="M 23 21 L 32 25.5 L 32 32 L 23 27.5 Z" fill={`url(#${id}-purple-mid)`} />
         {/* Right Face - Deep Purple */}
-        <path
-          d="M 32 25.5 L 41 21 L 41 27.5 L 32 32 Z"
-          fill={`url(#${id}-side-dark)`}
-        />
+        <path d="M 32 25.5 L 41 21 L 41 27.5 L 32 32 Z" fill={`url(#${id}-side-dark)`} />
 
         {/* Top Bevel Highlight */}
         <path

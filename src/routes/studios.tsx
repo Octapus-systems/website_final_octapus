@@ -1,10 +1,16 @@
+import { lazy, Suspense } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/site/JsonLd";
 import { Container, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { OisConnection } from "@/components/site/OisConnection";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
+
+const Skiper39 = lazy(() =>
+  import("@/components/ui/skiper39").then((m) => ({ default: m.Skiper39 })),
+);
 import { StudiosLeadForm } from "@/components/site/StudiosLeadForm";
 import { trackEvent } from "@/lib/analytics";
 import { studios, site } from "@/lib/site";
@@ -73,20 +79,26 @@ function StudiosPage() {
           {studios.intro}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild size="lg" className="rounded-full px-7">
-            <a
-              href="#start-a-studios-project"
-              onClick={() => trackEvent("product_engagement", { source: "studios_hero_cta" })}
-            >
-              Start a Studios Project <ArrowRight className="ml-1 size-4" />
-            </a>
-          </Button>
-
-          <Button asChild size="lg" variant="outline" className="rounded-full px-7">
-            <Link to="/marketing">See the growth track</Link>
-          </Button>
+          <RevealButton
+            to="#start-a-studios-project"
+            external
+            icon={ArrowRight}
+            label="Start a Studios Project"
+            onClick={() => trackEvent("product_engagement", { source: "studios_hero_cta" })}
+            className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+          />
+          <RevealButton
+            to="/marketing"
+            label="See the growth track"
+            variant="outline"
+            className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
+          />
         </div>
       </Container>
+
+      <Suspense fallback={<div className="h-64 w-full" aria-hidden="true" />}>
+        <Skiper39 />
+      </Suspense>
 
       <Section
         eyebrow="What Octapus Studios provides"

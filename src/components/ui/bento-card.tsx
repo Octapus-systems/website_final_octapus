@@ -17,13 +17,14 @@ import {
   Database,
   Mail,
   User,
+  type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TabConfig {
   id: string;
   label: string;
-  icon: any;
+  icon: LucideIcon;
   badge?: string;
   header: string;
   description: string;

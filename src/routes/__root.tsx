@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -17,7 +18,8 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { site } from "@/lib/site";
-import { getGstTheme, THEME_STORAGE_KEY } from "@/lib/theme";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
+import { isProductionHost } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -41,7 +43,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -101,19 +103,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Octapus — Software, AI and business systems in the UAE" },
       {
         property: "og:image",
-        content:
-          "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+        content: "https://octapus.ae/octapus-indigo-logo.svg",
       },
       {
         name: "twitter:image",
-        content:
-          "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+        content: "https://octapus.ae/octapus-indigo-logo.svg",
       },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "preload", href: "/loading-intro.mp4", as: "video", type: "video/mp4" },
+      { rel: "icon", href: "/octapus-indigo-logo.svg", type: "image/svg+xml" },
       { rel: "preconnect", href: "https://rsms.me" },
       { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -136,25 +135,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
-        {/* Theme: set before first paint based on user override or GST time */}
+        {/* Theme: set before first paint from the stored choice or system preference. */}
         <script
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{const t=localStorage.getItem('octapus-theme');if(t==='dark'){document.documentElement.classList.add('dark');}else if(t==='light'){document.documentElement.classList.remove('dark');}else{const h=(new Date().getUTCHours()+4)%24;if(h<6||h>=18){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}}catch(e){}})();`,
+            __html: `(function(){try{const t=localStorage.getItem('octapus-theme');const dark=t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);}catch(e){}})();`,
           }}
         />
         {/* Consent Mode v2 default (denied) — bootstraps before GTM loads */}
         <script
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`,
           }}
         />
       </head>
       <body>
+        <a
+          href="#main"
+          className="sr-only fixed left-4 top-4 z-[1000] rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg focus:not-sr-only focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        >
+          Skip to content
+        </a>
         {children}
         <Scripts />
       </body>
@@ -164,6 +167,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !isProductionHost(window.location.hostname)) {
+      if (!document.querySelector('meta[name="robots"]')) {
+        const meta = document.createElement("meta");
+        meta.name = "robots";
+        meta.content = "noindex,nofollow";
+        document.head.appendChild(meta);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]');
@@ -181,22 +195,19 @@ function RootComponent() {
   }, []);
 
   useEffect(() => {
-    const syncGstTheme = () => {
+    const preference = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncSystemTheme = () => {
       try {
         if (!localStorage.getItem(THEME_STORAGE_KEY)) {
-          const isDark = getGstTheme() === "dark";
-          if (document.documentElement.classList.contains("dark") !== isDark) {
-            document.documentElement.classList.toggle("dark", isDark);
-          }
+          document.documentElement.classList.toggle("dark", preference.matches);
         }
       } catch {
-        // ignore storage errors
+        // Keep the initial system preference when storage is unavailable.
       }
     };
 
-    syncGstTheme();
-    const interval = setInterval(syncGstTheme, 10000);
-    return () => clearInterval(interval);
+    preference.addEventListener("change", syncSystemTheme);
+    return () => preference.removeEventListener("change", syncSystemTheme);
   }, []);
 
   return (
@@ -209,7 +220,7 @@ function RootComponent() {
             name: site.legalName,
             alternateName: site.name,
             url: "https://octapus.ae/",
-            logo: "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+            logo: "https://octapus.ae/octapus-indigo-logo.svg",
             email: site.emails.info,
             telephone: site.phones.general,
             address: [
@@ -233,8 +244,7 @@ function RootComponent() {
             "@id": "https://octapus.ae/#localbusiness",
             name: site.legalName,
             url: "https://octapus.ae/",
-            image:
-              "https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png",
+            image: "https://octapus.ae/octapus-indigo-logo.svg",
             telephone: site.phones.general,
             email: site.emails.info,
             areaServed: ["AE", "GCC"],

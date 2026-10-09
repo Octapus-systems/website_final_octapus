@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Container } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { obmsMetrics, type Product } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import businessPhoto from "@/assets/obms-business.jpg";
@@ -221,22 +221,22 @@ export function ObmsShowcase({ product }: { product: Product }) {
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           {product.externalUrl ? (
-            <Button
-              asChild
-              size="lg"
-              className="rounded-full"
+            <RevealButton
+              to={product.externalUrl}
+              external
+              icon={ExternalLink}
+              label="Visit the O.B.M.S website"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
               onClick={() => trackEvent("obms_external_click", { source: "product_page" })}
-            >
-              <a href={product.externalUrl} target="_blank" rel="noopener noreferrer">
-                Visit the O.B.M.S website <ExternalLink className="ml-1 size-4" />
-              </a>
-            </Button>
+            />
           ) : null}
-          <Button asChild size="lg" variant="outline" className="rounded-full">
-            <Link to="/book">
-              Book an ERP walkthrough <ArrowRight className="ml-1 size-4" />
-            </Link>
-          </Button>
+          <RevealButton
+            to="/book"
+            icon={ArrowRight}
+            label="Book an ERP walkthrough"
+            variant="outline"
+            className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+          />
         </div>
       </Container>
     </section>

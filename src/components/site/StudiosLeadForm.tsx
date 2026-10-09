@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Loader2, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CheckCircle2 } from "lucide-react";
+import { RevealActionButton } from "@/components/site/RevealButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -133,22 +133,14 @@ export function StudiosLeadForm() {
         </div>
       )}
 
-      <Button
+      <RevealActionButton
         type="submit"
-        size="lg"
-        className="rounded-full w-full md:w-auto px-7"
+        label="Start a Studios Project"
+        loadingLabel="Sending"
+        loading={status === "loading"}
+        className="w-full md:w-auto"
         disabled={status === "loading"}
-      >
-        {status === "loading" ? (
-          <>
-            <Loader2 className="mr-2 size-4 animate-spin" /> Sending…
-          </>
-        ) : (
-          <>
-            Start a Studios Project <ArrowRight className="ml-1 size-4" />
-          </>
-        )}
-      </Button>
+      />
       <p className="text-xs text-muted-foreground">
         Takes under a minute. Octapus reply within one business day.
       </p>

@@ -1,4 +1,3 @@
-
 # Octapus L.L.C. — Website Build Plan
 
 A production-ready TanStack Start marketing site for Octapus: precise, architectural, quietly futuristic. White canvas, deep black type, disciplined grid, #601CE6 used as intelligence — not decoration.
@@ -56,6 +55,7 @@ Each leaf route defines its own `head()` with unique title, description, og:titl
 ## 4. Imagery
 
 Generate a consistent SaaS image family via `imagegen`:
+
 - Hero laptop with Octapus dashboard, white studio, soft purple reflection
 - Per-product device shots (dashboard glimpses, no fabricated data)
 - OIS abstract intelligence composition (dark)
@@ -81,6 +81,7 @@ Email delivery: the spec requires routing but does not name a provider. I'll wir
 ## 6. Motion
 
 Restrained Motion/React usage:
+
 - Hero: purple path drawing through a light grid, nodes converging (one-shot, ~1.2s)
 - Section reveals: subtle fade+translate on intersection
 - Process: scroll-linked stage highlighting

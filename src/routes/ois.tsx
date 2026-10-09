@@ -8,10 +8,11 @@ import {
   TrendingDown,
   Building2,
 } from "lucide-react";
-import oisImg from "@/assets/ois-network.png";
+import oisImg from "@/assets/ois-horus-ai-mobile-workforce.webp";
 import { Container, Section } from "@/components/site/Section";
 import { HorusCard } from "@/components/site/HorusCard";
-import { Button } from "@/components/ui/button";
+import Avatar from "@/components/ui/components-primitives-avatar";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
@@ -77,29 +78,35 @@ function OIS() {
             Your employees are already using AI to write faster, research quicker, analyse
             information and save time. OIS takes the next step.
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Button
-              asChild
-              size="lg"
+          <div className="mt-8 inline-flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-3 pr-5 backdrop-blur-sm">
+            <Avatar color="purple" size="lg" shape="squircle" label="OIS intelligence avatar" />
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-glow">
+                OIS intelligence layer
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Ready to work across your existing systems.
+              </p>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <RevealButton
+              to="/book"
+              icon={ArrowRight}
+              label="Start with OIS"
               variant="white"
-              className="rounded-full"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
               onClick={() => trackEvent("strategy_call_click", { source: "ois_hero" })}
-            >
-              <a href="/book">
-                Start with OIS <ArrowRight className="ml-1 size-4" />
-              </a>
-            </Button>
-            <Button
-              asChild
-              size="lg"
+            />
+            <RevealButton
+              to={site.oisExternalUrl}
+              external
+              icon={ExternalLink}
+              label="Experience the Concept"
               variant="outline"
-              className="rounded-full"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
               onClick={() => trackEvent("ois_external_click", { source: "ois_hero" })}
-            >
-              <a href={site.oisExternalUrl} target="_blank" rel="noopener noreferrer">
-                Experience the Concept <ExternalLink className="ml-1 size-4" />
-              </a>
-            </Button>
+            />
           </div>
         </Container>
 
@@ -107,9 +114,11 @@ function OIS() {
           <div className="rounded-3xl overflow-hidden border border-border">
             <img
               src={oisImg}
-              alt="OIS connects AI agents around your existing business systems"
+              alt="Horus AI preparing and sending a business quotation through a mobile conversation"
               loading="lazy"
-              className="w-full h-auto"
+              width={1672}
+              height={941}
+              className="aspect-video h-auto w-full object-cover"
             />
           </div>
           <HorusCard source="ois_page" showExploreLink={false} />
@@ -180,28 +189,23 @@ function OIS() {
             From Artificial Intelligence to Actual Workforce.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Button
-              asChild
-              size="lg"
+            <RevealButton
+              to="/book"
+              icon={ArrowRight}
+              label="Start with OIS"
               variant="white"
-              className="rounded-full"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
               onClick={() => trackEvent("strategy_call_click", { source: "ois_final" })}
-            >
-              <a href="/book">
-                Start with OIS <ArrowRight className="ml-1 size-4" />
-              </a>
-            </Button>
-            <Button
-              asChild
-              size="lg"
+            />
+            <RevealButton
+              to={site.oisExternalUrl}
+              external
+              icon={ExternalLink}
+              label="Experience the Concept"
               variant="outline"
-              className="rounded-full"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
               onClick={() => trackEvent("ois_external_click", { source: "ois_final" })}
-            >
-              <a href={site.oisExternalUrl} target="_blank" rel="noopener noreferrer">
-                Experience the Concept <ExternalLink className="ml-1 size-4" />
-              </a>
-            </Button>
+            />
           </div>
         </div>
       </Section>

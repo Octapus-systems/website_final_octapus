@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { Mail, Send } from "lucide-react";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
@@ -60,16 +61,20 @@ function BookPage() {
       >
         <div className="mx-auto max-w-2xl rounded-2xl border hairline bg-[var(--color-surface)] p-8 text-center">
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="rounded-full">
-              <a
-                href={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}
-              >
-                Email {site.emails.sales}
-              </a>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full">
-              <Link to="/contact">Use the enquiry form</Link>
-            </Button>
+            <RevealButton
+              to={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}
+              external
+              icon={Mail}
+              label={`Email ${site.emails.sales}`}
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
+            />
+            <RevealButton
+              to="/contact"
+              icon={Send}
+              label="Use the enquiry form"
+              variant="outline"
+              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+            />
           </div>
         </div>
       </Section>

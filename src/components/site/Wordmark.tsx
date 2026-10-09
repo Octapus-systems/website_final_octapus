@@ -13,10 +13,10 @@ export function Wordmark({ className, dark = false }: { className?: string; dark
       aria-label="Octapus — home"
     >
       <img
-        src="https://res.cloudinary.com/dk0v8kljx/image/upload/v1781652154/New_Logo_es6c4z.png"
+        src="/octapus-indigo-logo.svg"
         alt="Octapus"
-        width={140}
-        height={35}
+        width={150}
+        height={50}
         className="h-8 md:h-10 w-auto"
         style={{ objectFit: "contain" }}
       />

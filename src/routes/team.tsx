@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { site, team } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 
 export const Route = createFileRoute("/team")({
   head: () =>
@@ -63,7 +63,9 @@ function TeamPage() {
               </h1>
             </div>
             <div className="lg:text-right lg:max-w-sm">
-              <div className="text-eyebrow text-primary dark:text-primary-glow mb-3">[ OUR TEAM ]</div>
+              <div className="text-eyebrow text-primary dark:text-primary-glow mb-3">
+                [ OUR TEAM ]
+              </div>
               <p className="text-sm md:text-base leading-relaxed text-muted-foreground">
                 Our team is a group of visionaries, creators and technologists working together to
                 build the future.
@@ -125,30 +127,24 @@ function TeamPage() {
                   </p>
 
                   <div className="mt-6 flex flex-col gap-2">
-                    <Button
-                      asChild
-                      size="sm"
+                    <RevealButton
+                      to={`tel:${member.phone.replace(/\s/g, "")}`}
+                      external
+                      icon={Phone}
+                      label={member.phone}
                       variant="outline"
-                      className="rounded-full gap-2 justify-start"
+                      className="self-start"
                       onClick={() => trackEvent("call_click", { member: member.name })}
-                    >
-                      <a href={`tel:${member.phone.replace(/\s/g, "")}`}>
-                        <Phone className="size-4" />
-                        {member.phone}
-                      </a>
-                    </Button>
-                    <Button
-                      asChild
-                      size="sm"
-                      variant="ghost"
-                      className="rounded-full gap-2 justify-start text-muted-foreground hover:text-foreground"
+                    />
+                    <RevealButton
+                      to={`mailto:${member.email}`}
+                      external
+                      icon={Mail}
+                      label={member.email}
+                      variant="outline"
+                      className="self-start"
                       onClick={() => trackEvent("email_click", { member: member.name })}
-                    >
-                      <a href={`mailto:${member.email}`}>
-                        <Mail className="size-4" />
-                        {member.email}
-                      </a>
-                    </Button>
+                    />
                   </div>
                 </div>
               </article>
@@ -168,18 +164,22 @@ function TeamPage() {
               Ready to connect your systems? Reach out directly or book a strategy call.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Button asChild size="lg" className="rounded-full btn-aurora">
-                <a href={`tel:${site.phones.general.replace(/\s/g, "")}`}>
-                  <Phone className="mr-2 size-4" />
-                  Call us now
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-full">
-                <a href={`mailto:${site.emails.sales}`} onClick={() => trackEvent("email_click")}>
-                  <Mail className="mr-2 size-4" />
-                  Email sales
-                </a>
-              </Button>
+              <RevealButton
+                to={`tel:${site.phones.general.replace(/\s/g, "")}`}
+                external
+                icon={Phone}
+                label="Call us now"
+                className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
+              />
+              <RevealButton
+                to={`mailto:${site.emails.sales}`}
+                external
+                icon={Mail}
+                label="Email sales"
+                variant="outline"
+                className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
+                onClick={() => trackEvent("email_click")}
+              />
             </div>
           </div>
         </Container>

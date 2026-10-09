@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Container, Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { OisConnection } from "@/components/site/OisConnection";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { industries, type DisciplineTrack } from "@/lib/site";
@@ -32,14 +32,18 @@ export function TrackPage({
           {track.intro}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild size="lg" className="rounded-full px-7">
-            <Link to="/book">
-              Book a Strategy Call <ArrowRight className="ml-1 size-4" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="rounded-full px-7">
-            <Link to="/products">See the systems</Link>
-          </Button>
+          <RevealButton
+            to="/book"
+            icon={ArrowRight}
+            label="Book a Strategy Call"
+            className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+          />
+          <RevealButton
+            to="/products"
+            label="See the systems"
+            variant="outline"
+            className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
+          />
         </div>
       </Container>
 

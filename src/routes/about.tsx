@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
@@ -67,23 +67,33 @@ function AboutPage() {
       >
         <div className="mx-auto max-w-4xl mt-8 pt-12 border-t hairline space-y-12">
           <p className="text-2xl md:text-3xl font-medium leading-snug text-foreground text-center text-balance">
-            We take complicated technology, remove the noise, and arrange it into one controlled business system.
+            We take complicated technology, remove the noise, and arrange it into one controlled
+            business system.
           </p>
-          
+
           <div className="grid md:grid-cols-2 gap-10 text-muted-foreground leading-relaxed text-lg">
             <p>
-              We partner with founders and operators who have outgrown disconnected tools. Instead of adding another SaaS to the stack, we design the operating layer that the business actually needs.
+              We partner with founders and operators who have outgrown disconnected tools. Instead
+              of adding another SaaS to the stack, we design the operating layer that the business
+              actually needs.
             </p>
             <div className="space-y-6">
               <p>
                 And we operate it with you. Explore our{" "}
-                <Link to="/services" className="text-primary font-medium hover:underline underline-offset-4">
+                <Link
+                  to="/services"
+                  className="text-primary font-medium hover:underline underline-offset-4"
+                >
                   services
                 </Link>{" "}
                 or the{" "}
-                <Link to="/products" className="text-primary font-medium hover:underline underline-offset-4">
+                <Link
+                  to="/products"
+                  className="text-primary font-medium hover:underline underline-offset-4"
+                >
                   product ecosystem
-                </Link>.
+                </Link>
+                .
               </p>
               <div className="inline-block px-4 py-2 rounded-full border hairline bg-surface/50 dark:bg-surface-dark/50">
                 <p className="font-mono text-xs uppercase tracking-widest text-primary">
@@ -94,9 +104,11 @@ function AboutPage() {
           </div>
 
           <div className="pt-12 text-center border-t hairline">
-            <Button asChild size="lg" className="rounded-full px-8 h-12 text-base font-semibold shadow-md shadow-primary/20">
-              <Link to="/book">Book a Strategy Call</Link>
-            </Button>
+            <RevealButton
+              to="/book"
+              label="Book a Strategy Call"
+              className="h-12 min-w-12 max-w-12 px-3 shadow-md shadow-primary/20 hover:max-w-72"
+            />
           </div>
         </div>
       </Section>

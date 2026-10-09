@@ -5,6 +5,7 @@ import FluidFlowGrid from "@/components/ui/fluid-flow-grid";
 import BentoCard from "@/components/ui/bento-card";
 import { Container, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
+import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { OisConnection } from "@/components/site/OisConnection";
@@ -207,67 +208,58 @@ function ProductPage() {
               }
             >
               {isOIS ? (
-                <Button
-                  asChild
-                  size="lg"
-                  className="rounded-full"
+                <RevealButton
+                  to={site.oisExternalUrl}
+                  external
+                  icon={ExternalLink}
+                  label="Experience the OIS Concept"
+                  className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
                   onClick={() => trackEvent("ois_external_click", { source: "product_page" })}
-                >
-                  <a href={site.oisExternalUrl} target="_blank" rel="noopener noreferrer">
-                    Experience the OIS Concept <ExternalLink className="ml-1 size-4" />
-                  </a>
-                </Button>
+                />
               ) : p.slug === "horus-ai" && p.externalUrl ? (
-                <Button
-                  asChild
-                  size="lg"
-                  className="rounded-full"
+                <RevealButton
+                  to={p.externalUrl}
+                  external
+                  icon={ExternalLink}
+                  label="Visit the Horus AI website"
+                  className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
                   onClick={() => trackEvent("horus_external_click", { source: "product_hero" })}
-                >
-                  <a href={p.externalUrl} target="_blank" rel="noopener noreferrer">
-                    Visit the Horus AI website <ExternalLink className="ml-1 size-4" />
-                  </a>
-                </Button>
+                />
               ) : (
-                <Button
-                  asChild
-                  size="lg"
-                  className="rounded-full"
+                <RevealButton
+                  to="/contact"
+                  icon={ArrowRight}
+                  label={`Discuss ${p.name}`}
+                  className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
                   onClick={() => trackEvent("product_enquiry", { product: p.slug })}
-                >
-                  <Link to="/contact">
-                    Discuss {p.name} <ArrowRight className="ml-1 size-4" />
-                  </Link>
-                </Button>
+                />
               )}
               {isObms && p.externalUrl ? (
-                <Button
-                  asChild
-                  size="lg"
+                <RevealButton
+                  to={p.externalUrl}
+                  external
+                  icon={ExternalLink}
+                  label="More detail"
                   variant="outline"
-                  className="rounded-full"
+                  className="h-12 min-w-12 max-w-12 px-3 hover:max-w-64"
                   onClick={() => trackEvent("obms_external_click", { source: "product_hero" })}
-                >
-                  <a href={p.externalUrl} target="_blank" rel="noopener noreferrer">
-                    More detail <ExternalLink className="ml-1 size-4" />
-                  </a>
-                </Button>
+                />
               ) : p.slug === "horus-ai" ? (
-                <Button
-                  asChild
-                  size="lg"
+                <RevealButton
+                  to="/contact"
+                  icon={ArrowRight}
+                  label={`Talk about ${p.name}`}
                   variant="outline"
-                  className="rounded-full"
+                  className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
                   onClick={() => trackEvent("product_enquiry", { product: p.slug })}
-                >
-                  <Link to="/contact">
-                    Talk about {p.name} <ArrowRight className="ml-1 size-4" />
-                  </Link>
-                </Button>
+                />
               ) : (
-                <Button asChild size="lg" variant="outline" className="rounded-full">
-                  <Link to="/book">Book a strategy call</Link>
-                </Button>
+                <RevealButton
+                  to="/book"
+                  label="Book a strategy call"
+                  variant="outline"
+                  className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+                />
               )}
             </div>
           </div>
@@ -276,7 +268,7 @@ function ProductPage() {
               <div
                 ref={cardRef}
                 className={cn(
-                  "relative flex aspect-[4/3] w-full flex-col items-center justify-center overflow-hidden rounded-3xl border hairline bg-white p-6 text-center shadow-xl transition-[transform,box-shadow,border-color] duration-300 md:p-8",
+                  "relative flex aspect-[4/3] w-full flex-col items-center justify-center overflow-hidden rounded-3xl border hairline bg-card p-6 text-center shadow-xl transition-[transform,box-shadow,border-color] duration-300 md:p-8",
                   heroVideoSrc && "cursor-pointer",
                 )}
                 onMouseEnter={handleMouseEnter}
@@ -287,7 +279,7 @@ function ProductPage() {
                     <img
                       key={gifKey}
                       src={gifKey ? `${heroVideoSrc}?t=${gifKey}` : heroVideoSrc}
-                      alt={`${p.name} preview video`}
+                      alt={`${p.name} animated demonstration`}
                       className={cn(
                         "absolute inset-0 size-full object-cover rounded-3xl transition-all duration-500 z-20 pointer-events-none",
                         isHovered ? "opacity-100 scale-100" : "opacity-0 scale-105",
@@ -326,6 +318,8 @@ function ProductPage() {
                       src={p.image}
                       alt={`${p.name} logo`}
                       loading="eager"
+                      width={600}
+                      height={600}
                       className="max-h-44 md:max-h-56 w-auto max-w-full object-contain"
                     />
                   </div>

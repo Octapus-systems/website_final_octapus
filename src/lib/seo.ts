@@ -5,10 +5,66 @@
 
 export const SITE_NAME = "Octapus";
 export const SITE_TAGLINE = "Software, AI and Business Systems — UAE";
-export const SITE_URL = "https://octapus.ae";
+export const SITE_URL =
+  typeof process !== "undefined" && process.env?.SITE_URL
+    ? process.env.SITE_URL.replace(/\/+$/, "")
+    : "https://octapus.ae";
+
+export const ALLOWED_ROBOTS_HOSTS = new Set([
+  "octapus.ae",
+  "www.octapus.ae",
+  "website-final-octapus.vercel.app",
+]);
+
+export function isProductionHost(hostOrUrl?: string): boolean {
+  if (!hostOrUrl) {
+    if (typeof window !== "undefined") {
+      hostOrUrl = window.location.hostname;
+    } else {
+      try {
+        hostOrUrl = new URL(SITE_URL).hostname;
+      } catch {
+        hostOrUrl = "octapus.ae";
+      }
+    }
+  }
+  const clean = hostOrUrl
+    .split(",")[0]
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .split("/")[0]
+    .split(":")[0]
+    .toLowerCase();
+  return clean === "octapus.ae" || clean === "www.octapus.ae";
+}
+
+export function isAllowedRobotsHost(hostOrUrl?: string): boolean {
+  if (!hostOrUrl) {
+    if (typeof window !== "undefined") {
+      hostOrUrl = window.location.hostname;
+    } else {
+      try {
+        hostOrUrl = new URL(SITE_URL).hostname;
+      } catch {
+        hostOrUrl = "octapus.ae";
+      }
+    }
+  }
+  const clean = hostOrUrl
+    .split(",")[0]
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .split("/")[0]
+    .split(":")[0]
+    .toLowerCase();
+  return isProductionHost(clean) || ALLOWED_ROBOTS_HOSTS.has(clean);
+}
+
+export const isCrawlableHost = isAllowedRobotsHost;
+
 
 export function absoluteUrl(path: string) {
-  if (!path) return SITE_URL;
+  if (!path || path === "/") return `${SITE_URL}/`;
   if (/^https?:\/\//i.test(path)) return path;
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
@@ -27,6 +83,11 @@ export function buildMeta(input: MetaInput) {
   const { title, description, path, ogType = "website", image, noindex, keywords } = input;
 
   const canonical = absoluteUrl(path);
+
+  // If served on a host other than octapus.ae, mark noindex,nofollow
+  const shouldNoindex = Boolean(
+    noindex || (typeof window !== "undefined" && !isProductionHost(window.location.hostname)),
+  );
 
   const meta: Array<Record<string, string>> = [
     { title },
@@ -49,7 +110,7 @@ export function buildMeta(input: MetaInput) {
     meta.push({ property: "og:image", content: absImage });
     meta.push({ name: "twitter:image", content: absImage });
   }
-  if (noindex) {
+  if (shouldNoindex) {
     meta.push({ name: "robots", content: "noindex,nofollow" });
   }
 
