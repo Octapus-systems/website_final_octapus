@@ -21,6 +21,7 @@ import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
+import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
 import { RevealButton } from "@/components/site/RevealButton";
 import { servicePages } from "@/lib/service-pages";
 
@@ -314,7 +315,10 @@ function Home() {
       {/* ── 02. EVERYTHING CONNECTED (3D) ── */}
       <Octapus3DSection />
 
-      {/* ── 03. OUR PRODUCTS & TRUST PROOF ── */}
+      {/* ── 03. WHAT WE BUILD ── */}
+      <WhatWeBuildSection />
+
+      {/* ── 04. OUR PRODUCTS & TRUST PROOF ── */}
       <Section
         eyebrow="Proven Systems"
         title="Our Products"
