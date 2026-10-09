@@ -1,17 +1,24 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import * as React from "react";
 import { JsonLd } from "@/components/site/JsonLd";
-import { ScrollVideoSection } from "@/components/site/ScrollVideoSection";
+import { Octapus3DSection } from "@/components/site/Octapus3DSection";
+import { useLoadingDone } from "@/components/site/LoadingScreen";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { DotPattern } from "@/components/ui/dot-pattern";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  animate as motionAnimate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 
-import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
 
@@ -52,6 +59,55 @@ const statItemVariants = {
   },
 };
 
+const closingCtaVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.14, delayChildren: 0.08 },
+  },
+};
+
+const closingCtaItemVariants = {
+  hidden: { opacity: 0, y: 36, filter: "blur(10px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
+function AnimatedStatValue({ value }: { value: string }) {
+  const elementRef = React.useRef<HTMLSpanElement>(null);
+  const isInView = useInView(elementRef, { once: true, amount: 0.7 });
+  const reducedMotion = useReducedMotion();
+  const match = value.match(/^(\d+)(.*)$/);
+  const target = Number(match?.[1] ?? 0);
+  const suffix = match?.[2] ?? "";
+  const count = useMotionValue(reducedMotion ? target : 0);
+  const displayValue = useTransform(count, (latest) => `${Math.round(latest)}${suffix}`);
+
+  React.useEffect(() => {
+    if (!isInView) return;
+    if (reducedMotion) {
+      count.set(target);
+      return;
+    }
+
+    const controls = motionAnimate(count, target, {
+      duration: 1.35,
+      ease: [0.22, 1, 0.36, 1],
+    });
+
+    return () => controls.stop();
+  }, [count, isInView, reducedMotion, target]);
+
+  return (
+    <motion.span ref={elementRef} aria-label={value}>
+      {displayValue}
+    </motion.span>
+  );
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     ...buildMeta({
@@ -82,6 +138,8 @@ export const Route = createFileRoute("/")({
 function Home() {
   const navigate = useNavigate();
   const reducedMotion = useReducedMotion();
+  // Hero intro waits for the loading screen to fade out
+  const heroReady = useLoadingDone();
 
   const carouselSlides = React.useMemo(() => {
     return visibleProducts.map((p, idx) => ({
@@ -130,8 +188,7 @@ function Home() {
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col items-center justify-center py-20 text-center md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="flex items-center gap-3 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:text-xs"
           >
@@ -142,8 +199,7 @@ function Home() {
 
           <motion.h1
             initial={reducedMotion ? false : "hidden"}
-            whileInView="visible"
-            viewport={{ once: true }}
+            animate={heroReady || reducedMotion ? "visible" : "hidden"}
             variants={{
               hidden: {},
               visible: { transition: { staggerChildren: 0.065, delayChildren: 0.16 } },
@@ -183,8 +239,7 @@ function Home() {
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="mx-auto mt-10 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
           >
@@ -194,8 +249,7 @@ function Home() {
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
@@ -220,8 +274,7 @@ function Home() {
 
           <motion.ul
             initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.7, delay: 0.45 }}
             className="mt-14 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground/75 sm:gap-x-6 sm:text-[0.7rem]"
           >
@@ -237,11 +290,8 @@ function Home() {
         </div>
       </Section>
 
-      {/* ── 02. VIDEO SECTION ── */}
-      <ScrollVideoSection frameCount={600} mobileFrameCount={530} heightMultiplier={4} />
-
-      {/* ── 03. WHAT WE BUILD ── */}
-      <WhatWeBuildSection />
+      {/* ── 02. EVERYTHING CONNECTED (3D) ── */}
+      <Octapus3DSection />
 
       {/* ── 03. OUR PRODUCTS & TRUST PROOF ── */}
       <Section
@@ -282,7 +332,7 @@ function Home() {
                 }}
                 className="font-display text-3xl md:text-5xl font-bold tracking-tight text-foreground"
               >
-                {stat.value}
+                <AnimatedStatValue value={stat.value} />
               </motion.div>
               <div className="text-xs font-mono font-bold tracking-wider uppercase text-primary">
                 {stat.label}
@@ -303,36 +353,71 @@ function Home() {
 
       {/* ── 06. CLOSING CTA ── */}
       <Section className="bg-surface dark:bg-surface-dark border-t border-hairline relative overflow-hidden py-24 md:py-32">
-        <div className="mx-auto max-w-4xl text-center flex flex-col items-center relative z-10 space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.15]">
-              Your idea goes in. <br />
-              <span className="bg-gradient-to-r from-primary via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-                A production-ready system comes out.
-              </span>
-            </h2>
-          </div>
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl md:h-[30rem] md:w-[30rem]"
+          animate={reducedMotion ? undefined : { scale: [0.9, 1.15, 0.9], opacity: [0.35, 0.7, 0.35] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-          <div className="pt-6 flex flex-col sm:flex-row gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="rounded-full px-10 h-14 text-base font-semibold shadow-xl shadow-primary/25"
+        <motion.div
+          initial={reducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.45 }}
+          variants={closingCtaVariants}
+          className="mx-auto max-w-5xl text-center flex flex-col items-center relative z-10 space-y-8"
+        >
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.15]">
+            <span className="block overflow-hidden pb-[0.08em]">
+              <motion.span className="block" variants={closingCtaItemVariants}>
+                Your idea goes in.
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden pb-[0.12em]">
+              <motion.span
+                variants={closingCtaItemVariants}
+                className="block bg-gradient-to-r from-primary via-purple-400 to-indigo-400 bg-[length:200%_100%] bg-clip-text text-transparent"
+                animate={reducedMotion ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              >
+                A production-ready system comes out.
+              </motion.span>
+            </span>
+          </h2>
+
+          <motion.div variants={closingCtaItemVariants} className="pt-6 flex flex-col sm:flex-row gap-4">
+            <motion.div
+              whileHover={reducedMotion ? undefined : { y: -3, scale: 1.025 }}
+              whileTap={reducedMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 420, damping: 24 }}
             >
-              <Link to="/book">
-                Start Your Project <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-full px-8 h-14 text-base font-medium"
+              <Button
+                asChild
+                size="lg"
+                className="group rounded-full px-10 h-14 text-base font-semibold shadow-xl shadow-primary/25"
+              >
+                <Link to="/book">
+                  Start Your Project
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={reducedMotion ? undefined : { y: -3, scale: 1.025 }}
+              whileTap={reducedMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 420, damping: 24 }}
             >
-              <Link to="/contact">Contact Sales</Link>
-            </Button>
-          </div>
-        </div>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-8 h-14 text-base font-medium"
+              >
+                <Link to="/contact">Contact Sales</Link>
+              </Button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </Section>
     </>
   );

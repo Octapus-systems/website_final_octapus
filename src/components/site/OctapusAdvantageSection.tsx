@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Section } from "@/components/site/Section";
 import { ArrowRight, CheckCircle2, Zap, ShieldCheck, Cpu, Code2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DecryptText } from "@/components/ui/decrypt-text";
 
 export function OctapusAdvantageSection() {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -106,8 +107,26 @@ export function OctapusAdvantageSection() {
   return (
     <Section
       eyebrow="The Octapus Advantage"
-      title="Software, Built Faster. Built Better."
-      intro="AI-first. Engineer-refined. Production-ready."
+      title={
+        <DecryptText
+          text="Software, Built Faster. Built Better."
+          startDelay={140}
+          stagger={34}
+          jitter={75}
+          seed={27}
+          replayOnView
+        />
+      }
+      intro={
+        <DecryptText
+          text="AI-first. Engineer-refined. Production-ready."
+          startDelay={560}
+          stagger={25}
+          jitter={60}
+          seed={53}
+          replayOnView
+        />
+      }
       className="bg-background relative overflow-hidden py-24 md:py-32"
     >
       {/* Background ambient glowing accents */}
