@@ -214,6 +214,9 @@ function drawFace(typed,caret,chatA,logoA,send){
   fx.drawImage(LC,512-330,512-95,660,190.4);fx.globalAlpha=1}
  fx.restore();faceTex.needsUpdate=true}
 const hubG=new THREE.Group();world.add(hubG);
+const glowTex=radTex([[0,"rgba(124,77,255,.55)"],[.45,"rgba(124,77,255,.18)"],[1,"rgba(124,77,255,0)"]]);
+const glow=new THREE.Mesh(new THREE.PlaneGeometry(1,1).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({map:glowTex,transparent:true,depthWrite:false,opacity:0}));glow.position.y=-1;world.add(glow);
+const halo=new THREE.Mesh(new THREE.RingGeometry(.94,1,160).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0x7c4dff,transparent:true,depthWrite:false,opacity:0,side:THREE.DoubleSide}));halo.position.y=1;world.add(halo);
 const DR=170,DT=22;
 const discBody=new THREE.Mesh(new THREE.CylinderGeometry(DR,DR,DT,128).rotateX(Math.PI/2),new THREE.MeshPhysicalMaterial({color:0xf3efe7,roughness:.35,metalness:.08,clearcoat:.8,clearcoatRoughness:.2,envMapIntensity:.8}));discBody.castShadow=discBody.receiveShadow=true;hubG.add(discBody);
 const discRim=new THREE.Mesh(new THREE.TorusGeometry(DR,5,12,160),new THREE.MeshStandardMaterial({color:0xb9bcc6,metalness:.85,roughness:.22}));discRim.position.z=DT/2;discRim.castShadow=true;hubG.add(discRim);
@@ -295,13 +298,13 @@ function frame(p,tm){
  const mG=clamp((p-.72)/.16);
  // nodes
  nodes.forEach((n,i)=>{
-  const ec=ease(clamp((p-.56-n.delay*.07)/.09)),e=reduce&&p>.8?1:ease(ease(clamp((p-.715-n.delay*.04)/.13)));
+  const ec=ease(clamp((p-.56-n.delay*.07)/.09)),e=reduce&&p>.8?1:ease(ease(clamp((p-(.70+(2-n.ring)*.055+n.j/RINGS[n.ring].n*.05))/.09)));
   const rg=RINGS[n.ring],ringRot=rg.dir*rg.rate*rb;
-  const th=n.th0+n.dl*e+lerp(gRot,ringRot,e),r=lerp(n.rg0,rg.R,e),y=lerp(0,rg.y,e);
+  const th=n.th0+n.dl*e+lerp(gRot,ringRot,e),r=lerp(n.rg0,rg.R,e),fl=Math.sin(Math.PI*e),y=lerp(0,rg.y,e)+fl*(55+25*n.ring);
   ang[i]=(n.thr+ringRot)/D2R;
   const g=n.g;g.position.set(r*Math.sin(th),y,r*Math.cos(th));
   const pr=clamp((p-.015-n.delay*.02)/.05);
-  g.scale.setScalar(Math.max(.0001,lerp(1.12,rg.c/36,e)*easeO(reduce?1:pr)));g.visible=pr>.001;
+  g.scale.setScalar(Math.max(.0001,lerp(1.12,rg.c/36,e)*(1-.24*fl)*easeO(reduce?1:pr)));g.visible=pr>.001;
   g.quaternion.copy(camera.quaternion);g.rotateX(subtleTilt);
   n.fm.uniforms.uColor.value=ec;n.ec=ec;n.e=e;tmpPos[i][0]=g.position.x;tmpPos[i][1]=g.position.y;tmpPos[i][2]=g.position.z});
  // galaxy links
@@ -318,6 +321,8 @@ function frame(p,tm){
  dashA.scale.setScalar(Math.max(.0001,215*gR));dashA.rotation.y=-rb*1.5;
  dashB.scale.setScalar(Math.max(.0001,411*gR));dashB.rotation.y=rb;
  tick.scale.setScalar(Math.max(.0001,114*gR));tick.rotation.y=rb*2;
+ {const pu=.5+.5*Math.sin(tm*1.6);glow.scale.setScalar(Math.max(.0001,(520+40*pu)*gR));glow.material.opacity=gR*(.55+.25*pu);
+  const hp=(tm*.45)%1;halo.scale.setScalar(Math.max(.0001,(120+300*hp)*gR));halo.material.opacity=gR*.35*(1-hp)}
  dust.rotation.y=gRot;dust.material.opacity=lerp(.7,.14,ease(clamp((p-.76)/.12)));
 }
 /* ---------- scroll ---------- */

@@ -4,8 +4,9 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Octapus3DSection } from "@/components/site/Octapus3DSection";
 import { useLoadingDone } from "@/components/site/LoadingScreen";
 import { Section } from "@/components/site/Section";
+import { Button } from "@/components/ui/button";
 import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_URL } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import {
@@ -38,6 +39,8 @@ const FALLBACK_IMAGES = [
   obmsBusiness,
   oisNetwork,
 ];
+
+const heroTitle = "Build For Today";
 
 const visibleProducts = products.filter((p) => !hiddenProductSlugs.includes(p.slug));
 
@@ -196,20 +199,12 @@ function Home() {
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }])} />
 
       {/* ── 01. HERO ── */}
-      <header className="relative isolate overflow-hidden border-b border-border bg-background text-foreground">
+      <header className="relative isolate overflow-hidden bg-background text-foreground">
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle,currentColor_0.7px,transparent_0.8px)] bg-[size:24px_24px] opacity-[0.12]"
+          className="absolute inset-0 bg-[radial-gradient(circle,currentColor_0.7px,transparent_0.8px)] bg-[size:24px_24px] opacity-[0.12] dark:opacity-[0.28] [mask-image:linear-gradient(to_bottom,black_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
         />
-        <div
-          aria-hidden="true"
-          className="absolute left-1/2 top-1/2 aspect-square w-[min(82vw,48rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.055]"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute left-1/2 top-1/2 aspect-square w-[min(60vw,35rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/[0.055]"
-        />
-        <DotPattern className="fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/10" />
+        <DotPattern className="[mask-image:linear-gradient(to_bottom,black_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)] fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/30" />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col items-center justify-center py-20 text-center md:py-24">
           <motion.div
