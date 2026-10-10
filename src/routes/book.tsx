@@ -26,6 +26,20 @@ export const Route = createFileRoute("/book")({
   component: BookPage,
 });
 
+function CalEmbed({ link }: { link: string }) {
+  const src = `https://cal.com/${link}?embed=true&theme=light&layout=month_view&brandColor=%23601CE6`;
+  return (
+    <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border hairline bg-background shadow-sm">
+      <iframe
+        src={src}
+        title="Book a strategy call with Octapus"
+        loading="lazy"
+        className="block h-[760px] w-full border-0 sm:h-[700px]"
+      />
+    </div>
+  );
+}
+
 function BookPage() {
   return (
     <>
@@ -59,24 +73,41 @@ function BookPage() {
         title="Thirty Focused Minutes With the Octapus Team."
         intro="30 minutes. No obligation. Octapus listen, ask precise questions and share what Octapus'd recommend."
       >
-        <div className="mx-auto max-w-2xl rounded-2xl border hairline bg-[var(--color-surface)] p-8 text-center">
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <RevealButton
-              to={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}
-              external
-              icon={Mail}
-              label={`Email ${site.emails.sales}`}
-              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
-            />
-            <RevealButton
-              to="/contact"
-              icon={Send}
-              label="Use the enquiry form"
-              variant="outline"
-              className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
-            />
+        {site.calLink ? (
+          <>
+            <CalEmbed link={site.calLink} />
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Prefer email?{" "}
+              <a className="underline underline-offset-4" href={`mailto:${site.emails.sales}`}>
+                {site.emails.sales}
+              </a>{" "}
+              or{" "}
+              <Link to="/contact" className="underline underline-offset-4">
+                use the enquiry form
+              </Link>
+              .
+            </p>
+          </>
+        ) : (
+          <div className="mx-auto max-w-2xl rounded-2xl border hairline bg-[var(--color-surface)] p-8 text-center">
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <RevealButton
+                to={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}
+                external
+                icon={Mail}
+                label={`Email ${site.emails.sales}`}
+                className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
+              />
+              <RevealButton
+                to="/contact"
+                icon={Send}
+                label="Use the enquiry form"
+                variant="outline"
+                className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
+              />
+            </div>
           </div>
-        </div>
+        )}
       </Section>
 
       <RelatedLinks

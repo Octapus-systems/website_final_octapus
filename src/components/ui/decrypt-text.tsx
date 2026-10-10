@@ -12,6 +12,8 @@ type DecryptTextProps = {
   seed?: number;
   replayOnView?: boolean;
   as?: "span" | "div" | "p";
+  /** Soft blur on characters while they scramble, sharpening as they lock */
+  blur?: boolean;
 };
 
 const GLYPHS = "#%&@$?!*+=/{}[]<>~^";
@@ -37,6 +39,7 @@ export function DecryptText({
   seed = 1,
   replayOnView = true,
   as: Tag = "span",
+  blur = false,
 }: DecryptTextProps) {
   const rootRef = React.useRef<HTMLElement | null>(null);
   const characterRefs = React.useRef<Array<HTMLSpanElement | null>>([]);
@@ -142,7 +145,8 @@ export function DecryptText({
   React.useEffect(() => stop, [stop]);
 
   const css = `
-    .${scope} [data-character][data-state="scramble"]{color:color-mix(in oklab,currentColor 30%,var(--muted-foreground));}
+    .${scope} [data-character][data-state="scramble"]{color:color-mix(in oklab,currentColor 30%,var(--muted-foreground));${blur ? "filter:blur(6px);opacity:.55;" : ""}}
+    .${scope} [data-character]{${blur ? "display:inline-block;transition:filter 700ms ease-out,opacity 700ms ease-out;" : ""}}
     .${scope} [data-character][data-state="lock"]{animation:${scope}-flash ${FLASH_DURATION}ms cubic-bezier(.2,0,0,1);}
     @keyframes ${scope}-flash{0%{color:var(--primary);text-shadow:0 0 22px color-mix(in oklab,var(--primary) 60%,transparent)}100%{text-shadow:0 0 0 transparent}}
     @media (prefers-reduced-motion:reduce){.${scope} [data-character][data-state="lock"]{animation:none}}

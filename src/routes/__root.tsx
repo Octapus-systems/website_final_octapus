@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -15,10 +16,8 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { JsonLd } from "@/components/site/JsonLd";
-import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { site } from "@/lib/site";
-import { THEME_STORAGE_KEY } from "@/lib/theme";
 import { isProductionHost } from "@/lib/seo";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 
@@ -139,10 +138,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
-        {/* Theme: set before first paint from the stored choice or system preference. */}
+        {/* Theme: site is light; only the Team page is dark. Set before first paint. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{const t=localStorage.getItem('octapus-theme');const dark=t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);}catch(e){}})();`,
+            __html: `(function(){try{document.documentElement.classList.toggle('dark',location.pathname==='/team'||location.pathname.indexOf('/team/')===0);}catch(e){}})();`,
           }}
         />
         {/* Consent Mode v2 default (denied) — bootstraps before GTM loads */}
@@ -195,21 +194,11 @@ function RootComponent() {
     return () => observer.disconnect();
   }, []);
 
+  // Light site; dark only on the Team page
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   useEffect(() => {
-    const preference = window.matchMedia("(prefers-color-scheme: dark)");
-    const syncSystemTheme = () => {
-      try {
-        if (!localStorage.getItem(THEME_STORAGE_KEY)) {
-          document.documentElement.classList.toggle("dark", preference.matches);
-        }
-      } catch {
-        // Keep the initial system preference when storage is unavailable.
-      }
-    };
-
-    preference.addEventListener("change", syncSystemTheme);
-    return () => preference.removeEventListener("change", syncSystemTheme);
-  }, []);
+    document.documentElement.classList.toggle("dark", pathname === "/team" || pathname.startsWith("/team/"));
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -263,10 +252,6 @@ function RootComponent() {
         <LoadingScreen />
         <SmoothScroll />
         <Nav />
-        {/* Floating light toggle — always on top, all pages */}
-        <div className="fixed top-3 right-32 z-[100] md:hidden">
-          <ThemeToggle className="glass-card border hairline bg-background/80 backdrop-blur size-10 hover:bg-accent/50" />
-        </div>
         <main id="main" className="flex-1">
           <Outlet />
         </main>

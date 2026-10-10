@@ -110,9 +110,10 @@ export function OctapusAdvantageSection() {
       title={
         <DecryptText
           text="Software, Built Faster. Built Better."
-          startDelay={140}
-          stagger={34}
-          jitter={75}
+          startDelay={150}
+          stagger={45}
+          speed={110}
+          jitter={40}
           seed={27}
           replayOnView
         />
@@ -120,9 +121,10 @@ export function OctapusAdvantageSection() {
       intro={
         <DecryptText
           text="AI-first. Engineer-refined. Production-ready."
-          startDelay={560}
-          stagger={25}
-          jitter={60}
+          startDelay={900}
+          stagger={30}
+          speed={110}
+          jitter={30}
           seed={53}
           replayOnView
         />

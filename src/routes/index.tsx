@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import * as React from "react";
 import { JsonLd } from "@/components/site/JsonLd";
-import { Octapus3DSection } from "@/components/site/Octapus3DSection";
+import { Octapus3DSection, useStoryDone } from "@/components/site/Octapus3DSection";
 import { useLoadingDone } from "@/components/site/LoadingScreen";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
@@ -144,6 +144,8 @@ function Home() {
   const reducedMotion = useReducedMotion();
   // Hero intro waits for the loading screen to fade out
   const heroReady = useLoadingDone();
+  // "What We Build" only appears once the 3D story has finished
+  const storyDone = useStoryDone();
 
   const carouselSlides = React.useMemo(() => {
     return visibleProducts.map((p, idx) => ({
@@ -328,7 +330,14 @@ function Home() {
       <Octapus3DSection />
 
       {/* ── 03. WHAT WE BUILD ── */}
-      <WhatWeBuildSection />
+      <motion.div
+        initial={false}
+        animate={storyDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        aria-hidden={!storyDone}
+      >
+        <WhatWeBuildSection />
+      </motion.div>
 
       {/* ── 04. OUR PRODUCTS & TRUST PROOF ── */}
       <Section

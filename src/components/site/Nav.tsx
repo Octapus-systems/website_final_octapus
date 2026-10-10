@@ -3,7 +3,6 @@ import { Link, useRouter, useNavigate } from "@tanstack/react-router";
 import { Menu, X, ChevronRight, ChevronDown, CalendarClock } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "./Wordmark";
-import { ThemeToggle } from "./ThemeToggle";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { RevealButton } from "@/components/site/RevealButton";
 import { trackEvent } from "@/lib/analytics";
@@ -636,7 +635,6 @@ export function Nav() {
 
           {/* Desktop right actions */}
           <div className="hidden lg:flex items-center gap-2">
-            <ThemeToggle className="-translate-x-1" />
             <div className="relative h-9 w-9 shrink-0">
               <div className="absolute right-0 top-0 z-10">
                 <RevealButton
@@ -651,7 +649,6 @@ export function Nav() {
 
           {/* Mobile: hamburger + Sheet */}
           <div className="flex lg:hidden items-center gap-1">
-            <ThemeToggle />
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <button

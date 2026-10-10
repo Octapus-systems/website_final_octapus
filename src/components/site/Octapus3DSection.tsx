@@ -1,4 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const STORY_DONE_EVENT = "octa:story-done";
+const STORY_DONE_AT = 0.995;
+
+/** True once the 3D story has fully played (stays true). */
+export function useStoryDone() {
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    if ((window as Window & { __octaStoryDone?: boolean }).__octaStoryDone) return setDone(true);
+    const on = () => setDone(true);
+    window.addEventListener(STORY_DONE_EVENT, on);
+    return () => window.removeEventListener(STORY_DONE_EVENT, on);
+  }, []);
+  return done;
+}
 
 /**
  * Scroll-driven 3D "everything connected" scene.
@@ -33,9 +48,22 @@ export function Octapus3DSection() {
     const onMessage = (e: MessageEvent) => {
       if (e.source !== frame.contentWindow) return;
       if (e.data?.type === "octa3d-ready") sendProgress();
-      if (e.data?.type === "octa3d-progress") section.dataset.storyProgress = String(e.data.p);
+      if (e.data?.type === "octa3d-progress") {
+        section.dataset.storyProgress = String(e.data.p);
+        const w = window as Window & { __octaStoryDone?: boolean };
+        if (e.data.p >= STORY_DONE_AT && !w.__octaStoryDone) {
+          w.__octaStoryDone = true;
+          window.dispatchEvent(new Event(STORY_DONE_EVENT));
+        }
+      }
     };
 
+    const holdAtEnd = () => {
+      if ((window as Window & { __octaStoryDone?: boolean }).__octaStoryDone) return;
+      const end = section.offsetTop + section.offsetHeight - window.innerHeight;
+      if (window.scrollY > end + 2) window.scrollTo(0, end);
+    };
+    window.addEventListener("scroll", holdAtEnd, { passive: true });
     window.addEventListener("scroll", sendProgress, { passive: true });
     window.addEventListener("resize", sendProgress);
     window.addEventListener("pointermove", onPointer, { passive: true });
@@ -44,6 +72,7 @@ export function Octapus3DSection() {
     sendProgress();
 
     return () => {
+      window.removeEventListener("scroll", holdAtEnd);
       window.removeEventListener("scroll", sendProgress);
       window.removeEventListener("resize", sendProgress);
       window.removeEventListener("pointermove", onPointer);

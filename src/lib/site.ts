@@ -75,6 +75,11 @@ export const site = {
     { city: "Ajman", line: "Amper Gem Tower, Khalifa Street, Ajman, UAE" },
   ],
   whatsapp: "971508621612",
+  /**
+   * Cal.com booking link for /book, e.g. "octapus/strategy-call".
+   * Leave empty to show the email / enquiry-form fallback instead.
+   */
+  calLink: "" as string,
 } as const;
 
 export type Product = {
