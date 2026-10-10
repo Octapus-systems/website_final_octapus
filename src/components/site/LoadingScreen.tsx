@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Search } from "lucide-react";
 
 const MAX_WAIT_MS = 15000;
 
@@ -51,6 +52,8 @@ export function LoadingScreen() {
   const [typed, setTyped] = useState("");
   const [boxGone, setBoxGone] = useState(false);
   const [showOut, setShowOut] = useState(false);
+  const [cursorIn, setCursorIn] = useState(false);
+  const [pressed, setPressed] = useState(false);
   const textRef = useRef("");
 
   const completeLoading = useCallback(() => {
@@ -105,10 +108,17 @@ export function LoadingScreen() {
       await type(", get a website");
       await sleep(200);
       await type(" and run marketing");
-      await sleep(500);
-      await del(textRef.current.length);
-      await sleep(150);
+      await sleep(350);
       if (cancelled) return;
+      setCursorIn(true);
+      await sleep(850);
+      if (cancelled) return;
+      setPressed(true);
+      await sleep(200);
+      setPressed(false);
+      await sleep(250);
+      if (cancelled) return;
+      setCursorIn(false);
       setBoxGone(true);
       await sleep(300);
       setShowOut(true);
@@ -156,14 +166,50 @@ export function LoadingScreen() {
           <div className="mx-auto w-full max-w-[880px] text-center">
             <div className="relative flex min-h-[340px] flex-col items-center justify-center">
               <div
-                className={`flex w-full max-w-[760px] items-center overflow-hidden rounded border-border text-left font-medium tracking-[-0.015em] shadow-[0_1px_0_rgba(10,15,28,.04),0_22px_50px_-20px_rgba(10,15,28,.22)] transition-all duration-500 text-[clamp(20px,4.4vw,34px)] ${
-                  boxGone
-                    ? "max-h-0 min-h-0 -translate-y-2.5 border-0 px-[26px] py-0 opacity-0"
-                    : "max-h-[200px] min-h-[84px] border px-[26px] py-[22px] opacity-100"
+                className={`flex w-full flex-col items-center gap-7 transition-all duration-500 ${
+                  boxGone ? "pointer-events-none -translate-y-2.5 scale-95 opacity-0" : "opacity-100"
                 }`}
               >
-                <span>{typed}</span>
-                <span className="ml-[3px] inline-block h-[1.1em] w-0.5 animate-[caret-blink_1s_steps(1)_infinite] bg-primary" />
+                {/* Search bar */}
+                <div className="flex h-14 w-full max-w-[640px] items-center gap-3 rounded-full border border-border bg-background px-5 shadow-[0_1px_6px_rgba(32,33,36,.18)] sm:h-[58px] sm:px-6">
+                  <Search className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  <div className="flex min-w-0 flex-1 justify-end overflow-hidden whitespace-nowrap text-left text-base text-foreground sm:text-lg">
+                    <span className="min-w-0 flex-1 truncate [direction:rtl] text-left">
+                      <bdi>{typed}</bdi>
+                    </span>
+                    <span className="ml-[2px] inline-block h-[1.2em] w-0.5 shrink-0 animate-[caret-blink_1s_steps(1)_infinite] bg-primary" />
+                  </div>
+                </div>
+
+                {/* Search button + animated cursor */}
+                <div className="relative">
+                  <span
+                    className={`inline-flex h-10 items-center rounded-md border px-6 text-sm font-medium transition-all duration-150 ${
+                      pressed
+                        ? "scale-95 border-border bg-muted text-foreground shadow-inner"
+                        : "border-transparent bg-muted/70 text-foreground/80"
+                    }`}
+                  >
+                    Search
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className={`pointer-events-none absolute left-1/2 top-1/2 size-6 drop-shadow-md transition-all ease-out ${
+                      cursorIn
+                        ? "translate-x-1 translate-y-0 opacity-100 duration-[800ms]"
+                        : "translate-x-[140px] translate-y-[90px] opacity-0 duration-300"
+                    } ${pressed ? "scale-90" : "scale-100"}`}
+                  >
+                    <path
+                      d="M4 2.5v17.2l4.6-4.4 2.9 6.6 2.6-1.1-2.9-6.5h6.3z"
+                      fill="#fff"
+                      stroke="#111"
+                      strokeWidth="1.4"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
 
               <div

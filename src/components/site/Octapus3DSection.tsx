@@ -31,7 +31,9 @@ export function Octapus3DSection() {
     };
 
     const onMessage = (e: MessageEvent) => {
-      if (e.source === frame.contentWindow && e.data?.type === "octa3d-ready") sendProgress();
+      if (e.source !== frame.contentWindow) return;
+      if (e.data?.type === "octa3d-ready") sendProgress();
+      if (e.data?.type === "octa3d-progress") section.dataset.storyProgress = String(e.data.p);
     };
 
     window.addEventListener("scroll", sendProgress, { passive: true });
@@ -51,7 +53,7 @@ export function Octapus3DSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} aria-label="Everything connected" className="relative h-[1800vh] bg-background">
+    <section ref={sectionRef} data-scroll-story aria-label="Everything connected" className="relative h-[1800vh] bg-background">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         <iframe
           ref={frameRef}

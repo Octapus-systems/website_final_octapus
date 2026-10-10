@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500;600&family=Noto+Sans+Arabic:wght@500;600&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--m:clamp(20px,5.2vw,84px);--ink:#0f1115;--mute:#6b7080;--acc:#6b3fb5}
+:root{--pad:1.25rem;--m:calc(max(0px,(100vw - 80rem)/2) + var(--pad));--ink:#0f1115;--mute:#6b7080;--acc:#6b3fb5}
 *{box-sizing:border-box}
 html,body{margin:0;background:transparent;font-family:"Geist","Inter",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 html,body{overflow:hidden;height:100%}.spacer{display:none}
@@ -37,11 +37,16 @@ html,body{overflow:hidden;height:100%}.spacer{display:none}
 @keyframes dr{0%{transform:scaleY(0)}60%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
 #src{position:absolute;width:200px;height:200px;visibility:hidden;pointer-events:none}
 .t{font-family:Arial,Helvetica,sans-serif;font-weight:700}
-@media(max-width:700px){.cap.r{right:var(--m)}.rail{display:none}.hint{display:none}}
+.capfade{display:none}
+@media(min-width:768px){:root{--pad:2rem}}
+@media(min-width:1280px){:root{--pad:2.5rem}}
+@media(max-width:700px){.capfade{display:block;position:fixed;z-index:2;left:0;right:0;bottom:0;height:52vh;pointer-events:none;background:linear-gradient(to top,#fff 0%,rgba(255,255,255,.92) 45%,rgba(255,255,255,0) 100%)}
+.cap{bottom:calc(96px + env(safe-area-inset-bottom,0px))}.cap.r{right:var(--m)}.rail{display:none}.hint{display:none}}
 </style></head><body>
 <div class="spacer"></div>
 <canvas id="c"></canvas>
 <div class="top"><canvas id="brand"></canvas><span>Digital Transformation &middot; UAE</span></div>
+<div class="capfade"></div>
 <div class="rail" id="rail"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div class="hint" id="hint"><b></b>Scroll</div>
 
@@ -136,7 +141,7 @@ const R0=rng(11);
 const items=LOGOS.map(src=>({src})).concat(EXTRA.map(id=>({id})));
 for(let i=items.length-1;i>0;i--){const j=Math.floor(R0()*(i+1));[items[i],items[j]]=[items[j],items[i]]}
 const N=items.length,nO=24,nM=16,nI=N-nO-nM;
-const RINGS=[{n:nO,R:395,c:36,y:0,dir:1,rate:1,off:0,from:0},{n:nM,R:270,c:32,y:0,dir:-1,rate:1.5,off:11.25,from:nO},{n:nI,R:165,c:28,y:0,dir:1,rate:2,off:0,from:nO+nM}];
+const RINGS=[{n:nO,R:395,c:36,y:0,dir:1,rate:1,off:0,from:0},{n:nM,R:270,c:32,y:0,dir:-1,rate:1.2,off:11.25,from:nO},{n:nI,R:165,c:28,y:0,dir:1,rate:1.4,off:0,from:nO+nM}];
 
 const canvas=$("c");
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
@@ -265,7 +270,7 @@ function typedAt(p){let s="";for(const[k,txt,a,b]of TY){if(p<a)break;const f=cla
 /* ---------- camera path ---------- */
 // [p, azimuth, elevation, visibleHeight, minVisibleWidth, tx,ty,tz, stop]
 const K=[[0,-24,26,1800,2500,0,60,0,1],[.07,-24,26,1800,2500,0,60,0,1],[.14,0,5,540,460,0,210,0,1],[.40,0,4,470,400,0,210,0,1],
- [.52,0,72,1500,1900,0,0,0,0],[.64,180,58,1450,1850,0,0,0,0],[.76,300,46,1350,1700,0,0,0,0],[.84,360,34,920,780,0,0,0,1],[.92,360,38,860,720,0,0,0,1],[.97,360,86,1400,1800,0,0,0,1],[1,360,86,1400,1800,0,0,0,1]];
+ [.52,0,62,1450,1850,0,0,0,1],[.64,12,58,1400,1800,0,0,0,0],[.76,24,52,1300,1650,0,0,0,0],[.84,30,40,980,820,0,0,0,1],[.92,34,42,920,760,0,0,0,1],[.97,36,78,1350,1750,0,0,0,1],[1,36,78,1350,1750,0,0,0,1]];
 function sampleK(p){let i=0;while(i<K.length-2&&p>K[i+1][0])i++;
  const a=K[i],b=K[i+1],dt=b[0]-a[0],t=clamp((p-a[0])/dt),t2=t*t,t3=t2*t;
  const h00=2*t3-3*t2+1,h10=t3-2*t2+t,h01=-2*t3+3*t2,h11=t3-t2;
@@ -278,16 +283,18 @@ const tgt=new THREE.Vector3();let px=0,py=0,tpx=0,tpy=0;
 addEventListener("pointermove",e=>{tpx=e.clientX/innerWidth*2-1;tpy=e.clientY/innerHeight*2-1},{passive:true});
 function updateCam(p,tm){const k=reduce?0:1,v=sampleK(p),e=1-easeO(clamp(tm/2.6));
  const az=(v[0]+px*1.6+e*-16*k+Math.sin(tm*.31)*.7*k)*D2R,el=clamp(v[1]-py*1.1+e*7*k+Math.cos(tm*.27)*.4*k,2,88.5)*D2R;
- const H=Math.max(v[2],v[3]/camera.aspect)*(1+e*.22*k),dist=H/2/Math.tan(FOV*D2R/2);
+ const por=camera.aspect<.8,H=Math.max(v[2]*(por?.95:1),v[3]/camera.aspect*(por?.5:1))*(1+e*.22*k),dist=H/2/Math.tan(FOV*D2R/2);
  tgt.set(v[4],v[5],v[6]);
  camera.position.set(tgt.x+dist*Math.sin(az)*Math.cos(el),tgt.y+dist*Math.sin(el),tgt.z+dist*Math.cos(az)*Math.cos(el));
- camera.up.set(0,1,0);camera.lookAt(tgt);camera.updateMatrixWorld()}
+ camera.up.set(0,1,0);camera.lookAt(tgt);
+ if(camera.aspect<.8)camera.setViewOffset(innerWidth,innerHeight,0,innerHeight*.17,innerWidth,innerHeight);else camera.clearViewOffset();
+ camera.updateProjectionMatrix();camera.updateMatrixWorld()}
 
 /* ---------- frame ---------- */
 const ang=new Float32Array(N),tmpPos=nodes.map(()=>[0,0,0]);
 const S0=Math.hypot,subtleTilt=.2;
 function frame(p,tm){
- const k=reduce?0:1,gRot=(k?tm*.3:0)*D2R+p*45*D2R,rb=((k?tm*1.5:0)+p*180)*D2R;
+ const k=reduce?0:1,gRot=(k?tm*.12:0)*D2R+p*18*D2R,rb=((k?tm*.6:0)+p*40)*D2R;
  // chat disc -> hub
  const m1=ease(clamp((p-.41)/.11)),chatA=1-ease(clamp((p-.41)/.05)),logoA=ease(clamp((p-.43)/.06));
  hubG.position.set(0,lerp(210,0,m1),0);hubG.rotation.set(-Math.PI/2*m1,Math.sin(tm*.4)*.04*(1-m1)*k,0,"XYZ");hubG.scale.setScalar(lerp(1,105/DR,m1));
@@ -336,8 +343,9 @@ if(window.parent!==window)window.parent.postMessage({type:"octa3d-ready"},"*");
 const t0=performance.now();let last=t0;
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const tm=(now-t0)/1000;
  // critically-damped follow for butter-smooth scroll
- const w=3.2,x=cur-target;vel+=(-w*w*x-2*w*vel)*dt;cur+=vel*dt;if(Math.abs(cur-target)<1e-5&&Math.abs(vel)<1e-4){cur=target;vel=0}
+ const w=3.2,x=cur-target;vel+=(-w*w*x-2*w*vel)*dt;vel=Math.max(-.12,Math.min(.12,vel));cur+=vel*dt;if(Math.abs(cur-target)<1e-5&&Math.abs(vel)<1e-4){cur=target;vel=0}
  px+=(tpx-px)*.03;py+=(tpy-py)*.03;
+ if(window.parent!==window&&Math.abs(cur-(loop.sent??-1))>.002){loop.sent=cur;window.parent.postMessage({type:"octa3d-progress",p:cur},"*")}
  if(active){const p=clamp(cur);updateCam(p,tm);frame(p,tm);overlay(p);renderer.render(scene,camera)}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 }

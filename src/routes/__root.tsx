@@ -20,6 +20,7 @@ import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { site } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import { isProductionHost } from "@/lib/seo";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
 
 function NotFoundComponent() {
   return (
@@ -260,6 +261,7 @@ function RootComponent() {
 
       <div className="flex min-h-dvh flex-col">
         <LoadingScreen />
+        <SmoothScroll />
         <Nav />
         {/* Floating light toggle — always on top, all pages */}
         <div className="fixed top-3 right-32 z-[100] md:hidden">

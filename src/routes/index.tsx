@@ -227,36 +227,48 @@ function Home() {
               visible: { transition: { staggerChildren: 0.065, delayChildren: 0.16 } },
             }}
             aria-label={heroTitle}
-            className="mt-8 flex flex-row items-center justify-center max-w-[11ch] text-balance font-display text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.038em] text-foreground [text-shadow:0_4px_24px_rgba(0,0,0,0.06)] dark:[text-shadow:0_4px_24px_rgba(255,255,255,0.08)] sm:max-w-none sm:whitespace-nowrap"
+            className="mt-8 flex flex-row flex-wrap items-center justify-center gap-y-1 text-balance font-display text-[clamp(3.4rem,14vw,9rem)] sm:text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.038em] text-foreground [text-shadow:0_4px_24px_rgba(0,0,0,0.06)] dark:[text-shadow:0_4px_24px_rgba(255,255,255,0.08)] sm:max-w-none sm:whitespace-nowrap"
           >
-            {Array.from(heroTitle).map((character, index) => (
-              <motion.span
-                key={`${character}-${index}`}
-                aria-hidden="true"
-                variants={{
-                  hidden: {
-                    opacity: character === " " ? 0 : 0.16,
-                    filter: "blur(12px)",
-                    scale: 1.025,
-                  },
-                  visible: {
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    scale: 1,
-                    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
-                  },
-                }}
-                className={
-                  character === " "
-                    ? "inline-block w-[0.2em]"
-                    : index >= 10
-                      ? "inline-block text-primary"
-                      : "inline-block"
-                }
-              >
-                {character === " " ? "\u00a0" : character}
-              </motion.span>
-            ))}
+            {heroTitle.split(" ").map((word, wordIndex, words) => {
+              const offset = words.slice(0, wordIndex).join(" ").length + (wordIndex ? 1 : 0);
+              return (
+                <span key={word} className="inline-flex whitespace-nowrap">
+                  {Array.from(wordIndex < words.length - 1 ? word + " " : word).map(
+                    (character, i) => {
+                      const index = offset + i;
+                      return (
+                        <motion.span
+                          key={`${character}-${index}`}
+                          aria-hidden="true"
+                          variants={{
+                            hidden: {
+                              opacity: character === " " ? 0 : 0.16,
+                              filter: "blur(12px)",
+                              scale: 1.025,
+                            },
+                            visible: {
+                              opacity: 1,
+                              filter: "blur(0px)",
+                              scale: 1,
+                              transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+                            },
+                          }}
+                          className={
+                            character === " "
+                              ? "inline-block w-[0.2em]"
+                              : index >= 10
+                                ? "inline-block text-primary"
+                                : "inline-block"
+                          }
+                        >
+                          {character === " " ? "\u00a0" : character}
+                        </motion.span>
+                      );
+                    },
+                  )}
+                </span>
+              );
+            })}
           </motion.h1>
 
           <motion.p
@@ -298,7 +310,7 @@ function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={heroReady ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.7, delay: 0.45 }}
-            className="mt-14 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground/75 sm:gap-x-6 sm:text-[0.7rem]"
+            className="mt-14 flex flex-wrap items-center justify-center gap-x-3 px-4 gap-y-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground/75 sm:gap-x-6 sm:text-[0.7rem]"
           >
             {["Custom software", "AI systems", "Digital platforms"].map((capability, index) => (
               <React.Fragment key={capability}>
@@ -381,7 +393,9 @@ function Home() {
         <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl md:h-[30rem] md:w-[30rem]"
-          animate={reducedMotion ? undefined : { scale: [0.9, 1.15, 0.9], opacity: [0.35, 0.7, 0.35] }}
+          animate={
+            reducedMotion ? undefined : { scale: [0.9, 1.15, 0.9], opacity: [0.35, 0.7, 0.35] }
+          }
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         />
 
@@ -402,7 +416,11 @@ function Home() {
               <motion.span
                 variants={closingCtaItemVariants}
                 className="block bg-gradient-to-r from-primary via-purple-400 to-indigo-400 bg-[length:200%_100%] bg-clip-text text-transparent"
-                animate={reducedMotion ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                animate={
+                  reducedMotion
+                    ? undefined
+                    : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }
+                }
                 transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               >
                 A production-ready system comes out.
@@ -410,7 +428,10 @@ function Home() {
             </span>
           </h2>
 
-          <motion.div variants={closingCtaItemVariants} className="pt-6 flex flex-col sm:flex-row gap-4">
+          <motion.div
+            variants={closingCtaItemVariants}
+            className="pt-6 flex flex-col sm:flex-row gap-4"
+          >
             <motion.div
               whileHover={reducedMotion ? undefined : { y: -3, scale: 1.025 }}
               whileTap={reducedMotion ? undefined : { scale: 0.98 }}
