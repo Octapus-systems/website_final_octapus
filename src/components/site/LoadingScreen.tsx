@@ -173,8 +173,8 @@ export function LoadingScreen() {
                 {/* Search bar */}
                 <div className="flex h-14 w-full max-w-[640px] items-center gap-3 rounded-full border border-border bg-background px-5 shadow-[0_1px_6px_rgba(32,33,36,.18)] sm:h-[58px] sm:px-6">
                   <Search className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-                  <div className="flex min-w-0 flex-1 justify-end overflow-hidden whitespace-nowrap text-left text-base text-foreground sm:text-lg">
-                    <span className="min-w-0 flex-1 truncate [direction:rtl] text-left">
+                  <div className="flex min-w-0 flex-1 justify-start overflow-hidden whitespace-nowrap text-left text-base text-foreground sm:text-lg">
+                    <span className="min-w-0 truncate [direction:rtl] text-left">
                       <bdi>{typed}</bdi>
                     </span>
                     <span className="ml-[2px] inline-block h-[1.2em] w-0.5 shrink-0 animate-[caret-blink_1s_steps(1)_infinite] bg-primary" />

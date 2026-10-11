@@ -8,7 +8,7 @@ import "lenis/dist/lenis.css";
  * (like the 3D story) play through instead of skipping. Touch keeps native scrolling.
  */
 // Max page speed while a scroll story is on screen (px per second), so a fling can't skip it
-const MAX_STORY_SPEED = 1400;
+const MAX_STORY_SPEED = 2200;
 const MAX_STORY_STEP = 120;
 
 export function SmoothScroll() {

@@ -138,10 +138,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
-        {/* Theme: site is light; only the Team page is dark. Set before first paint. */}
+        {/* Theme: whole site is light (no dark mode). Clear any leftover class before first paint. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{document.documentElement.classList.toggle('dark',location.pathname==='/team'||location.pathname.indexOf('/team/')===0);}catch(e){}})();`,
+            __html: `(function(){try{document.documentElement.classList.remove('dark');}catch(e){}})();`,
           }}
         />
         {/* Consent Mode v2 default (denied) — bootstraps before GTM loads */}
@@ -194,11 +194,10 @@ function RootComponent() {
     return () => observer.disconnect();
   }, []);
 
-  // Light site; dark only on the Team page
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Light site everywhere, including Team
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", pathname === "/team" || pathname.startsWith("/team/"));
-  }, [pathname]);
+    document.documentElement.classList.remove("dark");
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

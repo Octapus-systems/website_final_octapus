@@ -45,6 +45,8 @@ export function Octapus3DSection() {
       post({ x: (e.clientX / window.innerWidth) * 2 - 1, y: (e.clientY / window.innerHeight) * 2 - 1 });
     };
 
+    const onTap = () => post({ spin: true });
+
     const onMessage = (e: MessageEvent) => {
       if (e.source !== frame.contentWindow) return;
       if (e.data?.type === "octa3d-ready") sendProgress();
@@ -68,6 +70,7 @@ export function Octapus3DSection() {
     window.addEventListener("resize", sendProgress);
     window.addEventListener("pointermove", onPointer, { passive: true });
     window.addEventListener("message", onMessage);
+    section.addEventListener("click", onTap);
     frame.addEventListener("load", sendProgress);
     sendProgress();
 
@@ -77,12 +80,13 @@ export function Octapus3DSection() {
       window.removeEventListener("resize", sendProgress);
       window.removeEventListener("pointermove", onPointer);
       window.removeEventListener("message", onMessage);
+      section.removeEventListener("click", onTap);
       frame.removeEventListener("load", sendProgress);
     };
   }, []);
 
   return (
-    <section ref={sectionRef} data-scroll-story aria-label="Everything connected" className="relative h-[1800vh] bg-background">
+    <section ref={sectionRef} data-scroll-story aria-label="Everything connected" className="relative h-[520vh] cursor-pointer bg-background">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         <iframe
           ref={frameRef}

@@ -5,7 +5,7 @@ import { Octapus3DSection, useStoryDone } from "@/components/site/Octapus3DSecti
 import { useLoadingDone } from "@/components/site/LoadingScreen";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
-import { site, products, hiddenProductSlugs, stats } from "@/lib/site";
+import { site, products, hiddenProductSlugs } from "@/lib/site";
 import { buildMeta, breadcrumbSchema, SITE_URL } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { DotPattern } from "@/components/ui/dot-pattern";
@@ -45,23 +45,6 @@ const heroTitle = "Build For Today";
 
 const visibleProducts = products.filter((p) => !hiddenProductSlugs.includes(p.slug));
 
-const statGridVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.08 },
-  },
-};
-
-const statItemVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.97 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
-
 const closingCtaVariants = {
   hidden: {},
   visible: {
@@ -78,38 +61,6 @@ const closingCtaItemVariants = {
     transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
-
-function AnimatedStatValue({ value }: { value: string }) {
-  const elementRef = React.useRef<HTMLSpanElement>(null);
-  const isInView = useInView(elementRef, { once: true, amount: 0.7 });
-  const reducedMotion = useReducedMotion();
-  const match = value.match(/^(\d+)(.*)$/);
-  const target = Number(match?.[1] ?? 0);
-  const suffix = match?.[2] ?? "";
-  const count = useMotionValue(reducedMotion ? target : 0);
-  const displayValue = useTransform(count, (latest) => `${Math.round(latest)}${suffix}`);
-
-  React.useEffect(() => {
-    if (!isInView) return;
-    if (reducedMotion) {
-      count.set(target);
-      return;
-    }
-
-    const controls = motionAnimate(count, target, {
-      duration: 1.35,
-      ease: [0.22, 1, 0.36, 1],
-    });
-
-    return () => controls.stop();
-  }, [count, isInView, reducedMotion, target]);
-
-  return (
-    <motion.span ref={elementRef} aria-label={value}>
-      {displayValue}
-    </motion.span>
-  );
-}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -356,39 +307,6 @@ function Home() {
             }}
           />
         </div>
-
-        {/* Integrated Trust Metrics */}
-        <motion.div
-          initial={reducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={statGridVariants}
-          className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10 max-w-5xl mx-auto text-center mt-16 pt-12 border-t border-hairline"
-        >
-          {stats.map((stat, idx) => (
-            <motion.div key={idx} variants={statItemVariants} className="space-y-1">
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, scale: 0.82 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    transition: { type: "spring", stiffness: 280, damping: 22 },
-                  },
-                }}
-                className="font-display text-3xl md:text-5xl font-bold tracking-tight text-foreground"
-              >
-                <AnimatedStatValue value={stat.value} />
-              </motion.div>
-              <div className="text-xs font-mono font-bold tracking-wider uppercase text-primary">
-                {stat.label}
-              </div>
-              <p className="text-xs text-muted-foreground max-w-[200px] mx-auto mt-1">
-                {stat.detail}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
       </Section>
 
       {/* ── 05. THE OCTAPUS ADVANTAGE ── */}

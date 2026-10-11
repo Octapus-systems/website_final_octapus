@@ -105,11 +105,11 @@ function TeamPage() {
             {team.map((member, idx) => (
               <article
                 key={member.name}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border hairline bg-card transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2"
+                className="relative flex flex-col overflow-hidden rounded-2xl border hairline bg-card shadow-sm"
                 style={{ animationDelay: `${idx * 100}ms` }}
               >
                 {/* Top illuminated bar */}
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-primary-glow to-primary opacity-80 transition-opacity group-hover:opacity-100 z-10" />
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-primary-glow to-primary z-10" />
 
                 {/* Content */}
                 <div className="relative flex flex-1 flex-col p-6">
@@ -126,25 +126,27 @@ function TeamPage() {
                     {member.bio}
                   </p>
 
-                  <div className="mt-6 flex flex-col gap-2">
-                    <RevealButton
-                      to={`tel:${member.phone.replace(/\s/g, "")}`}
-                      external
-                      icon={Phone}
-                      label={member.phone}
-                      variant="outline"
-                      className="self-start"
+                  <div className="mt-6 flex flex-col gap-2 border-t hairline pt-5">
+                    <a
+                      href={`tel:${member.phone.replace(/\s/g, "")}`}
                       onClick={() => trackEvent("call_click", { member: member.name })}
-                    />
-                    <RevealButton
-                      to={`mailto:${member.email}`}
-                      external
-                      icon={Mail}
-                      label={member.email}
-                      variant="outline"
-                      className="self-start"
+                      className="flex items-center gap-3 rounded-xl bg-primary/[0.06] px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-primary/10"
+                    >
+                      <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <Phone className="size-4" aria-hidden="true" />
+                      </span>
+                      <span className="truncate">{member.phone}</span>
+                    </a>
+                    <a
+                      href={`mailto:${member.email}`}
                       onClick={() => trackEvent("email_click", { member: member.name })}
-                    />
+                      className="flex items-center gap-3 rounded-xl bg-primary/[0.06] px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-primary/10"
+                    >
+                      <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <Mail className="size-4" aria-hidden="true" />
+                      </span>
+                      <span className="truncate">{member.email}</span>
+                    </a>
                   </div>
                 </div>
               </article>
