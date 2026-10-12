@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Mail, MapPin, Phone, Send } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -160,18 +160,7 @@ export function Footerdemo() {
 
           <TooltipProvider>
             <div className="flex gap-2">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <a
-                    href={`tel:${site.phones.general.replace(/\s/g, "")}`}
-                    className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] transition hover:border-primary hover:bg-primary"
-                    aria-label={`Call Octapus at ${site.phones.general}`}
-                  >
-                    <Phone className="size-4" aria-hidden="true" />
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent>Call {site.phones.general}</TooltipContent>
-              </Tooltip>
+
               <Tooltip>
                 <TooltipTrigger asChild>
                   <a
