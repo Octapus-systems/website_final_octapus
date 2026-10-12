@@ -6,6 +6,7 @@ import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { site, team } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { RevealButton } from "@/components/site/RevealButton";
+import { TeamVisualSection } from "@/components/site/TeamVisualSection";
 
 export const Route = createFileRoute("/team")({
   head: () =>
@@ -75,28 +76,8 @@ function TeamPage() {
         </Container>
       </section>
 
-      {/* Team image */}
-      <Section className="relative py-6 md:py-10">
-        <Container>
-          <div className="relative overflow-hidden rounded-2xl border hairline shadow-2xl shadow-primary/10">
-            <img
-              src="/Team_dark_mode_1295x1215.png"
-              alt="Meet the experts behind Octapus — Sayid Nazim, Shabab, Jishad and Ajay Peter"
-              className="w-full h-auto object-cover dark:hidden"
-              loading="eager"
-              decoding="async"
-            />
-            <img
-              src="https://res.cloudinary.com/dk0v8kljx/image/upload/v1787327927/WhatsApp_Image_2026-08-21_at_9.10.38_PM_gorbzm.jpg"
-              alt="Meet the experts behind Octapus — Sayid Nazim, Shabab, Jishad and Ajay Peter"
-              className="w-full h-auto object-cover hidden dark:block"
-              loading="eager"
-              decoding="async"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-40 pointer-events-none" />
-          </div>
-        </Container>
-      </Section>
+      {/* Team member section */}
+      <TeamVisualSection />
 
       {/* Team grid — contact cards */}
       <Section className="relative">

@@ -1,0 +1,303 @@
+.teamSection {
+  position: relative;
+  margin: 40px auto 0;
+  width: min(1120px, calc(100% - 56px));
+}
+
+.teamPin {
+  background: #fff;
+  border: 1px solid #dfe3e7;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px rgba(50, 58, 68, 0.06);
+}
+
+:global(.dark) .teamPin {
+  background: #000;
+  border-color: #262628;
+  box-shadow: 0 22px 50px rgba(40, 32, 61, 0.2);
+}
+
+.teamHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 90px 48px 32px;
+}
+
+.teamHeading h2 {
+  margin: 0;
+  max-width: 510px;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -1.7px;
+  color: #25282d;
+}
+
+:global(.dark) .teamHeading h2 {
+  color: #f0f0f2;
+}
+
+.teamHeading aside {
+  text-align: right;
+  width: 180px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.teamHeading aside b {
+  font-family: monospace;
+  letter-spacing: 2px;
+  font-size: 11px;
+  color: #68727f;
+}
+
+:global(.dark) .teamHeading aside b {
+  color: #a58aea;
+}
+
+.teamHeading aside p {
+  margin: 62px 0 0 auto;
+  max-width: 145px;
+  color: #717780;
+}
+
+:global(.dark) .teamHeading aside p {
+  color: #bbb;
+}
+
+.sceneWindow {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1.94;
+  background: #f4f5f7;
+}
+
+:global(.dark) .sceneWindow {
+  background: #000;
+}
+
+.scene {
+  position: absolute;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  left: 0;
+  top: 0;
+  transform-origin: center;
+  will-change: transform;
+  filter: grayscale(1);
+}
+
+:global(.dark) .scene {
+  filter: none;
+}
+
+.mobileProfile,
+.mobileControls {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .teamSection {
+    width: 100%;
+    margin: 0;
+    height: 480vh;
+    height: 480svh;
+  }
+
+  .teamPin {
+    position: sticky;
+    top: 0;
+    border-radius: 0;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    border-left: 0;
+    border-right: 0;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  :global(.dark) .teamPin {
+    background: #000;
+  }
+
+  .teamHeading {
+    padding: 23px 22px 16px;
+    flex-shrink: 0;
+  }
+
+  .teamHeading h2 {
+    font-size: 24px;
+    letter-spacing: -0.6px;
+    max-width: 250px;
+  }
+
+  .teamHeading aside {
+    display: none;
+  }
+
+  .sceneWindow {
+    aspect-ratio: auto;
+    flex: 1;
+    min-height: 160px;
+  }
+
+  .scene {
+    width: 2300px;
+    top: -425px;
+    left: 0;
+  }
+
+  .mobileProfile {
+    display: block;
+    padding: 18px 24px 12px;
+    min-height: 178px;
+    flex-shrink: 0;
+    background: #fff;
+    border-top: 1px solid #e0e4e9;
+  }
+
+  :global(.dark) .mobileProfile {
+    background: #0c0c0d;
+    border-color: #222226;
+  }
+
+  .mobileProfile small {
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #697588;
+    display: block;
+  }
+
+  :global(.dark) .mobileProfile small {
+    color: #9e83db;
+  }
+
+  .mobileProfile h3 {
+    margin: 9px 0 7px;
+    font-size: 27px;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+    color: #25282d;
+  }
+
+  :global(.dark) .mobileProfile h3 {
+    color: #f0f0f2;
+  }
+
+  .mobileProfile strong {
+    display: block;
+    color: #566376;
+    font-size: 10px;
+    letter-spacing: 1px;
+    line-height: 1.4;
+  }
+
+  :global(.dark) .mobileProfile strong {
+    color: #a486ef;
+  }
+
+  .mobileProfile p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #66717f;
+    margin: 12px 0 0;
+    max-width: 420px;
+  }
+
+  :global(.dark) .mobileProfile p {
+    color: #a2a2a8;
+  }
+
+  .mobileControls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 12px 20px 18px;
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  :global(.dark) .mobileControls {
+    background: #0c0c0d;
+  }
+
+  .mobileControls button {
+    background: none;
+    border: 0;
+    border-top: 2px solid #dce2e9;
+    color: #737e8c;
+    text-align: left;
+    font-size: 10px;
+    padding: 9px 0 0;
+    cursor: pointer;
+  }
+
+  :global(.dark) .mobileControls button {
+    border-top: 2px solid #303037;
+    color: #909097;
+  }
+
+  .mobileControls button span {
+    display: block;
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+
+  .mobileControls button[aria-current="true"] {
+    color: #242e3b;
+    border-color: #687789;
+  }
+
+  :global(.dark) .mobileControls button[aria-current="true"] {
+    color: white;
+    border-color: #9b73f1;
+  }
+}
+
+@media (max-width: 700px) and (max-height: 660px) {
+  .teamHeading {
+    padding: 14px 20px 10px;
+  }
+
+  .teamHeading h2 {
+    font-size: 20px;
+  }
+
+  .mobileProfile {
+    padding-top: 12px;
+    min-height: 150px;
+  }
+
+  .mobileProfile h3 {
+    font-size: 23px;
+  }
+
+  .mobileProfile p {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  .mobileControls {
+    padding-bottom: 10px;
+  }
+
+  .scene {
+    top: -170px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene {
+    will-change: auto;
+  }
+}
