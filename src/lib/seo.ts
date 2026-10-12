@@ -5,10 +5,19 @@
 
 export const SITE_NAME = "Octapus";
 export const SITE_TAGLINE = "Software, AI and Business Systems — UAE";
-export const SITE_URL =
-  typeof process !== "undefined" && process.env?.SITE_URL
-    ? process.env.SITE_URL.replace(/\/+$/, "")
-    : "https://octapus.ae";
+export const SITE_URL = (() => {
+  const envUrl =
+    typeof process !== "undefined" && process.env?.SITE_URL
+      ? process.env.SITE_URL.replace(/\/+$/, "")
+      : "";
+  if (envUrl) {
+    if (envUrl === "https://octapus.ae" || envUrl === "http://octapus.ae") {
+      return "https://www.octapus.ae";
+    }
+    return envUrl;
+  }
+  return "https://www.octapus.ae";
+})();
 
 export const ALLOWED_ROBOTS_HOSTS = new Set([
   "octapus.ae",
@@ -24,7 +33,7 @@ export function isProductionHost(hostOrUrl?: string): boolean {
       try {
         hostOrUrl = new URL(SITE_URL).hostname;
       } catch {
-        hostOrUrl = "octapus.ae";
+        hostOrUrl = "www.octapus.ae";
       }
     }
   }
@@ -46,7 +55,7 @@ export function isAllowedRobotsHost(hostOrUrl?: string): boolean {
       try {
         hostOrUrl = new URL(SITE_URL).hostname;
       } catch {
-        hostOrUrl = "octapus.ae";
+        hostOrUrl = "www.octapus.ae";
       }
     }
   }

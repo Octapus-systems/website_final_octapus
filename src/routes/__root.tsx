@@ -103,11 +103,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Octapus — Software, AI and business systems in the UAE" },
       {
         property: "og:image",
-        content: "https://octapus.ae/octapus-indigo-logo.svg",
+        content: "https://www.octapus.ae/octapus-indigo-logo.svg",
       },
       {
         name: "twitter:image",
-        content: "https://octapus.ae/octapus-indigo-logo.svg",
+        content: "https://www.octapus.ae/octapus-indigo-logo.svg",
       },
     ],
     links: [
@@ -208,8 +208,8 @@ function RootComponent() {
             "@type": "Organization",
             name: site.legalName,
             alternateName: site.name,
-            url: "https://octapus.ae/",
-            logo: "https://octapus.ae/octapus-indigo-logo.svg",
+            url: "https://www.octapus.ae/",
+            logo: "https://www.octapus.ae/octapus-indigo-logo.svg",
             sameAs: site.socials.filter((s) => s.name !== "WhatsApp").map((s) => s.href),
             email: site.emails.info,
             telephone: site.phones.general,
@@ -231,7 +231,7 @@ function RootComponent() {
           {
             "@context": "https://schema.org",
             "@type": "ProfessionalService",
-            "@id": "https://octapus.ae/#localbusiness",
+            "@id": "https://www.octapus.ae/#localbusiness",
             name: site.legalName,
             alternateName: "Octapus",
             description:
@@ -248,8 +248,8 @@ function RootComponent() {
               "Systems integration",
               "Digital marketing",
             ],
-            url: "https://octapus.ae/",
-            image: "https://octapus.ae/octapus-indigo-logo.svg",
+            url: "https://www.octapus.ae/",
+            image: "https://www.octapus.ae/octapus-indigo-logo.svg",
             sameAs: site.socials.filter((s) => s.name !== "WhatsApp").map((s) => s.href),
             telephone: site.phones.general,
             email: site.emails.info,
