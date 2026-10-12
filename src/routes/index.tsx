@@ -18,6 +18,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
+import { HomeFaq } from "@/components/site/HomeFaq";
 
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
@@ -65,13 +66,20 @@ const closingCtaItemVariants = {
 export const Route = createFileRoute("/")({
   head: () => ({
     ...buildMeta({
-      title: "Octapus — Custom Software, AI Systems and Digital Platforms",
+      title: "Octapus — AI & Software Development Company in Dubai, UAE",
       description:
-        "Octapus designs and develops mobile apps, custom software, ERP systems, business automation, web platforms and creative production around real business requirements.",
+        "Octapus is a UAE AI and software development company in Dubai and Ajman. We build custom software, AI agents and automation, ERP and CRM systems, mobile apps and web platforms for UAE and GCC businesses.",
       path: "/",
       ogType: "website",
       keywords: [
         "Octapus",
+        "AI company in UAE",
+        "AI company Dubai",
+        "IT company in UAE",
+        "software development company Dubai",
+        "software company UAE",
+        "AI automation UAE",
+        "AI agents UAE",
         "custom software development",
         "software development company",
         "mobile app development",
@@ -314,6 +322,9 @@ function Home() {
 
       {/* ── 05. OUR BUILD PROCESS ── */}
       <BuildProcessSection />
+
+      {/* ── FAQ (also FAQPage structured data for search + AI answers) ── */}
+      <HomeFaq />
 
       {/* ── 06. CLOSING CTA ── */}
       <Section className="bg-surface dark:bg-surface-dark border-t border-hairline relative overflow-hidden py-24 md:py-32">

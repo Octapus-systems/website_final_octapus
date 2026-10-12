@@ -75,6 +75,16 @@ export const site = {
     { city: "Ajman", line: "Amper Gem Tower, Khalifa Street, Ajman, UAE" },
   ],
   whatsapp: "971508621612",
+  /** Official social profiles — shown in the footer and linked in structured data (sameAs). */
+  socials: [
+    { name: "WhatsApp", href: "https://wa.me/971508621612" },
+    { name: "Instagram", href: "https://www.instagram.com/octapus.ae/" },
+    { name: "LinkedIn", href: "https://ae.linkedin.com/company/octapus-systems" },
+    {
+      name: "Facebook",
+      href: "https://www.facebook.com/photo?fbid=122104426604882181&set=a.122094496544882181",
+    },
+  ],
   /**
    * Cal.com booking link for /book, e.g. "octapus/strategy-call".
    * Leave empty to show the email / enquiry-form fallback instead.

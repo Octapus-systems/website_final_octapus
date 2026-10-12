@@ -32,6 +32,7 @@ import { Route as SupportRouteImport } from './routes/support'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
@@ -153,6 +154,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/team': typeof TeamRoute
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -231,6 +238,7 @@ export interface FileRoutesByTo {
   '/team': typeof TeamRoute
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/products': typeof ProductsIndexRoute
@@ -262,6 +270,7 @@ export interface FileRoutesById {
   '/team': typeof TeamRoute
   '/technology': typeof TechnologyRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/products/': typeof ProductsIndexRoute
@@ -294,6 +303,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/technology'
     | '/terms'
+    | '/work'
     | '/products/$slug'
     | '/services/$slug'
     | '/products/'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/technology'
     | '/terms'
+    | '/work'
     | '/products/$slug'
     | '/services/$slug'
     | '/products'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/technology'
     | '/terms'
+    | '/work'
     | '/products/$slug'
     | '/services/$slug'
     | '/products/'
@@ -383,6 +395,7 @@ export interface RootRouteChildren {
   TeamRoute: typeof TeamRoute
   TechnologyRoute: typeof TechnologyRoute
   TermsRoute: typeof TermsRoute
+  WorkRoute: typeof WorkRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
 }
 
@@ -549,6 +562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/'
@@ -639,6 +659,7 @@ const rootRouteChildren: RootRouteChildren = {
   TeamRoute: TeamRoute,
   TechnologyRoute: TechnologyRoute,
   TermsRoute: TermsRoute,
+  WorkRoute: WorkRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
 }
 export const routeTree = rootRouteImport

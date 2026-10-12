@@ -10,6 +10,7 @@ type EventName =
   | "ois_external_click"
   | "obms_external_click"
   | "whatsapp_click"
+  | "ask_ai_click"
   | "call_click"
   | "email_click"
   | "support_request"
