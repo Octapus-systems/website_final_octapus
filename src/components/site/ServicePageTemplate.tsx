@@ -5,7 +5,6 @@ import { Container } from "@/components/site/Section";
 import { serviceBySlug, type ServiceIcon, type ServicePageData } from "@/lib/service-pages";
 import { site } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/seo";
-import { MobileAppsHeroVisual } from "@/components/site/MobileAppsHeroVisual";
 
 const icons: Record<ServiceIcon, typeof Monitor> = {
   screen: Monitor,
@@ -43,7 +42,6 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
       />
 
       <header className="service-hero relative isolate overflow-hidden border-b border-border bg-background text-foreground">
-        {service.slug === "mobile-apps" && <MobileAppsHeroVisual />}
         <Container className="relative z-10 flex min-h-[min(680px,calc(100svh-4rem))] items-center py-20 sm:py-24 lg:py-28">
           <div className="relative z-10 max-w-4xl">
             <Link
