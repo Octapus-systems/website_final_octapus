@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
 
-const MAX_WAIT_MS = 15000;
+const MAX_WAIT_MS = 6000;
 
 const LOADED_EVENT = "octa:loaded";
 
@@ -57,6 +57,11 @@ export function LoadingScreen() {
   const textRef = useRef("");
 
   const completeLoading = useCallback(() => {
+    try {
+      sessionStorage.setItem("octapus_intro_seen", "1");
+    } catch {
+      // Ignore session storage errors
+    }
     setIsVisible(false);
   }, []);
 
@@ -72,14 +77,14 @@ export function LoadingScreen() {
       for (const ch of s) {
         if (cancelled) return;
         set(textRef.current + ch);
-        await sleep(jitter(20));
+        await sleep(jitter(12));
       }
     };
     const del = async (n: number) => {
       for (let i = 0; i < n; i++) {
         if (cancelled) return;
         set(textRef.current.slice(0, -1));
-        await sleep(jitter(9));
+        await sleep(jitter(6));
       }
     };
 
@@ -87,42 +92,34 @@ export function LoadingScreen() {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         setBoxGone(true);
         setShowOut(true);
-        await sleep(1200);
+        await sleep(700);
         if (!cancelled) completeLoading();
         return;
       }
 
-      await sleep(250);
+      await sleep(120);
       await type("Hey, I need a CRM");
-      await sleep(250);
+      await sleep(120);
       await del(5);
-      await sleep(60);
       await type("n ERP");
-      await sleep(250);
+      await sleep(120);
       await del(6);
-      await sleep(60);
       await type(" to automate my whole business");
-      await sleep(200);
-      await type(", generate leads");
-      await sleep(200);
-      await type(", get a website");
-      await sleep(200);
-      await type(" and run marketing");
-      await sleep(350);
+      await sleep(250);
       if (cancelled) return;
       setCursorIn(true);
-      await sleep(850);
+      await sleep(450);
       if (cancelled) return;
       setPressed(true);
-      await sleep(200);
+      await sleep(120);
       setPressed(false);
-      await sleep(250);
+      await sleep(100);
       if (cancelled) return;
       setCursorIn(false);
       setBoxGone(true);
-      await sleep(300);
+      await sleep(200);
       setShowOut(true);
-      await sleep(2200);
+      await sleep(1100);
       if (!cancelled) completeLoading();
     };
 
@@ -159,7 +156,7 @@ export function LoadingScreen() {
           key="loading-screen"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           onClick={completeLoading}
           className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden bg-background px-6 py-12 text-foreground"
         >
