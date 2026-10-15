@@ -82,7 +82,7 @@ export const site = {
     { name: "LinkedIn", href: "https://ae.linkedin.com/company/octapus-systems" },
     {
       name: "Facebook",
-      href: "https://www.facebook.com/photo?fbid=122104426604882181&set=a.122094496544882181",
+      href: "https://www.facebook.com/profile.php?id=61576526338097",
     },
   ],
   /**
@@ -510,6 +510,13 @@ export const techStack = [
   { group: "Cloud & DevOps", items: ["AWS", "Cloudflare", "Docker", "Kubernetes", "Terraform"] },
   { group: "AI & Data", items: ["OpenAI", "Anthropic", "LangChain", "Vector DBs", "dbt"] },
   { group: "Integrations", items: ["Odoo", "Zoho", "Stripe", "WhatsApp", "Twilio"] },
+] as const;
+
+export const clients = [
+  { name: "Bab Al Madeena", sector: "Arabian farm" },
+  { name: "Encore", sector: "Cab company, UK" },
+  { name: "Castle Craft", sector: "Luxury landscaping" },
+  { name: "Al Mehar", sector: "Abaya fashion" },
 ] as const;
 
 export const testimonials = [

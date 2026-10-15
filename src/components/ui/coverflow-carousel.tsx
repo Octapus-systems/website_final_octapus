@@ -178,7 +178,6 @@ export function CoverflowCarousel({
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
-    event.currentTarget.setPointerCapture(event.pointerId);
     didDragRef.current = false;
     targetRef.current = posRef.current;
     dragRef.current = {
@@ -196,7 +195,12 @@ export function CoverflowCarousel({
 
     const pitch = widthRef.current * (1 + gap);
     if (!pitch) return;
-    if (Math.abs(event.clientX - drag.x) > 6) didDragRef.current = true;
+    // Capture only once a real drag starts — capturing on pointerdown retargets
+    // the click to the frame, so the card's onClick never fires.
+    if (!didDragRef.current && Math.abs(event.clientX - drag.x) > 6) {
+      didDragRef.current = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
 
     const now = performance.now();
     const previous = posRef.current;
