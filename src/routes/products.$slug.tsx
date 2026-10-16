@@ -13,7 +13,7 @@ import { ObmsShowcase } from "@/components/site/ObmsShowcase";
 import { BillingShowcase } from "@/components/site/BillingShowcase";
 import { LmsShowcase } from "@/components/site/LmsShowcase";
 import { HorusCard } from "@/components/site/HorusCard";
-import { products, productOisNotes, site } from "@/lib/site";
+import { products, productOisNotes, site, noindexProductSlugs } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -31,14 +31,23 @@ export const Route = createFileRoute("/products/$slug")({
       };
     }
     const p = loaderData;
-    return buildMeta({
-      title: `${p.name} — ${p.headline}`.slice(0, 70),
+    const meta = buildMeta({
+      title: `${p.name} | Octapus`,
       description: `${p.headline} ${p.outcome}`.slice(0, 158),
       path: `/products/${params.slug}`,
       ogType: "product",
       image: p.image,
       keywords: [...p.tags, "Octapus", "UAE software", p.name],
     });
+    if (!noindexProductSlugs.includes(params.slug)) return meta;
+    // buildMeta's own robots tag is "noindex,nofollow", so swap it for "noindex, follow".
+    return {
+      ...meta,
+      meta: [
+        ...meta.meta.filter((m) => m.name !== "robots"),
+        { name: "robots", content: "noindex, follow" },
+      ],
+    };
   },
   component: ProductPage,
   notFoundComponent: () => (

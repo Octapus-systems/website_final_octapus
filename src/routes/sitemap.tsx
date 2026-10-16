@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { products } from "@/lib/site";
+import { products, noindexProductSlugs } from "@/lib/site";
 import { servicePages } from "@/lib/service-pages";
 
 const staticRoutes = [
@@ -10,7 +10,6 @@ const staticRoutes = [
   { to: "/industries", label: "Industries" },
   { to: "/about", label: "About" },
   { to: "/ois", label: "OIS" },
-  { to: "/blog", label: "Blog" },
   { to: "/support", label: "Support" },
   { to: "/careers", label: "Careers" },
   { to: "/contact", label: "Contact" },
@@ -66,7 +65,7 @@ export const Route = createFileRoute("/sitemap")({
         <div>
           <div className="text-eyebrow mb-3">Products</div>
           <ul className="space-y-2">
-            {products.map((p) => (
+            {products.filter((p) => !noindexProductSlugs.includes(p.slug)).map((p) => (
               <li key={p.slug}>
                 <Link
                   to="/products/$slug"

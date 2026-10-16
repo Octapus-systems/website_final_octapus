@@ -34,7 +34,7 @@ function TermsPage() {
           { name: "Terms of Service", path: "/terms" },
         ])}
       />
-      <Section eyebrow="Legal" title="Terms of Service">
+      <Section eyebrow="Legal" titleAs="h1" title="Terms of Service">
         <div className="mx-auto max-w-3xl text-muted-foreground space-y-4"></div>
       </Section>
     </>

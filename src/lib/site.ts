@@ -322,6 +322,9 @@ export const hiddenProductSlugs = [
   "ai-business-automation",
 ];
 
+/** Product pages whose content is template placeholder: noindexed and left out of sitemaps. */
+export const noindexProductSlugs = ["algorithem", "buy", "blueprint", "icon", "oprate"];
+
 export const services = [
   {
     slug: "engineering",

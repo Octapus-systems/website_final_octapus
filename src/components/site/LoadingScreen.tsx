@@ -214,11 +214,11 @@ export function LoadingScreen() {
                   showOut ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3.5 opacity-0"
                 }`}
               >
-                <h1
-                  className={`m-0 font-bold leading-[1.02] tracking-[-0.045em] text-[clamp(38px,9vw,80px)]`}
+                <div
+                  className={`m-0 font-display font-bold leading-[1.02] tracking-[-0.045em] text-balance text-foreground text-[clamp(38px,9vw,80px)]`}
                 >
                   We build <span className="text-primary">all of it.</span>
-                </h1>
+                </div>
                 <p
                   className={`mx-auto mt-4 max-w-[640px] leading-[1.55] text-muted-foreground text-[clamp(15px,3.3vw,20px)]`}
                 >

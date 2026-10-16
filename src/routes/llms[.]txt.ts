@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { products, services, industries, site } from "@/lib/site";
+import { products, services, industries, site, noindexProductSlugs } from "@/lib/site";
 
 export const Route = createFileRoute("/llms.txt")({
   server: {
@@ -38,7 +38,9 @@ export const Route = createFileRoute("/llms.txt")({
           "- [Support](/support): Help for existing customers.",
           "",
           "## Products",
-          ...products.map((p) => `- [${p.name}](/products/${p.slug}): ${p.headline}`),
+          ...products
+            .filter((p) => !noindexProductSlugs.includes(p.slug))
+            .map((p) => `- [${p.name}](/products/${p.slug}): ${p.headline}`),
           "",
           "## Services",
           ...services.map((s) => `- [${s.name}](/services): ${s.summary}`),

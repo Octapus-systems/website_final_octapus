@@ -34,7 +34,7 @@ function PrivacyPage() {
           { name: "Privacy Policy", path: "/privacy" },
         ])}
       />
-      <Section eyebrow="Legal" title="Privacy Policy">
+      <Section eyebrow="Legal" titleAs="h1" title="Privacy Policy">
         <div className="mx-auto max-w-3xl prose prose-neutral text-muted-foreground space-y-4">
           <p>
             This policy describes how Octapus L.L.C. collects, uses and protects information
