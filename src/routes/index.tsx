@@ -19,7 +19,7 @@ import {
 } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 import { HomeFaq } from "@/components/site/HomeFaq";
-import { TrustSection } from "@/components/site/TrustSection";
+import { SelectedWorkSection } from "@/components/site/SelectedWorkSection";
 
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
@@ -318,8 +318,8 @@ function Home() {
         </div>
       </Section>
 
-      {/* ── TRUST: clients + testimonials ── */}
-      <TrustSection />
+      {/* ── SELECTED WORK ── */}
+      <SelectedWorkSection />
 
       {/* ── 05. THE OCTAPUS ADVANTAGE ── */}
       <OctapusAdvantageSection />

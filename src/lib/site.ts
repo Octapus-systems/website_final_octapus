@@ -515,31 +515,32 @@ export const techStack = [
   { group: "Integrations", items: ["Odoo", "Zoho", "Stripe", "WhatsApp", "Twilio"] },
 ] as const;
 
-export const clients = [
-  { name: "Bab Al Madeena", sector: "Arabian farm" },
-  { name: "Encore", sector: "Cab company, UK" },
-  { name: "Castle Craft", sector: "Luxury landscaping" },
-  { name: "Al Mehar", sector: "Abaya fashion" },
-] as const;
-
-export const testimonials = [
+export const selectedWork = [
   {
-    quote:
-      "Octapus rebuilt our operations layer in six months. The system pays for itself every quarter.",
-    author: "Managing Director",
-    company: "Construction group, Dubai",
+    id: "bab-al-madeena",
+    client: "Bab Al Madeena",
+    meta: "Farm Products · Dubai",
+    description:
+      "Custom software and a merchant website to manage farm products, orders and deliveries in one place.",
   },
   {
-    quote:
-      "The team behaves like an internal engineering function — not a vendor. That is what actually moved the numbers.",
-    author: "Chief Operating Officer",
-    company: "Retail chain, UAE",
+    id: "encore-executive",
+    client: "Encore Executive",
+    meta: "Fleet Management · UK",
+    description:
+      "A fleet management platform built around their business, from managing vehicles to coordinating day-to-day operations.",
   },
   {
-    quote:
-      "They connected eight tools we thought would never talk to each other. Reporting is finally honest.",
-    author: "Head of Finance",
-    company: "Healthcare provider",
+    id: "castle-craft",
+    client: "Castle Craft",
+    meta: "Branding & Web · Dubai",
+    description: "Brand identity and a modern website that reflect the quality of their business.",
+  },
+  {
+    id: "mehar-collective",
+    client: "Mehar Collective",
+    meta: "Branding & Digital Marketing · Dubai",
+    description: "Brand identity and digital marketing to strengthen their online presence.",
   },
 ] as const;
 
