@@ -175,7 +175,7 @@ export function SelectedWorkSection() {
                 aria-hidden={!active}
                 className="flex w-full shrink-0 snap-center flex-col items-center px-2 py-8 text-center md:py-12"
               >
-                <div className="flex h-8 w-32 items-center justify-center md:h-10 md:w-36">
+                <div className="flex h-12 w-40 items-center justify-center md:h-16 md:w-48">
                   <img
                     src={logo.src}
                     alt={`${work.client} logo`}
