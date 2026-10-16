@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
+import { CookieConsent } from "@/components/site/CookieConsent";
 import { JsonLd } from "@/components/site/JsonLd";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { site } from "@/lib/site";
@@ -144,10 +145,11 @@ function RootShell({ children }: { children: ReactNode }) {
             __html: `(function(){try{document.documentElement.classList.remove('dark');}catch(e){}})();`,
           }}
         />
-        {/* Consent Mode v2 default (denied) — bootstraps before GTM loads */}
+        {/* Consent Mode v2 default (denied) — bootstraps before GTM loads.
+            Re-applies a saved choice from <CookieConsent /> so the first hit carries it. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});`,
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});try{var c=localStorage.getItem('octapus-consent');if(c==='granted'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}}catch(e){}`,
           }}
         />
         {/* Google Tag Manager */}
@@ -305,6 +307,7 @@ function RootComponent() {
         <Footer />
       </div>
       <FloatingActions />
+      <CookieConsent />
     </QueryClientProvider>
   );
 }
