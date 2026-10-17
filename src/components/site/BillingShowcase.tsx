@@ -119,7 +119,7 @@ export function BillingShowcase({ product }: { product: Product }) {
                 <div className="rounded-2xl bg-background p-4 border hairline space-y-2">
                   <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     <span>Legacy Off-the-Shelf Tools</span>
-                    <span className="text-red-500">Rigid Constraints</span>
+                    <span className="text-red-600">Rigid Constraints</span>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Forces you to change receipt formats, tax calculations, cashier steps, and
@@ -132,7 +132,7 @@ export function BillingShowcase({ product }: { product: Product }) {
                 <div className="rounded-2xl bg-primary/15 p-4 border border-primary/30 space-y-2">
                   <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-primary">
                     <span>Octapus Custom Billing</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                    <span className="text-emerald-800 dark:text-emerald-400 font-bold">
                       100% Tailored
                     </span>
                   </div>

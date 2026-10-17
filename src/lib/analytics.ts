@@ -3,6 +3,7 @@
 
 type EventName =
   | "strategy_call_click"
+  | "contact_cta_click"
   | "form_start"
   | "form_submit"
   | "form_error"

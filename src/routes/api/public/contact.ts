@@ -139,6 +139,15 @@ function loadEnv() {
         const recipientEmail =
           data.enquiryType === "career" ? "hr@octapus.ae" : process.env.SMTP_TO || routedTo;
 
+        // SMTP credentials come only from the environment — never from source code.
+        if (!process.env.SMTP_PASS) {
+          console.error("[octapus.contact] SMTP_PASS is not configured; enquiry not sent.");
+          return new Response(
+            JSON.stringify({ error: "Failed to send email. Please try again later." }),
+            { status: 500, headers: { "Content-Type": "application/json" } },
+          );
+        }
+
         try {
           const smtpPort = Number(process.env.SMTP_PORT) || 465;
           const isSecure = smtpPort === 465 || process.env.SMTP_PORT === "465";
@@ -149,7 +158,7 @@ function loadEnv() {
             secure: isSecure,
             auth: {
               user: process.env.SMTP_USER || "info@octapus.ae",
-              pass: process.env.SMTP_PASS || "Octapos@info666",
+              pass: process.env.SMTP_PASS,
             },
             tls: {
               rejectUnauthorized: false,
@@ -191,7 +200,6 @@ Email: ${data.email}
 Phone: ${data.phone || "N/A"}
 Company: ${data.company || "N/A"}
 Preferred Contact: ${data.preferredContact}
-Preferred Contact Method: ${data.preferredContact}
 Budget: ${data.budget || "N/A"}
 Timeline: ${data.timeline || "N/A"}
 

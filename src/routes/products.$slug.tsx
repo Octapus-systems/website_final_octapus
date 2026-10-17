@@ -15,7 +15,7 @@ import { LmsShowcase } from "@/components/site/LmsShowcase";
 import { HorusCard } from "@/components/site/HorusCard";
 import { products, productOisNotes, site, noindexProductSlugs } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl, isShareableImage } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/$slug")({
@@ -166,15 +166,10 @@ function ProductPage() {
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web",
           description: p.headline,
-          url: `/products/${p.slug}`,
-          ...(p.image ? { image: p.image } : {}),
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "AED",
-            availability: "https://schema.org/InStock",
-          },
-          provider: { "@type": "Organization", name: site.legalName, url: "/" },
+          url: absoluteUrl(`/products/${p.slug}`),
+          // No `offers`: pricing is quoted per project, so a price here would be inaccurate.
+          ...(isShareableImage(p.image) ? { image: absoluteUrl(p.image) } : {}),
+          provider: { "@type": "Organization", name: site.legalName, url: absoluteUrl("/") },
           keywords: p.tags.join(", "),
         }}
       />

@@ -128,7 +128,7 @@ function EngineeringPage() {
           {
             to: "/ois",
             label: "OIS",
-            detail: "The intelligence layer connecting every system Octapus build.",
+            detail: "The intelligence layer connecting every system Octapus builds.",
           },
         ]}
       />

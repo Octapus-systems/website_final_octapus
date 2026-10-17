@@ -36,8 +36,9 @@ export const contactSchema = z.object({
   preferredContact: z.enum(["email", "phone", "whatsapp"]),
   budget: z.string().trim().max(80).optional().or(z.literal("")),
   timeline: z.string().trim().max(80).optional().or(z.literal("")),
-  // honeypot
-  website: z.string().max(0).optional().or(z.literal("")),
+  // honeypot — accepted here so the API can silently drop bot submissions instead of
+  // returning a validation error that tells the bot which field to leave empty.
+  website: z.string().max(500).optional().or(z.literal("")),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

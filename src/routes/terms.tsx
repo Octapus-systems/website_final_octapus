@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { JsonLd } from "@/components/site/JsonLd";
 import { site } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/terms")({
   head: () =>
@@ -12,6 +12,8 @@ export const Route = createFileRoute("/terms")({
         "Terms governing use of the Octapus website, products and professional services.",
       path: "/terms",
       ogType: "article",
+      // Kept out of search until the full terms are published (the page is a placeholder).
+      noindex: true,
     }),
   component: TermsPage,
 });
@@ -24,7 +26,7 @@ function TermsPage() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           name: "Terms of Service",
-          url: "/terms",
+          url: absoluteUrl("/terms"),
           about: { "@type": "Organization", name: site.legalName },
         }}
       />
@@ -35,7 +37,22 @@ function TermsPage() {
         ])}
       />
       <Section eyebrow="Legal" titleAs="h1" title="Terms of Service">
-        <div className="mx-auto max-w-3xl text-muted-foreground space-y-4"></div>
+        <div className="mx-auto max-w-3xl text-muted-foreground space-y-4">
+          <p>
+            The full terms of service for this website and for Octapus engagements are being
+            finalised and will be published here.
+          </p>
+          <p>
+            For any question about terms, contact{" "}
+            <a
+              href={`mailto:${site.emails.info}`}
+              className="text-primary underline underline-offset-4"
+            >
+              {site.emails.info}
+            </a>
+            .
+          </p>
+        </div>
       </Section>
     </>
   );

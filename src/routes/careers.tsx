@@ -4,14 +4,14 @@ import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/careers")({
   head: () =>
     buildMeta({
       title: "Careers at Octapus — Precise Builders, Designers and Operators",
       description:
-        "Join Octapus in Dubai and Ajman. Octapus hire selectively when Octapus have specific work for a specific person — engineers, designers and operators who ship.",
+        "Join Octapus in Dubai and Ajman. We hire selectively, when we have specific work for a specific person — engineers, designers and operators who ship.",
       path: "/careers",
       ogType: "website",
       keywords: [
@@ -33,7 +33,7 @@ function CareersPage() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Careers at Octapus",
-          url: "/careers",
+          url: absoluteUrl("/careers"),
           about: { "@type": "Organization", name: site.legalName },
         }}
       />
@@ -48,11 +48,11 @@ function CareersPage() {
         titleAs="h1"
         eyebrow="Careers"
         title="Precise Builders. Thoughtful Designers. Operators Who Ship."
-        intro="Octapus hire selectively and only when Octapus have specific work for a specific person."
+        intro="We hire selectively, and only when we have specific work for a specific person."
       >
         <div className="mx-auto max-w-2xl text-center space-y-6">
           <p className="text-muted-foreground">
-            Send us a note about the work you want to do. If it aligns, Octapus'll be in touch.
+            Send us a note about the work you want to do. If it aligns, we'll be in touch.
           </p>
           <div className="rounded-2xl border hairline p-6 bg-[var(--color-surface)] text-sm text-muted-foreground">
             Career enquiries: {site.emails.hr}
@@ -67,7 +67,7 @@ function CareersPage() {
           {
             to: "/about",
             label: "About Octapus",
-            detail: "Who Octapus are, how Octapus work, what Octapus ship.",
+            detail: "Who we are, how we work and what we ship.",
           },
           {
             to: "/services",

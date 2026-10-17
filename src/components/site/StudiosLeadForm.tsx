@@ -142,7 +142,7 @@ export function StudiosLeadForm() {
         disabled={status === "loading"}
       />
       <p className="text-xs text-muted-foreground">
-        Takes under a minute. Octapus reply within one business day.
+        Takes under a minute. We reply within one business day.
       </p>
     </form>
   );

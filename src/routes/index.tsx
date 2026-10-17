@@ -6,7 +6,7 @@ import { useLoadingDone } from "@/components/site/LoadingScreen";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { site, products, hiddenProductSlugs } from "@/lib/site";
-import { buildMeta, breadcrumbSchema, SITE_URL } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_URL, absoluteUrl } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import {
@@ -26,8 +26,9 @@ import { BuildProcessSection } from "@/components/site/BuildProcessSection";
 import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
 import { RevealButton } from "@/components/site/RevealButton";
 import { servicePages } from "@/lib/service-pages";
+import { trackEvent } from "@/lib/analytics";
 
-import productErpImg from "@/assets/product-erp.png";
+import productErpImg from "@/assets/product-erp.webp";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
 import heroLaptop from "@/assets/hero-laptop.webp";
@@ -69,7 +70,7 @@ export const Route = createFileRoute("/")({
     ...buildMeta({
       title: "Octapus — AI & Software Development Company in Dubai, UAE",
       description:
-        "Octapus is a UAE AI and software development company in Dubai and Ajman. We build custom software, AI agents and automation, ERP and CRM systems, mobile apps and web platforms for UAE and GCC businesses.",
+        "AI and software development company in Dubai and Ajman. Octapus builds custom software, AI automation, ERP and CRM systems, mobile apps and web platforms.",
       path: "/",
       ogType: "website",
       keywords: [
@@ -125,7 +126,8 @@ function Home() {
           "@type": "WebSite",
           name: "Octapus",
           url: `${SITE_URL}/`,
-          publisher: { "@type": "Organization", name: site.legalName },
+          inLanguage: "en",
+          publisher: { "@id": "https://www.octapus.ae/#organization" },
         }}
       />
       <JsonLd
@@ -140,7 +142,7 @@ function Home() {
               "@type": "Service",
               name: service.title,
               description: service.summary,
-              url: `/services/${service.slug}`,
+              url: absoluteUrl(`/services/${service.slug}`),
               provider: { "@type": "Organization", name: site.legalName },
             },
           })),
@@ -154,7 +156,7 @@ function Home() {
           itemListElement: visibleProducts.slice(0, 8).map((p, i) => ({
             "@type": "ListItem",
             position: i + 1,
-            url: `/products/${p.slug}`,
+            url: absoluteUrl(`/products/${p.slug}`),
             name: p.name,
           })),
         }}
@@ -169,25 +171,21 @@ function Home() {
         />
         <DotPattern className="[mask-image:linear-gradient(to_bottom,black_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)] fill-neutral-400/45 animate-scrolling-dots motion-reduce:animate-none dark:fill-white/30" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col items-center justify-center py-20 text-center md:py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-3 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:text-xs"
+        <div
+          data-hero-intro
+          data-intro-done={heroReady && !reducedMotion ? "" : undefined}
+          className="relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col items-center justify-center py-20 text-center md:py-24"
+        >
+          <div
+            className="hero-fade flex items-center gap-3 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:text-xs"
+            style={{ "--hero-delay": "0s", "--hero-dur": "0.55s" } as React.CSSProperties}
           >
             <span aria-hidden="true" className="h-px w-8 bg-primary/45 sm:w-12" />
             Octapus / Software Engineering
             <span aria-hidden="true" className="h-px w-8 bg-primary/45 sm:w-12" />
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={reducedMotion ? false : "hidden"}
-            animate={heroReady || reducedMotion ? "visible" : "hidden"}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.065, delayChildren: 0.16 } },
-            }}
+          <h1
             aria-label={heroTitle}
             className="mt-8 flex flex-row flex-wrap items-center justify-center gap-y-1 text-balance font-display text-[clamp(3.4rem,14vw,9rem)] sm:text-[clamp(4.25rem,10vw,9rem)] font-semibold leading-[0.84] tracking-[-0.038em] text-foreground [text-shadow:0_4px_24px_rgba(0,0,0,0.06)] dark:[text-shadow:0_4px_24px_rgba(255,255,255,0.08)] sm:max-w-none sm:whitespace-nowrap"
           >
@@ -199,63 +197,52 @@ function Home() {
                     (character, i) => {
                       const index = offset + i;
                       return (
-                        <motion.span
+                        <span
                           key={`${character}-${index}`}
                           aria-hidden="true"
-                          variants={{
-                            hidden: {
-                              opacity: character === " " ? 0 : 0.16,
-                              filter: "blur(12px)",
-                              scale: 1.025,
-                            },
-                            visible: {
-                              opacity: 1,
-                              filter: "blur(0px)",
-                              scale: 1,
-                              transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
-                            },
-                          }}
                           className={
                             character === " "
                               ? "inline-block w-[0.2em]"
                               : index >= 10
-                                ? "inline-block text-primary"
-                                : "inline-block"
+                                ? "hero-char inline-block text-primary"
+                                : "hero-char inline-block"
+                          }
+                          style={
+                            { "--hero-delay": `${0.16 + index * 0.065}s` } as React.CSSProperties
                           }
                         >
                           {character === " " ? "\u00a0" : character}
-                        </motion.span>
+                        </span>
                       );
                     },
                   )}
                 </span>
               );
             })}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="mx-auto mt-10 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
+          <p
+            className="hero-fade mx-auto mt-10 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
+            style={{ "--hero-delay": "0.2s", "--hero-dur": "0.8s" } as React.CSSProperties}
           >
-            AI-first development and experienced engineering, working together to move scalable
-            software from idea to production.
-          </motion.p>
+            Custom software, ERP, CRM, AI automation and mobile apps for UAE businesses — AI-first
+            and engineer-led, from idea to production.
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          <div
+            className="hero-fade mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            style={{ "--hero-delay": "0.3s", "--hero-dur": "0.8s" } as React.CSSProperties}
           >
             <Button
               asChild
               size="lg"
               className="rounded-full px-8 h-12 text-base font-semibold shadow-lg shadow-primary/25"
             >
-              <Link to="/book">
-                Start Your Project <ArrowRight className="ml-2 h-4 w-4" />
+              <Link
+                to="/book"
+                onClick={() => trackEvent("strategy_call_click", { source: "hero" })}
+              >
+                Start Your Project <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
             <Button
@@ -264,15 +251,18 @@ function Home() {
               variant="outline"
               className="rounded-full px-8 h-12 text-base font-medium"
             >
-              <Link to="/contact">Discuss Software Idea</Link>
+              <Link
+                to="/contact"
+                onClick={() => trackEvent("contact_cta_click", { source: "hero" })}
+              >
+                Discuss Your Software Idea
+              </Link>
             </Button>
-          </motion.div>
+          </div>
 
-          <motion.ul
-            initial={{ opacity: 0, y: 12 }}
-            animate={heroReady ? { opacity: 1, y: 0 } : undefined}
-            transition={{ duration: 0.7, delay: 0.45 }}
-            className="mt-14 flex flex-wrap items-center justify-center gap-x-3 px-4 gap-y-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground/75 sm:gap-x-6 sm:text-[0.7rem]"
+          <ul
+            className="hero-fade mt-14 flex flex-wrap items-center justify-center gap-x-3 px-4 gap-y-2 font-mono text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground/75 sm:gap-x-6 sm:text-[0.7rem]"
+            style={{ "--hero-delay": "0.45s", "--hero-dur": "0.7s" } as React.CSSProperties}
           >
             {["Custom software", "AI systems", "Digital platforms"].map((capability, index) => (
               <React.Fragment key={capability}>
@@ -282,7 +272,7 @@ function Home() {
                 <li>{capability}</li>
               </React.Fragment>
             ))}
-          </motion.ul>
+          </ul>
         </div>
       </header>
 
@@ -384,9 +374,15 @@ function Home() {
                 size="lg"
                 className="group rounded-full px-10 h-14 text-base font-semibold shadow-xl shadow-primary/25"
               >
-                <Link to="/book">
+                <Link
+                  to="/book"
+                  onClick={() => trackEvent("strategy_call_click", { source: "closing_cta" })}
+                >
                   Start Your Project
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight
+                    className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                    aria-hidden="true"
+                  />
                 </Link>
               </Button>
             </motion.div>
@@ -401,7 +397,12 @@ function Home() {
                 variant="outline"
                 className="rounded-full px-8 h-14 text-base font-medium"
               >
-                <Link to="/contact">Contact Sales</Link>
+                <Link
+                  to="/contact"
+                  onClick={() => trackEvent("contact_cta_click", { source: "closing_cta" })}
+                >
+                  Contact Sales
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

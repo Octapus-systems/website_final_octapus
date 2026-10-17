@@ -274,16 +274,18 @@ function TimelineTitle({ title, index, itemCount, flowProgress, flowEnabled }: T
     <div className="relative min-w-0 flex-1">
       <h3 className={cn(titleClassName, "text-foreground")}>{title}</h3>
       {flowEnabled && (
-        <motion.h3
+        // Highlight overlay: a div (not a second h3) so the heading outline has no duplicates;
+        // font-display/tracking/balance mirror the base h3 styles so it lines up exactly.
+        <motion.div
           aria-hidden="true"
           className={cn(
             titleClassName,
-            "pointer-events-none absolute inset-0 text-primary [text-shadow:0_0_18px_color-mix(in_oklab,var(--color-primary)_16%,transparent)]",
+            "pointer-events-none absolute inset-0 font-display tracking-[-0.035em] text-balance text-primary [text-shadow:0_0_18px_color-mix(in_oklab,var(--color-primary)_16%,transparent)]",
           )}
           style={{ opacity: activation }}
         >
           {title}
-        </motion.h3>
+        </motion.div>
       )}
     </div>
   );

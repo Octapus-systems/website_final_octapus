@@ -4,7 +4,8 @@ import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { trackEvent } from "@/lib/analytics";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/support")({
   head: () =>
@@ -32,7 +33,7 @@ function SupportPage() {
           "@context": "https://schema.org",
           "@type": "ContactPage",
           name: "Octapus Support",
-          url: "/support",
+          url: absoluteUrl("/support"),
           about: { "@type": "Organization", name: site.legalName },
           contactPoint: [
             {
@@ -70,13 +71,19 @@ function SupportPage() {
         <div className="mx-auto max-w-3xl grid gap-6 md:grid-cols-2">
           <div className="rounded-2xl border hairline p-6">
             <div className="text-eyebrow mb-2">Technical</div>
-            <p className="text-sm text-muted-foreground">{site.emails.tech}</p>
-            <p className="text-sm text-muted-foreground">{site.phones.support}</p>
+            <ContactLink href={`mailto:${site.emails.tech}`} label={site.emails.tech} />
+            <ContactLink
+              href={`tel:${site.phones.support.replace(/\s/g, "")}`}
+              label={site.phones.support}
+            />
           </div>
           <div className="rounded-2xl border hairline p-6">
             <div className="text-eyebrow mb-2">General</div>
-            <p className="text-sm text-muted-foreground">{site.emails.info}</p>
-            <p className="text-sm text-muted-foreground">{site.phones.general}</p>
+            <ContactLink href={`mailto:${site.emails.info}`} label={site.emails.info} />
+            <ContactLink
+              href={`tel:${site.phones.general.replace(/\s/g, "")}`}
+              label={site.phones.general}
+            />
           </div>
         </div>
         <div className="mt-10 text-center">
@@ -105,5 +112,19 @@ function SupportPage() {
         ]}
       />
     </>
+  );
+}
+
+function ContactLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      onClick={() =>
+        trackEvent(href.startsWith("mailto") ? "email_click" : "call_click", { source: "support" })
+      }
+      className="block py-1 text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+    >
+      {label}
+    </a>
   );
 }

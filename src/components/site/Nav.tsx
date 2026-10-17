@@ -641,6 +641,7 @@ export function Nav() {
                   to="/book"
                   icon={CalendarClock}
                   label="Book a Strategy Call"
+                  touchExpand={false}
                   onClick={() => trackEvent("strategy_call_click", { source: "nav" })}
                 />
               </div>
@@ -681,7 +682,10 @@ export function Nav() {
                     to="/book"
                     icon={CalendarClock}
                     label="Book a Strategy Call"
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => {
+                      trackEvent("strategy_call_click", { source: "mobile_nav" });
+                      setMobileOpen(false);
+                    }}
                   />
                 </div>
               </SheetContent>

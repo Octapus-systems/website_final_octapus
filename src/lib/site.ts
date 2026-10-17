@@ -1,10 +1,10 @@
-import productErpImg from "@/assets/product-erp.png";
+import productErpImg from "@/assets/product-erp.webp";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
 import horusAiVideo from "@/assets/horus.mp4";
 import customAiVideo from "@/assets/custom-ai-v2.mp4";
 import aiBizAutoImg from "@/assets/ai-business-automation-product.webp";
-import erpImplProductImg from "@/assets/erp-implementation-product.png";
+import erpImplProductImg from "@/assets/erp-implementation-product.webp";
 
 export type TeamMember = {
   name: string;
@@ -379,10 +379,82 @@ export const industries = [
   "Professional Services",
 ] as const;
 
+/**
+ * Typical operational problem, system type and benefit per sector. These describe common
+ * situations and solution types; they are not claims about completed client work.
+ */
+export const industryDetails: Record<
+  (typeof industries)[number],
+  { problem: string; system: string; benefit: string }
+> = {
+  Construction: {
+    problem:
+      "Project costs, drawings, subcontractor invoices and site progress sit in separate files.",
+    system: "Project management and cost control linked to purchasing and accounts.",
+    benefit: "Earlier warning on budget overruns and one current view of each project.",
+  },
+  Healthcare: {
+    problem: "Patient administration, billing and staff rosters are handled in disconnected tools.",
+    system: "Role-based administration, scheduling and billing workflows with audit trails.",
+    benefit: "Less duplicate data entry and cleaner records for administrative teams.",
+  },
+  Retail: {
+    problem:
+      "Stock, prices and promotions differ between the till, the warehouse and the web shop.",
+    system: "Point-of-sale, inventory and pricing connected to one product record.",
+    benefit: "Accurate stock across branches and fewer manual stock counts.",
+  },
+  Education: {
+    problem: "Admissions, timetables, fees and parent communication run on separate spreadsheets.",
+    system: "A role-based school platform covering administration, learning and fees.",
+    benefit: "Parents and staff work from the same records, with less chasing.",
+  },
+  Finance: {
+    problem: "Month-end reporting depends on exports and manual reconciliation.",
+    system: "Reporting layers and workflow approvals on top of the existing ledger.",
+    benefit: "Faster close, clearer audit trails and reports that teams can trust.",
+  },
+  Manufacturing: {
+    problem: "Production schedules, maintenance logs and inventory are updated by hand.",
+    system: "Production planning and maintenance tracking connected to stock and purchasing.",
+    benefit: "Fewer unplanned stoppages and better visibility of materials on the floor.",
+  },
+  Hospitality: {
+    problem: "Bookings, housekeeping, food stock and guest billing are not linked.",
+    system: "Reservation, operations and billing software with shared guest records.",
+    benefit: "Fewer double bookings and quicker check-in and check-out.",
+  },
+  "Real Estate": {
+    problem: "Leads, listings, viewings and contracts are tracked in different places.",
+    system: "CRM and document workflows connected to listings and accounts.",
+    benefit: "Shorter response times to enquiries and a clear record for every deal.",
+  },
+  Transportation: {
+    problem: "Dispatch, driver hours, fuel and maintenance are managed separately.",
+    system: "Fleet and dispatch software linked to maintenance and billing.",
+    benefit: "Better vehicle utilisation and fewer missed service intervals.",
+  },
+  "E-commerce": {
+    problem: "Orders, payments and stock across marketplaces and the own store fall out of step.",
+    system: "Order management connected to inventory, fulfilment and accounting.",
+    benefit: "One order updates every system once, so stock and revenue stay accurate.",
+  },
+  Logistics: {
+    problem: "Shipment status, documents and customer updates depend on phone calls and email.",
+    system: "Shipment tracking and document workflows shared with customers and carriers.",
+    benefit: "Fewer status calls and faster paperwork for every consignment.",
+  },
+  "Professional Services": {
+    problem: "Time, project scope and invoicing are not tied together, so work goes unbilled.",
+    system: "Time tracking, project costing and invoicing in one workflow.",
+    benefit: "Better billing accuracy and clearer margins on each engagement.",
+  },
+};
+
 export const processStages = [
   {
     name: "Discover",
-    detail: "Octapus map your operation, systems and constraints in plain language.",
+    detail: "We map your operation, systems and constraints in plain language.",
   },
   { name: "Plan", detail: "A clear scope, sequencing and definition of done — before code." },
   { name: "Design", detail: "Interfaces designed for the people who will actually use them." },
@@ -551,7 +623,7 @@ export const faqs = [
   },
   {
     q: "How is Octapus different from a traditional software agency?",
-    a: "Octapus stay with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors.",
+    a: "Octapus stays with the system after launch. Engineering, business systems, AI, design, growth and operations sit inside one team with one roadmap — so accountability never moves between vendors.",
   },
   {
     q: "Why choose custom software instead of an off-the-shelf tool?",
@@ -563,7 +635,7 @@ export const faqs = [
   },
   {
     q: "Do you build from scratch or extend existing systems?",
-    a: "Both. Octapus extend Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises.",
+    a: "Both. Octapus extends Odoo, ERPs and CRMs where it makes sense, and build custom software where off-the-shelf tools force painful compromises.",
   },
   {
     q: "What is OIS and how is it different from a chatbot?",
@@ -575,7 +647,7 @@ export const faqs = [
   },
   {
     q: "How much does an ERP or custom software project cost in the UAE?",
-    a: "Cost depends on scope, integrations and data migration rather than headcount. Octapus size projects after a discovery phase and agree a scope, sequence and definition of done before any code is written.",
+    a: "Cost depends on scope, integrations and data migration rather than headcount. Octapus sizes projects after a discovery phase and agrees a scope, sequence and definition of done before any code is written.",
   },
   {
     q: "What does an engagement typically look like?",
@@ -583,7 +655,7 @@ export const faqs = [
   },
   {
     q: "Where are you based and who do you serve?",
-    a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. Octapus work with startups and growing companies across the GCC and internationally.",
+    a: "Octapus is headquartered in the UAE with offices in Dubai and Ajman. We work with startups and growing companies across the GCC and internationally.",
   },
   {
     q: "Do you offer ongoing support and monitoring?",
@@ -621,7 +693,7 @@ export const disciplineTracks: DisciplineTrack[] = [
     title: "Engineering Intelligent Digital Systems",
     hero: "Engineering the systems that power modern businesses.",
     intro:
-      "Four disciplines build and run the operating layer of your company — engineering, business systems, AI & data and operate — with OIS adding intelligence on top of everything Octapus connect.",
+      "Four disciplines build and run the operating layer of your company — engineering, business systems, AI & data and operate — with OIS adding intelligence on top of everything Octapus connects.",
     keywords: [
       "software development UAE",
       "enterprise software UAE",

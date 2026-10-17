@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Phone, Mail } from "lucide-react";
 import { Section, Container } from "@/components/site/Section";
 import { JsonLd } from "@/components/site/JsonLd";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 import { site, team } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { RevealButton } from "@/components/site/RevealButton";
@@ -37,7 +37,7 @@ function TeamPage() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Meet the Octapus Team",
-          url: "/team",
+          url: absoluteUrl("/team"),
           description: "Leadership and key team members at Octapus L.L.C.",
         }}
       />

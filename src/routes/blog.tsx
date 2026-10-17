@@ -3,7 +3,7 @@ import { Section } from "@/components/site/Section";
 import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
-import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_NAME, absoluteUrl } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const Route = createFileRoute("/blog")({
@@ -34,8 +34,8 @@ function BlogPage() {
           "@context": "https://schema.org",
           "@type": "Blog",
           name: `${SITE_NAME} Blog`,
-          url: "/blog",
-          publisher: { "@type": "Organization", name: site.legalName, url: "/" },
+          url: absoluteUrl("/blog"),
+          publisher: { "@type": "Organization", name: site.legalName, url: absoluteUrl("/") },
         }}
       />
       <JsonLd
@@ -49,7 +49,7 @@ function BlogPage() {
         eyebrow="Blog"
         titleAs="h1"
         title="Field Notes From the Team Building Connected Systems."
-        intro="Octapus publish infrequently — when Octapus have something specific and useful to say about software, AI and running real operations."
+        intro="We publish infrequently — when we have something specific and useful to say about software, AI and running real operations."
       >
         <div className="mx-auto max-w-2xl text-center">
           <div className="mt-8">
@@ -74,7 +74,7 @@ function BlogPage() {
           {
             to: "/about",
             label: "About",
-            detail: "Who Octapus is and how Octapus work with growing companies.",
+            detail: "Who Octapus is and how we work with growing companies.",
           },
         ]}
       />

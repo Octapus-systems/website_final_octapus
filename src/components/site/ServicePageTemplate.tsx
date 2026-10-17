@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Container } from "@/components/site/Section";
 import { serviceBySlug, type ServiceIcon, type ServicePageData } from "@/lib/service-pages";
 import { site } from "@/lib/site";
-import { breadcrumbSchema } from "@/lib/seo";
+import { breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 const icons: Record<ServiceIcon, typeof Monitor> = {
   screen: Monitor,
@@ -21,15 +21,15 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
   const servicePath = `/services/${service.slug}`;
 
   return (
-    <main>
+    <>
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "Service",
           name: service.title,
           description: service.summary,
-          url: servicePath,
-          provider: { "@type": "Organization", name: site.legalName, url: "/" },
+          url: absoluteUrl(servicePath),
+          provider: { "@type": "Organization", name: site.legalName, url: absoluteUrl("/") },
           areaServed: "United Arab Emirates",
         }}
       />
@@ -222,6 +222,6 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
           </Link>
         </Container>
       </section>
-    </main>
+    </>
   );
 }

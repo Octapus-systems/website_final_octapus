@@ -26,6 +26,9 @@ const moduleIcons = [
   { label: "Reports", icon: FileText, color: "#f59e0b" },
 ];
 
+// Darker text shades for the status pills so small labels meet WCAG AA contrast.
+const TONE_TEXT: Record<string, string> = { "#059669": "#047857", "#f59e0b": "#b45309" };
+
 const cmsRows = [
   { name: "Homepage", status: "Published", tone: "#059669" },
   { name: "Products", status: "Draft", tone: "#f59e0b" },
@@ -108,11 +111,11 @@ export function ObmsShowcase({ product }: { product: Product }) {
                     key={m.label}
                     className="rounded-2xl bg-[#f5f8ff] p-4 ring-1 ring-[#2563eb]/10 transition-shadow hover:shadow-[0_12px_30px_-18px_rgba(37,99,235,0.7)]"
                   >
-                    <div className="text-[11px] font-medium text-[#0b1533]/55">{m.label}</div>
+                    <div className="text-[11px] font-medium text-[#0b1533]/70">{m.label}</div>
                     <div className="mt-1.5 text-xl font-bold tracking-tight text-[#0b1533]">
                       {m.value}
                     </div>
-                    <div className="mt-1 text-[11px] text-[#0b1533]/50">{m.detail}</div>
+                    <div className="mt-1 text-[11px] text-[#0b1533]/65">{m.detail}</div>
                   </div>
                 ))}
               </div>
@@ -161,7 +164,7 @@ export function ObmsShowcase({ product }: { product: Product }) {
                   </span>
                   <div className="text-sm font-semibold text-[#0b1533]">CMS panel</div>
                 </div>
-                <span className="rounded-full bg-[#059669]/10 px-2.5 py-1 text-[10px] font-semibold text-[#059669]">
+                <span className="rounded-full bg-[#059669]/10 px-2.5 py-1 text-[10px] font-semibold text-[#065f46]">
                   Live
                 </span>
               </div>
@@ -174,7 +177,7 @@ export function ObmsShowcase({ product }: { product: Product }) {
                     <span className="text-xs font-medium text-[#0b1533]">{r.name}</span>
                     <span
                       className="rounded-full px-2.5 py-1 text-[10px] font-semibold"
-                      style={{ backgroundColor: `${r.tone}18`, color: r.tone }}
+                      style={{ backgroundColor: `${r.tone}18`, color: TONE_TEXT[r.tone] ?? r.tone }}
                     >
                       {r.status}
                     </span>
@@ -214,7 +217,7 @@ export function ObmsShowcase({ product }: { product: Product }) {
                 />
               </div>
               <div className="mt-4 text-sm font-semibold text-[#0b1533]">{a.name}</div>
-              <div className="mt-1 text-xs text-[#0b1533]/55">{a.note}</div>
+              <div className="mt-1 text-xs text-[#0b1533]/70">{a.note}</div>
             </div>
           ))}
         </div>

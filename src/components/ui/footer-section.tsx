@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Mail, MapPin, Send } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Wordmark } from "@/components/site/Wordmark";
 import { site } from "@/lib/site";
 import { AskAi } from "@/components/site/AskAi";
+import { trackEvent } from "@/lib/analytics";
 
 const SOCIAL_PATHS: Record<string, string> = {
   WhatsApp:
@@ -37,6 +38,7 @@ const footerLinks = [
       { to: "/team", text: "Team" },
       { to: "/careers", text: "Careers" },
       { to: "/contact", text: "Contact" },
+      { to: "/book", text: "Book a Call" },
     ],
   },
   {
@@ -159,12 +161,13 @@ export function Footerdemo() {
           </div>
 
           <TooltipProvider>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
 
               <Tooltip>
                 <TooltipTrigger asChild>
                   <a
                     href={`mailto:${site.emails.info}`}
+                    onClick={() => trackEvent("email_click", { source: "footer" })}
                     className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] transition hover:border-primary hover:bg-primary"
                     aria-label={`Email ${site.emails.info}`}
                   >
@@ -173,6 +176,19 @@ export function Footerdemo() {
                 </TooltipTrigger>
                 <TooltipContent>{site.emails.info}</TooltipContent>
               </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a
+                    href={`tel:${site.phones.general.replace(/\s/g, "")}`}
+                    onClick={() => trackEvent("call_click", { source: "footer" })}
+                    className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] transition hover:border-primary hover:bg-primary"
+                    aria-label={`Call Octapus on ${site.phones.general}`}
+                  >
+                    <Phone className="size-4" aria-hidden="true" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>{site.phones.general}</TooltipContent>
+              </Tooltip>
               {site.socials.map((social) => (
                 <Tooltip key={social.name}>
                   <TooltipTrigger asChild>
@@ -180,6 +196,11 @@ export function Footerdemo() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer me"
+                      onClick={
+                        social.name === "WhatsApp"
+                          ? () => trackEvent("whatsapp_click", { source: "footer" })
+                          : undefined
+                      }
                       className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] transition hover:border-primary hover:bg-primary"
                       aria-label={`Octapus on ${social.name}`}
                     >
@@ -193,7 +214,7 @@ export function Footerdemo() {
           </TooltipProvider>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/42 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {site.legalName}. All rights reserved.
           </p>

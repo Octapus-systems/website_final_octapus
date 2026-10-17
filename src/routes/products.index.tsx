@@ -7,7 +7,7 @@ import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { OisConnection } from "@/components/site/OisConnection";
 import { ProductsShowcase } from "@/components/site/ProductsShowcase";
 import { products, hiddenProductSlugs } from "@/lib/site";
-import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_NAME, absoluteUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/")({
@@ -42,14 +42,14 @@ function ProductsIndex() {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: `${SITE_NAME} Products`,
-          url: "/products",
+          url: absoluteUrl("/products"),
           hasPart: visibleProducts.map((p) => ({
             "@type": "SoftwareApplication",
             name: p.name,
             applicationCategory: "BusinessApplication",
             operatingSystem: "Web",
             description: p.headline,
-            url: `/products/${p.slug}`,
+            url: absoluteUrl(`/products/${p.slug}`),
           })),
         }}
       />

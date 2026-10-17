@@ -23,7 +23,7 @@ const staticPaths = [
   "/contact",
   "/book",
   "/privacy",
-  "/terms",
+  // "/terms" is left out while it is a noindexed placeholder — add it back once published.
 ];
 
 // Manual per-route last-modified dates (YYYY-MM-DD). Update a date when that route's content changes.

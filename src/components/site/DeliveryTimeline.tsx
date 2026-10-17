@@ -10,7 +10,7 @@ const defaultItems: TimelineItem[] = [
   {
     label: "Day 1",
     title: "Discovery call",
-    detail: "Octapus map your current systems, gaps and priorities in one focused session.",
+    detail: "We map your current systems, gaps and priorities in one focused session.",
   },
   {
     label: "Week 1",

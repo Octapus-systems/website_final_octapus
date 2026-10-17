@@ -177,7 +177,7 @@ export function OctapusAdvantageSection() {
               muted
               playsInline
               loop
-              preload="auto"
+              preload="none"
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
                 isCard1Active ? "opacity-100" : "opacity-0",
@@ -306,7 +306,7 @@ export function OctapusAdvantageSection() {
               muted
               playsInline
               loop
-              preload="auto"
+              preload="none"
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
                 isCard2Active ? "opacity-100" : "opacity-0",

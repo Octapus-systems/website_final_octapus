@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
 
@@ -36,18 +36,31 @@ export function useLoadingDone() {
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const jitter = (ms: number) => ms + Math.random() * ms * 0.6;
 
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+/** Intro already played this session, or the page is embedded (nav previews). */
+function shouldSkipIntro() {
+  try {
+    if (sessionStorage.getItem("octapus_intro_seen")) return true;
+  } catch {
+    // Ignore session storage errors
+  }
+  return window.self !== window.top;
+}
+
 export function LoadingScreen() {
-  const [isVisible, setIsVisible] = useState(() => {
-    if (typeof window !== "undefined") {
-      try {
-        if (sessionStorage.getItem("octapus_intro_seen")) return false;
-      } catch {
-        // Ignore session storage errors
-      }
-      return window.self === window.top;
-    }
-    return true;
-  });
+  // Starts visible on both server and client so hydration matches. Returning visitors never
+  // see it: the inline script in __root.tsx tags <html> with `octa-intro-seen`, which hides
+  // the server-rendered overlay via CSS before first paint; it is then removed below.
+  const [isVisible, setIsVisible] = useState(true);
+  const skippedRef = useRef(false);
+
+  useIsomorphicLayoutEffect(() => {
+    if (!shouldSkipIntro()) return;
+    skippedRef.current = true;
+    setIsVisible(false);
+    markLoaded();
+  }, []);
 
   const [typed, setTyped] = useState("");
   const [boxGone, setBoxGone] = useState(false);
@@ -66,7 +79,7 @@ export function LoadingScreen() {
   }, []);
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || skippedRef.current) return;
     let cancelled = false;
 
     const set = (s: string) => {
@@ -89,11 +102,9 @@ export function LoadingScreen() {
     };
 
     const play = async () => {
+      // Reduced motion: no typed sequence, so don't hold the page for one.
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        setBoxGone(true);
-        setShowOut(true);
-        await sleep(700);
-        if (!cancelled) completeLoading();
+        completeLoading();
         return;
       }
 
@@ -131,29 +142,36 @@ export function LoadingScreen() {
 
   // Every full load / refresh starts at the hero, not a restored scroll position
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || skippedRef.current) return;
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
     return () => window.scrollTo(0, 0);
   }, [isVisible]);
 
   useEffect(() => {
-    // Loader never shown (e.g. inside an iframe): content can animate right away.
-    if (!isVisible && !window.__octaLoaded) markLoaded();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || skippedRef.current) return;
     const timeout = window.setTimeout(() => setIsVisible(false), MAX_WAIT_MS);
     return () => window.clearTimeout(timeout);
   }, [isVisible]);
+
+  // Keyboard skip. The overlay holds no focusable controls, so it never traps focus.
+  useEffect(() => {
+    if (!isVisible) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") completeLoading();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isVisible, completeLoading]);
 
   return (
     <AnimatePresence onExitComplete={markLoaded}>
       {isVisible && (
         <motion.div
           key="loading-screen"
+          data-loading-screen=""
+          // Decorative intro: screen readers go straight to the page content.
+          aria-hidden="true"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}

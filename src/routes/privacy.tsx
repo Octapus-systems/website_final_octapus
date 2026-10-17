@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { JsonLd } from "@/components/site/JsonLd";
 import { site } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacy")({
   head: () =>
@@ -24,7 +24,7 @@ function PrivacyPage() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           name: "Privacy Policy",
-          url: "/privacy",
+          url: absoluteUrl("/privacy"),
           about: { "@type": "Organization", name: site.legalName },
         }}
       />

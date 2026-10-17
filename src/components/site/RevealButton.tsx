@@ -11,6 +11,8 @@ interface RevealButtonProps {
   external?: boolean;
   className?: string;
   onClick?: () => void;
+  /** Show the label on touch screens, which can't hover to reveal it. Default true. */
+  touchExpand?: boolean;
 }
 
 interface RevealActionButtonProps {
@@ -23,16 +25,31 @@ interface RevealActionButtonProps {
   variant?: "default" | "outline" | "white";
   className?: string;
   onClick?: () => void;
+  /** Always show the label (e.g. form submit buttons). */
+  expanded?: boolean;
 }
 
 const revealLabelClass =
   "inline-block max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-out group-hover:ml-2 group-hover:max-w-52 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-52 group-focus-visible:opacity-100";
 
-function RevealContent({ Icon, label }: { Icon: LucideIcon; label: string }) {
+// Touch devices never fire hover, so an icon-only CTA would hide its label there.
+const touchLabelClass =
+  "[@media(hover:none)]:ml-2 [@media(hover:none)]:max-w-60 [@media(hover:none)]:opacity-100";
+const touchButtonClass = "[@media(hover:none)]:max-w-none [@media(hover:none)]:px-4";
+
+function RevealContent({
+  Icon,
+  label,
+  touchExpand,
+}: {
+  Icon: LucideIcon;
+  label: string;
+  touchExpand: boolean;
+}) {
   return (
     <>
       <Icon className="size-4 shrink-0" />
-      <span className={revealLabelClass}>{label}</span>
+      <span className={cn(revealLabelClass, touchExpand && touchLabelClass)}>{label}</span>
     </>
   );
 }
@@ -45,17 +62,19 @@ export function RevealButton({
   external,
   className,
   onClick,
+  touchExpand = true,
 }: RevealButtonProps) {
-  const content = <RevealContent Icon={Icon} label={label} />;
+  const content = <RevealContent Icon={Icon} label={label} touchExpand={touchExpand} />;
 
   const sharedClasses = cn(
     "group h-9 min-w-9 max-w-9 px-2.5 gap-0 justify-start overflow-hidden transition-all duration-300 ease-out hover:max-w-60 hover:px-4 rounded-full",
+    touchExpand && touchButtonClass,
     variant === "default" && "btn-aurora",
     variant === "outline" &&
-      "bg-foreground/10 border border-foreground/20 text-white hover:bg-foreground/20 hover:text-white hover:border-foreground/40",
+      "bg-foreground/10 border border-foreground/20 text-foreground hover:bg-foreground/20 hover:text-foreground hover:border-foreground/40",
     variant === "white" && "btn-aurora text-white",
     variant === "subtle" &&
-      "bg-foreground/10 border border-foreground/15 text-white hover:bg-foreground/20 hover:border-foreground/30",
+      "bg-foreground/10 border border-foreground/15 text-foreground hover:bg-foreground/20 hover:border-foreground/30",
     className,
   );
 
@@ -96,6 +115,7 @@ export function RevealActionButton({
   variant = "default",
   className,
   onClick,
+  expanded = false,
 }: RevealActionButtonProps) {
   const ActiveIcon = loading ? Loader2 : Icon;
   const activeLabel = loading ? loadingLabel : label;
@@ -106,14 +126,18 @@ export function RevealActionButton({
       variant={variant}
       disabled={disabled || loading}
       aria-label={activeLabel}
+      aria-busy={loading || undefined}
       onClick={onClick}
       className={cn(
         "group h-11 min-w-11 max-w-11 justify-start gap-0 overflow-hidden rounded-full px-3.5 transition-all duration-300 ease-out hover:max-w-72 hover:px-5 focus-visible:max-w-72 focus-visible:px-5",
+        expanded ? "max-w-none justify-center px-5" : touchButtonClass,
         className,
       )}
     >
       <ActiveIcon className={cn("size-4 shrink-0", loading && "animate-spin")} />
-      <span className={revealLabelClass}>{activeLabel}</span>
+      <span className={expanded ? "ml-2 whitespace-nowrap" : cn(revealLabelClass, touchLabelClass)}>
+        {activeLabel}
+      </span>
     </Button>
   );
 }

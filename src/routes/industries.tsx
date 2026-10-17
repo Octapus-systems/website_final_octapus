@@ -3,15 +3,15 @@ import { Section } from "@/components/site/Section";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { Container } from "@/components/site/Section";
-import { industries, industryOisUseCases } from "@/lib/site";
+import { industries, industryDetails, industryOisUseCases } from "@/lib/site";
 import { buildMeta, breadcrumbSchema } from "@/lib/seo";
 
 export const Route = createFileRoute("/industries")({
   head: () =>
     buildMeta({
-      title: "Industries Octapus Serve — Software, ERP, CRM and AI Across 12+ Sectors",
+      title: "Industries Octapus Serves — Software, ERP, CRM and AI by Sector",
       description:
-        "Octapus builds software, ERP, CRM and AI systems for construction, healthcare, retail, education, finance, manufacturing, hospitality, real estate, logistics, e-commerce and professional services.",
+        "Software, ERP, CRM and AI systems for construction, healthcare, retail, education, finance, manufacturing, hospitality, real estate, logistics and more.",
       path: "/industries",
       ogType: "website",
       keywords: [
@@ -52,16 +52,28 @@ function IndustriesPage() {
         eyebrow="Industries"
         title="Sectors Where Octapus Systems Already Run."
         titleAs="h1"
-        intro="Octapus describe what Octapus actually do rather than pretend equal expertise everywhere. Regulated industries receive extra diligence before Octapus take on the work."
+        intro="We describe what we actually do rather than pretend equal expertise everywhere. Regulated industries receive extra diligence before we take on the work."
       />
       <Section className="!pt-0">
+        <h2 className="sr-only">Industries we work in</h2>
         <div className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden grid-cols-2 md:grid-cols-3">
           {industries.map((i) => (
             <div key={i} className="bg-background px-6 py-8">
               <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">{i}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Relevant Octapus use cases available on request.
-              </p>
+              <dl className="mt-3 space-y-3 text-sm leading-relaxed">
+                <div>
+                  <dt className="font-medium text-foreground">Common problem</dt>
+                  <dd className="text-muted-foreground">{industryDetails[i].problem}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-foreground">Typical system</dt>
+                  <dd className="text-muted-foreground">{industryDetails[i].system}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-foreground">Business benefit</dt>
+                  <dd className="text-muted-foreground">{industryDetails[i].benefit}</dd>
+                </div>
+              </dl>
             </div>
           ))}
         </div>
@@ -97,7 +109,7 @@ function IndustriesPage() {
           {
             to: "/technology",
             label: "Technology",
-            detail: "How Octapus design, build and operate systems for your sector.",
+            detail: "How Octapus designs, builds and operates systems for your sector.",
           },
           {
             to: "/ois",

@@ -1,18 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
-import { Mail, Send } from "lucide-react";
-import { RevealButton } from "@/components/site/RevealButton";
+import { Mail, MessageCircle, Phone, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/site/JsonLd";
+import { trackEvent } from "@/lib/analytics";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/book")({
   head: () =>
     buildMeta({
       title: "Book a Strategy Call — Talk to the Octapus Team",
       description:
-        "Book a focused 30-minute strategy call with Octapus. Octapus listen, ask precise questions and share what Octapus would recommend for your systems.",
+        "Book a free, focused 30-minute strategy call with Octapus. We listen, ask precise questions and share what we would recommend for your systems.",
       path: "/book",
       ogType: "website",
       keywords: [
@@ -50,14 +51,9 @@ function BookPage() {
           serviceType: "Strategy Consultation",
           name: "Octapus Strategy Call",
           description: "30-minute strategy call with Octapus on software, AI and business systems.",
-          provider: { "@type": "Organization", name: site.legalName, url: "/" },
+          provider: { "@type": "Organization", name: site.legalName, url: absoluteUrl("/") },
           areaServed: ["AE", "GCC", "Global"],
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "AED",
-            availability: "https://schema.org/InStock",
-          },
+          // No offers: the call is not priced in structured data until the owner confirms terms.
         }}
       />
       <JsonLd
@@ -71,7 +67,7 @@ function BookPage() {
         titleAs="h1"
         eyebrow="Strategy call"
         title="Thirty Focused Minutes With the Octapus Team."
-        intro="30 minutes. No obligation. Octapus listen, ask precise questions and share what Octapus'd recommend."
+        intro="30 minutes. No obligation. We listen, ask precise questions and share what we'd recommend."
       >
         {site.calLink ? (
           <>
@@ -89,29 +85,63 @@ function BookPage() {
             </p>
           </>
         ) : (
+          // No live calendar yet (site.calLink is empty): requests are confirmed by the team.
           <div className="mx-auto max-w-2xl rounded-2xl border hairline bg-[var(--color-surface)] p-8 text-center">
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <RevealButton
-                to={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}
-                external
-                icon={Mail}
-                label={`Email ${site.emails.sales}`}
-                className="h-12 min-w-12 max-w-12 px-3 hover:max-w-80"
-              />
-              <RevealButton
-                to="/contact"
-                icon={Send}
-                label="Use the enquiry form"
-                variant="outline"
-                className="h-12 min-w-12 max-w-12 px-3 hover:max-w-72"
-              />
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              Request your strategy call
+            </h2>
+            <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground md:text-base">
+              Share a few lines about your project and the times that suit you. We'll confirm a slot
+              by email or WhatsApp within one business day.
+            </p>
+            <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <Button asChild size="lg" className="h-12 rounded-full px-6">
+                <Link
+                  to="/contact"
+                  onClick={() => trackEvent("contact_cta_click", { source: "book" })}
+                >
+                  <Send className="mr-2 size-4" aria-hidden="true" />
+                  Request via enquiry form
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-12 rounded-full px-6">
+                <a
+                  href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hello Octapus — I'd like to book a strategy call.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent("whatsapp_click", { source: "book" })}
+                >
+                  <MessageCircle className="mr-2 size-4" aria-hidden="true" />
+                  WhatsApp us
+                </a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-12 rounded-full px-6">
+                <a
+                  href={`mailto:${site.emails.sales}?subject=${encodeURIComponent("Strategy call request")}`}
+                  onClick={() => trackEvent("email_click", { source: "book" })}
+                >
+                  <Mail className="mr-2 size-4" aria-hidden="true" />
+                  Email {site.emails.sales}
+                </a>
+              </Button>
             </div>
+            <p className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+              <Phone className="size-4 text-primary" aria-hidden="true" />
+              Prefer to talk now? Call{" "}
+              <a
+                href={`tel:${site.phones.sales.replace(/\s/g, "")}`}
+                onClick={() => trackEvent("call_click", { source: "book" })}
+                className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+              >
+                {site.phones.sales}
+              </a>
+            </p>
           </div>
         )}
       </Section>
 
       <RelatedLinks
-        title="Before the call, browse what Octapus build."
+        title="Before the call, browse what Octapus builds."
         items={[
           {
             to: "/services",

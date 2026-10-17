@@ -11,7 +11,7 @@ export const Route = createFileRoute("/technology")({
     buildMeta({
       title: "Octapus Technology — Software, ERP and AI Systems in the UAE",
       description:
-        "Engineering, business systems, AI & data and operate — the Octapus technology pathway for custom software, enterprise platforms, business automation and AI solutions in the UAE.",
+        "Engineering, business systems, AI & data and operations — how Octapus delivers custom software, enterprise platforms, automation and AI in the UAE.",
       path: "/technology",
       ogType: "website",
       keywords: track.keywords,
@@ -51,7 +51,7 @@ function TechnologyPage() {
       <TrackPage
         track={track}
         oisTitle="Engineering creates the foundation. OIS adds the intelligence."
-        oisBody="Custom software and architecture give the business a reliable operating layer. OIS sits on top of the systems Octapus connect, so authorized AI agents can read, reason and act inside them — without replacing anything."
+        oisBody="Custom software and architecture give the business a reliable operating layer. OIS sits on top of the systems Octapus connects, so authorized AI agents can read, reason and act inside them — without replacing anything."
         oisChain={[
           "Custom software",
           "Architecture and integration",
@@ -62,7 +62,7 @@ function TechnologyPage() {
         approach={[
           {
             k: "Discovery first",
-            v: "Octapus map the operation, systems and constraints before scope or code.",
+            v: "We map the operation, systems and constraints before scope or code.",
           },
           {
             k: "Short cycles",
@@ -82,7 +82,7 @@ function TechnologyPage() {
           {
             to: "/ois",
             label: "OIS",
-            detail: "The intelligence layer connecting every system Octapus build.",
+            detail: "The intelligence layer connecting every system Octapus builds.",
           },
           {
             to: "/products",

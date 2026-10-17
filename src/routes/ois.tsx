@@ -17,14 +17,14 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/ois")({
   head: () =>
     buildMeta({
       title: "OIS — From Artificial Intelligence to Actual Workforce | Octapus",
       description:
-        "OIS, the Octapus Intelligence System, turns your existing software and repetitive workflows into AI employees. Lower cost, faster execution, higher accuracy — available beyond office hours.",
+        "OIS, the Octapus Intelligence System, turns your existing software and repetitive workflows into AI employees that work beyond office hours.",
       path: "/ois",
       ogType: "article",
       image: oisImg,
@@ -53,10 +53,10 @@ function OIS() {
           headline: "OIS — Octapus Intelligence System",
           description:
             "OIS turns your existing software and repetitive workflows into AI employees. Lower cost, faster execution, higher accuracy — available beyond office hours.",
-          image: oisImg,
+          image: absoluteUrl(oisImg),
           author: { "@type": "Organization", name: site.legalName },
-          publisher: { "@type": "Organization", name: site.legalName, url: "/" },
-          url: "/ois",
+          publisher: { "@type": "Organization", name: site.legalName, url: absoluteUrl("/") },
+          url: absoluteUrl("/ois"),
         }}
       />
       <JsonLd
@@ -127,7 +127,7 @@ function OIS() {
 
       <Section
         eyebrow="The next step"
-        title="Instead of simply giving your employees AI tools, Octapus build AI employees around your actual business."
+        title="Instead of simply giving your employees AI tools, Octapus builds AI employees around your actual business."
         intro="Turn your existing software into an intelligent system. Build an AI version of a repetitive employee workflow. Or, when you need a specific role without expanding your traditional workforce, deploy a dedicated OIS Agent."
       >
         <div className="mt-12 grid gap-3 md:grid-cols-5">

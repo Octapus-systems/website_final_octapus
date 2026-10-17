@@ -4,14 +4,14 @@ import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { site } from "@/lib/site";
-import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_NAME, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   head: () =>
     buildMeta({
       title: "About Octapus — Systems Behind Modern UAE Business",
       description:
-        "Octapus L.L.C. is a UAE software, AI and business-systems partner designing connected operations for startups and growing companies — from Dubai and Ajman to the world.",
+        "Octapus L.L.C. is a UAE software, AI and business-systems partner designing connected operations for startups and growing companies, from Dubai and Ajman.",
       path: "/about",
       ogType: "profile",
       keywords: [
@@ -34,12 +34,12 @@ function AboutPage() {
           "@context": "https://schema.org",
           "@type": "AboutPage",
           name: `About ${SITE_NAME}`,
-          url: "/about",
+          url: absoluteUrl("/about"),
           mainEntity: {
             "@type": "Organization",
             name: site.legalName,
             alternateName: site.name,
-            url: "/",
+            url: absoluteUrl("/"),
             email: site.emails.info,
             telephone: site.phones.general,
             areaServed: ["AE", "GCC", "Global"],

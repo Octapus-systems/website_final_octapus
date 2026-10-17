@@ -57,7 +57,7 @@ const userRoles = [
     summary:
       "Accesses courses, attends live classes, completes assignments and quizzes, and tracks academic progress.",
     icon: Sparkles,
-    badgeColor: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20",
+    badgeColor: "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/20",
     iconBg: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
     features: [
       "Centralized course dashboard & schedules",
@@ -72,7 +72,7 @@ const userRoles = [
     summary:
       "Monitors children's academics, attendance, homework, examinations, fees, achievements and school engagement.",
     icon: HeartHandshake,
-    badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+    badgeColor: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
     iconBg: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
     features: [
       "Real-time attendance & grade alerts",

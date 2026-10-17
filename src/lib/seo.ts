@@ -78,6 +78,14 @@ export function absoluteUrl(path: string) {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+/** 1200×630 share image. Social platforms don't render SVG, so this is a PNG. */
+export const DEFAULT_OG_IMAGE = "/og-image.png";
+
+/** Social platforms only accept raster images for og:image (no SVG, no video). */
+export function isShareableImage(src?: string): src is string {
+  return Boolean(src && /\.(png|jpe?g|webp|gif)($|\?)/i.test(src));
+}
+
 export type MetaInput = {
   title: string;
   description: string;
@@ -106,7 +114,8 @@ export function buildMeta(input: MetaInput) {
     { property: "og:url", content: canonical },
     { property: "og:type", content: ogType },
     { property: "og:site_name", content: SITE_NAME },
-    { name: "twitter:card", content: image ? "summary_large_image" : "summary" },
+    { property: "og:locale", content: "en_AE" },
+    { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
   ];
@@ -114,11 +123,9 @@ export function buildMeta(input: MetaInput) {
   if (keywords?.length) {
     meta.push({ name: "keywords", content: keywords.join(", ") });
   }
-  if (image) {
-    const absImage = absoluteUrl(image);
-    meta.push({ property: "og:image", content: absImage });
-    meta.push({ name: "twitter:image", content: absImage });
-  }
+  const absImage = absoluteUrl(isShareableImage(image) ? image : DEFAULT_OG_IMAGE);
+  meta.push({ property: "og:image", content: absImage });
+  meta.push({ name: "twitter:image", content: absImage });
   if (shouldNoindex) {
     meta.push({ name: "robots", content: "noindex,nofollow" });
   }

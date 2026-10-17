@@ -40,6 +40,7 @@ export function FloatingActions() {
   return (
     <div
       aria-hidden={!idle}
+      inert={!idle}
       className={`fixed inset-x-0 bottom-5 z-40 flex justify-center px-4 print:hidden transition-all duration-300 ${
         idle
           ? "opacity-100 translate-y-0 pointer-events-auto"
@@ -54,7 +55,7 @@ export function FloatingActions() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with Octapus on WhatsApp"
-          onClick={() => trackEvent("whatsapp_click")}
+          onClick={() => trackEvent("whatsapp_click", { source: "floating" })}
           title="Chat on WhatsApp"
           className="inline-flex size-10 items-center justify-center rounded-full bg-[#25D366] text-white shadow-md shadow-[#25D366]/30 transition hover:scale-105 hover:bg-[#1ebe5b]"
         >

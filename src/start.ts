@@ -1,7 +1,6 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
-import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
@@ -18,7 +17,8 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
   }
 });
 
+// No server functions use Supabase auth, so the client-side auth middleware is not registered.
+// Re-add attachSupabaseAuth here only together with a server function that needs it.
 export const startInstance = createStart(() => ({
-  functionMiddleware: [attachSupabaseAuth],
   requestMiddleware: [errorMiddleware],
 }));

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,14 +18,14 @@ import {
 import { trackEvent } from "@/lib/analytics";
 
 import { JsonLd } from "@/components/site/JsonLd";
-import { buildMeta, breadcrumbSchema } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   head: () =>
     buildMeta({
       title: "Contact Octapus — Let's Build Your Next Digital Success Story",
       description:
-        "Structured enquiry form routed to the right Octapus team — product, custom software, ERP, CRM, AI, marketing, support and careers. Dubai and Ajman offices.",
+        "Contact Octapus about custom software, ERP, CRM, AI automation, websites or marketing. Your enquiry goes straight to the right team in Dubai or Ajman.",
       path: "/contact",
       ogType: "website",
       keywords: [
@@ -44,6 +44,8 @@ function ContactPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
 
+  const successRef = useRef<HTMLDivElement>(null);
+
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvError, setCvError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +63,11 @@ function ContactPage() {
 
   const currentEnquiryType = watch("enquiryType");
   const isCareer = currentEnquiryType === "career";
+
+  // Move focus to the confirmation so keyboard and screen-reader users know it was sent.
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
 
   useEffect(() => {
     if (!isCareer) {
@@ -176,8 +183,8 @@ function ContactPage() {
           "@context": "https://schema.org",
           "@type": "ContactPage",
           name: "Contact Octapus",
-          url: "/contact",
-          about: { "@type": "Organization", name: site.legalName, url: "/" },
+          url: absoluteUrl("/contact"),
+          about: { "@type": "Organization", name: site.legalName, url: absoluteUrl("/") },
           contactPoint: [
             {
               "@type": "ContactPoint",
@@ -223,21 +230,26 @@ function ContactPage() {
         eyebrow="Contact"
         title="Tell Us the Operation You Need to Connect."
         titleAs="h1"
-        intro="Octapus route enquiries to the right team so you get a fast, informed response."
+        intro="We route every enquiry to the right team, so you get a fast, informed response."
       />
 
       <Container className="pb-20">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
             {status === "success" ? (
-              <div className="rounded-2xl border hairline bg-[var(--color-primary-soft)]/50 p-8 text-center">
-                <CheckCircle2 className="mx-auto size-8 text-primary" />
+              <div
+                ref={successRef}
+                role="status"
+                tabIndex={-1}
+                className="rounded-2xl border hairline bg-[var(--color-primary-soft)]/50 p-8 text-center outline-none"
+              >
+                <CheckCircle2 className="mx-auto size-8 text-primary" aria-hidden="true" />
                 <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">
                   Message received.
                 </h2>
                 <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                  Octapus've routed your enquiry to the right Octapus team. You'll hear back within
-                  one business day.
+                  We've routed your enquiry to the right Octapus team. You'll hear back within one
+                  business day.
                 </p>
               </div>
             ) : (
@@ -258,8 +270,14 @@ function ContactPage() {
                 />
 
                 <div className="grid gap-5 md:grid-cols-2">
-                  <Field label="Name" error={errors.name?.message} htmlFor="c-name">
-                    <Input id="c-name" {...register("name")} autoComplete="name" />
+                  <Field label="Name" required error={errors.name?.message} htmlFor="c-name">
+                    <Input
+                      id="c-name"
+                      {...register("name")}
+                      autoComplete="name"
+                      aria-required="true"
+                      {...errorProps("c-name", errors.name?.message)}
+                    />
                   </Field>
                   <Field label="Company" error={errors.company?.message} htmlFor="c-company">
                     <Input id="c-company" {...register("company")} autoComplete="organization" />
@@ -267,11 +285,32 @@ function ContactPage() {
                 </div>
 
                 <div className="grid gap-5 md:grid-cols-2">
-                  <Field label="Work email" error={errors.email?.message} htmlFor="c-email">
-                    <Input id="c-email" type="email" {...register("email")} autoComplete="email" />
+                  <Field
+                    label="Work email"
+                    required
+                    error={errors.email?.message}
+                    htmlFor="c-email"
+                  >
+                    <Input
+                      id="c-email"
+                      type="email"
+                      inputMode="email"
+                      {...register("email")}
+                      autoComplete="email"
+                      aria-required="true"
+                      {...errorProps("c-email", errors.email?.message)}
+                    />
                   </Field>
                   <Field label="Phone" error={errors.phone?.message} htmlFor="c-phone">
-                    <Input id="c-phone" type="tel" {...register("phone")} autoComplete="tel" />
+                    <Input
+                      id="c-phone"
+                      type="tel"
+                      inputMode="tel"
+                      {...register("phone")}
+                      autoComplete="tel"
+                      placeholder="+971"
+                      {...errorProps("c-phone", errors.phone?.message)}
+                    />
                   </Field>
                 </div>
 
@@ -290,13 +329,16 @@ function ContactPage() {
                 </Field>
 
                 <Field
-                  label={isCareer ? "Tell me about yourself" : "Brief project description"}
+                  label={isCareer ? "Tell us about yourself" : "Brief project description"}
+                  required
                   error={errors.description?.message}
                   htmlFor="c-desc"
                 >
                   <Textarea
                     id="c-desc"
                     rows={5}
+                    aria-required="true"
+                    {...errorProps("c-desc", errors.description?.message)}
                     placeholder={
                       isCareer
                         ? "Introduce yourself, your background, and why you'd like to join Octapus..."
@@ -309,6 +351,7 @@ function ContactPage() {
                 {isCareer && (
                   <Field
                     label="Attach CV / Resume (PDF, DOC, DOCX — max 10MB)"
+                    required
                     error={cvError || undefined}
                     htmlFor="c-cv"
                   >
@@ -319,6 +362,8 @@ function ContactPage() {
                         ref={fileInputRef}
                         accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         onChange={handleFileChange}
+                        aria-required="true"
+                        {...errorProps("c-cv", cvError || undefined)}
                         className="cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                       />
                     </div>
@@ -380,10 +425,17 @@ function ContactPage() {
                   loading={status === "loading"}
                   className="w-full md:w-auto"
                   disabled={status === "loading"}
+                  expanded
                 />
                 <p className="text-xs text-muted-foreground">
-                  By submitting you agree to our privacy policy. Octapus never share your
-                  information.
+                  <span aria-hidden="true">*</span> Required. By submitting you agree to our{" "}
+                  <Link
+                    to="/privacy"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    privacy policy
+                  </Link>
+                  . We never share your information.
                 </p>
               </form>
             )}
@@ -454,23 +506,38 @@ function ContactPage() {
   );
 }
 
+/** Links an input to its error message so screen readers announce it with the field. */
+function errorProps(id: string, error?: string) {
+  return error ? { "aria-invalid": true, "aria-describedby": `${id}-error` } : {};
+}
+
 function Field({
   label,
   htmlFor,
   error,
+  required,
   children,
 }: {
   label: string;
   htmlFor: string;
   error?: string;
+  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={htmlFor}>{label}</Label>
+      <Label htmlFor={htmlFor}>
+        {label}
+        {required && (
+          <span aria-hidden="true" className="text-destructive">
+            {" "}
+            *
+          </span>
+        )}
+      </Label>
       {children}
       {error && (
-        <p role="alert" className="text-xs text-destructive">
+        <p id={`${htmlFor}-error`} role="alert" className="text-xs text-destructive">
           {error}
         </p>
       )}
@@ -491,7 +558,9 @@ function ContactRow({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-primary">{icon}</span>
+      <span className="text-primary" aria-hidden="true">
+        {icon}
+      </span>
       <div className="flex-1">
         <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
         <a

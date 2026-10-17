@@ -102,30 +102,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Octapus — Software, AI and business systems in the UAE" },
+      { property: "og:image", content: "https://www.octapus.ae/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       {
-        property: "og:image",
-        content: "https://www.octapus.ae/octapus-indigo-logo.svg",
+        property: "og:image:alt",
+        content: "Octapus — software, AI and business systems in the UAE",
       },
-      {
-        name: "twitter:image",
-        content: "https://www.octapus.ae/octapus-indigo-logo.svg",
-      },
+      { name: "twitter:image", content: "https://www.octapus.ae/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/octapus-indigo-logo.svg", type: "image/svg+xml" },
-      { rel: "preconnect", href: "https://rsms.me" },
-      { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      } as unknown as Record<string, string>,
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Epilogue:wght@400;500;600&display=swap",
-      },
+      { rel: "icon", href: "/favicon-48.png", type: "image/png", sizes: "48x48" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      // Fonts are self-hosted (public/fonts) so no third-party font request blocks render or loads before consent.
+      { rel: "stylesheet", href: "/fonts/fonts.css" },
     ],
   }),
   shellComponent: RootShell,
@@ -139,10 +131,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
-        {/* Theme: whole site is light (no dark mode). Clear any leftover class before first paint. */}
+        {/* Theme: whole site is light (no dark mode). Clear any leftover class before first paint.
+            Also hide the intro overlay before first paint when it was already seen this session
+            (or inside an iframe) — see LoadingScreen. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{document.documentElement.classList.remove('dark');}catch(e){}})();`,
+            __html: `(function(){try{var d=document.documentElement;d.classList.remove('dark');if(sessionStorage.getItem('octapus_intro_seen')||window.self!==window.top)d.classList.add('octa-intro-seen');}catch(e){}})();`,
           }}
         />
         {/* Consent Mode v2 default (denied) — bootstraps before GTM loads.
@@ -229,10 +223,11 @@ function RootComponent() {
           {
             "@context": "https://schema.org",
             "@type": "Organization",
+            "@id": "https://www.octapus.ae/#organization",
             name: site.legalName,
             alternateName: site.name,
             url: "https://www.octapus.ae/",
-            logo: "https://www.octapus.ae/octapus-indigo-logo.svg",
+            logo: "https://www.octapus.ae/logo.png",
             sameAs: site.socials.filter((s) => s.name !== "WhatsApp").map((s) => s.href),
             email: site.emails.info,
             telephone: site.phones.general,
@@ -272,7 +267,8 @@ function RootComponent() {
               "Digital marketing",
             ],
             url: "https://www.octapus.ae/",
-            image: "https://www.octapus.ae/octapus-indigo-logo.svg",
+            image: "https://www.octapus.ae/og-image.png",
+            logo: "https://www.octapus.ae/logo.png",
             sameAs: site.socials.filter((s) => s.name !== "WhatsApp").map((s) => s.href),
             telephone: site.phones.general,
             email: site.emails.info,

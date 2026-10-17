@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Section } from "@/components/site/Section";
 import { JsonLd } from "@/components/site/JsonLd";
 import { servicePages } from "@/lib/service-pages";
-import { buildMeta, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
+import { buildMeta, breadcrumbSchema, SITE_NAME, absoluteUrl } from "@/lib/seo";
 
 export const Route = createFileRoute("/services/")({
   head: () =>
@@ -39,7 +39,7 @@ function ServicesPage() {
               "@type": "Service",
               name: s.title,
               description: s.summary,
-              url: `/services/${s.slug}`,
+              url: absoluteUrl(`/services/${s.slug}`),
               provider: { "@type": "Organization", name: "Octapus L.L.C." },
             },
           })),

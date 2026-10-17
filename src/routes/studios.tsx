@@ -116,11 +116,7 @@ function StudiosPage() {
         </div>
       </Section>
 
-      <Section
-        eyebrow="How Octapus work"
-        title="Reputation is built, not bought."
-        className="!pt-0"
-      >
+      <Section eyebrow="How we work" title="Reputation is built, not bought." className="!pt-0">
         <div className="grid gap-px bg-hairline border hairline rounded-2xl overflow-hidden md:grid-cols-3">
           {way.map((a) => (
             <div key={a.k} className="bg-background p-7">
@@ -133,7 +129,7 @@ function StudiosPage() {
 
       <OisConnection
         title="Creative that stays connected to the operation."
-        body="Campaigns, content and enquiries feed back into the systems Octapus build, so OIS can show what demand actually turned into — and where reputation is compounding."
+        body="Campaigns, content and enquiries feed back into the systems Octapus builds, so OIS can show what demand actually turned into — and where reputation is compounding."
         chain={[
           "Brand and content",
           "Campaigns",
@@ -148,7 +144,7 @@ function StudiosPage() {
 
         eyebrow="Start here"
         title="Start a Studios Project."
-        intro="Tell us what you want to be known for. Octapus'll come back with a positioning read and a suggested first move."
+        intro="Tell us what you want to be known for. We'll come back with a positioning read and a suggested first move."
         className="!pt-0"
       >
         <div className="grid gap-8 lg:grid-cols-12">

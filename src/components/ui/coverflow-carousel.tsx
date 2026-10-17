@@ -341,6 +341,8 @@ export function CoverflowCarousel({
                       src={slide.src}
                       alt={slide.alt || slide.title || "Product showcase"}
                       draggable={false}
+                      loading="lazy"
+                      decoding="async"
                       className="max-h-full max-w-full object-contain select-none"
                     />
                   </div>
@@ -349,6 +351,8 @@ export function CoverflowCarousel({
                     src={slide.src}
                     alt={slide.alt || slide.title || "Product showcase"}
                     draggable={false}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full select-none object-cover"
                   />
                 )}

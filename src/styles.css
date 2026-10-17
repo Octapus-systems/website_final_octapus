@@ -335,13 +335,35 @@
   background-size: 56px 56px;
 }
 
+/* Intro overlay already seen this session: hidden before first paint (set in __root.tsx). */
+.octa-intro-seen [data-loading-screen] {
+  display: none !important;
+}
+
+/* Homepage hero: text is visible from first paint (LCP). The entrance plays only after the
+   intro has finished (data-intro-done is set in routes/index.tsx; never with reduced motion). */
+[data-hero-intro][data-intro-done] .hero-fade {
+  animation: hero-fade-in var(--hero-dur, 0.8s) cubic-bezier(0.22, 1, 0.36, 1) var(--hero-delay, 0s) both;
+}
+[data-hero-intro][data-intro-done] .hero-char {
+  animation: hero-char-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) var(--hero-delay, 0s) both;
+}
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-char-in {
+  from { opacity: 0.16; filter: blur(12px); transform: scale(1.025); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
 @utility text-eyebrow {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-muted-foreground);
+  /* Raw token (not --color-*) so `.dark` sections get the light muted colour. */
+  color: var(--muted-foreground);
 }
 
 @utility reveal {
@@ -541,15 +563,24 @@
 }
 
 @utility btn-aurora-outline {
-  background: color-mix(in oklab, oklch(0.12 0 0) 42%, transparent);
+  /* 64% keeps white text at WCAG AA (~6:1) over the light page; dark sections keep 42%. */
+  background: color-mix(in oklab, oklch(0.12 0 0) 64%, transparent);
   color: oklch(1 0 0);
   border: 1.5px solid color-mix(in oklab, var(--color-primary-glow) 55%, transparent);
   box-shadow: 0 0 18px -8px color-mix(in oklab, var(--color-primary-glow) 70%, transparent);
 
   &:hover {
-    background: color-mix(in oklab, oklch(0.12 0 0) 55%, transparent);
+    background: color-mix(in oklab, oklch(0.12 0 0) 74%, transparent);
     border-color: color-mix(in oklab, var(--color-primary-glow) 95%, transparent);
     box-shadow: 0 0 26px -6px color-mix(in oklab, var(--color-primary-glow) 85%, transparent);
+  }
+
+  .dark & {
+    background: color-mix(in oklab, oklch(0.12 0 0) 42%, transparent);
+  }
+
+  .dark &:hover {
+    background: color-mix(in oklab, oklch(0.12 0 0) 55%, transparent);
   }
 }
 
