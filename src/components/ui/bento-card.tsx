@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { m as motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   LayoutDashboard,
   Users,

@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useLocation, useRouter } from "@tanstack/react-router";
-import Lenis from "lenis";
-import "lenis/dist/lenis.css";
+import type Lenis from "lenis";
 
 /**
  * Smooth, normalised wheel/trackpad scrolling for the whole site.
  * Evens out big wheel jumps and trackpad flings so scroll-driven sections
  * (like the 3D story) play through instead of skipping. Touch keeps native scrolling.
+ * Lenis is only loaded (on demand) for mouse / trackpad devices: on touch screens it would
+ * pass scrolling through natively anyway, while still running a frame loop forever.
  */
 // Max page speed while a scroll story is on screen (px per second), so a fling can't skip it
 const MAX_STORY_SPEED = 2200;
@@ -19,11 +20,27 @@ export function SmoothScroll() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
+    let cancelled = false;
+    let teardown: (() => void) | undefined;
+
+    void import("lenis").then(({ default: LenisCtor }) => {
+      if (cancelled) return;
+      teardown = startLenis(LenisCtor);
+    });
+
+    return () => {
+      cancelled = true;
+      teardown?.();
+    };
+  }, []);
+
+  function startLenis(LenisCtor: typeof Lenis) {
     let allowance = MAX_STORY_STEP;
     let last = performance.now();
 
-    const lenis = new Lenis({
+    const lenis: Lenis = new LenisCtor({
       lerp: 0.085,
       wheelMultiplier: 0.9,
       smoothWheel: true,
@@ -64,7 +81,7 @@ export function SmoothScroll() {
       lenis.destroy();
       lenisRef.current = null;
     };
-  }, []);
+  }
 
   // When navigating to a new page, reset scroll to top immediately so pages don't open at previous scroll depth / footer
   useEffect(() => {

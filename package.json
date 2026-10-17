@@ -10,6 +10,7 @@
     "start": "node --env-file=.env .output/server/index.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
+    "test:smoke": "node scripts/smoke-test.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {

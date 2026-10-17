@@ -1,22 +1,45 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, ArrowLeft, ExternalLink } from "lucide-react";
-import FluidFlowGrid from "@/components/ui/fluid-flow-grid";
-import BentoCard from "@/components/ui/bento-card";
+import BentoCardSSR from "@/components/ui/bento-card";
 import { Container, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { RevealButton } from "@/components/site/RevealButton";
 import { JsonLd } from "@/components/site/JsonLd";
 import { RelatedLinks } from "@/components/site/RelatedLinks";
 import { OisConnection } from "@/components/site/OisConnection";
-import { ObmsShowcase } from "@/components/site/ObmsShowcase";
-import { BillingShowcase } from "@/components/site/BillingShowcase";
-import { LmsShowcase } from "@/components/site/LmsShowcase";
-import { HorusCard } from "@/components/site/HorusCard";
-import { products, productOisNotes, site, noindexProductSlugs } from "@/lib/site";
+import { ObmsShowcase as ObmsShowcaseSSR } from "@/components/site/ObmsShowcase";
+import { BillingShowcase as BillingShowcaseSSR } from "@/components/site/BillingShowcase";
+import { LmsShowcase as LmsShowcaseSSR } from "@/components/site/LmsShowcase";
+import { HorusCard as HorusCardSSR } from "@/components/site/HorusCard";
+import { products, productOisNotes, site, noindexProductSlugs, processStages } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
 import { buildMeta, breadcrumbSchema, absoluteUrl, isShareableImage } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+
+// Heavy showcases render on the server as usual; in the browser each is its own chunk, loaded
+// during hydration after the first paint (the SSR branch is removed from the client build).
+const BentoCard = import.meta.env.SSR
+  ? BentoCardSSR
+  : lazy(() => import("@/components/ui/bento-card"));
+const ObmsShowcase = import.meta.env.SSR
+  ? ObmsShowcaseSSR
+  : lazy(() =>
+      import("@/components/site/ObmsShowcase").then((mod) => ({ default: mod.ObmsShowcase })),
+    );
+const BillingShowcase = import.meta.env.SSR
+  ? BillingShowcaseSSR
+  : lazy(() =>
+      import("@/components/site/BillingShowcase").then((mod) => ({ default: mod.BillingShowcase })),
+    );
+const LmsShowcase = import.meta.env.SSR
+  ? LmsShowcaseSSR
+  : lazy(() =>
+      import("@/components/site/LmsShowcase").then((mod) => ({ default: mod.LmsShowcase })),
+    );
+const HorusCard = import.meta.env.SSR
+  ? HorusCardSSR
+  : lazy(() => import("@/components/site/HorusCard").then((mod) => ({ default: mod.HorusCard })));
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -329,7 +352,9 @@ function ProductPage() {
                   </div>
                 ) : p.slug === "lms" || p.slug === "ois" ? null : (
                   <div className="absolute inset-0 bg-muted/20 grid place-items-center">
-                    <BentoCard />
+                    <Suspense fallback={null}>
+                      <BentoCard />
+                    </Suspense>
                   </div>
                 )}
               </div>
@@ -338,19 +363,23 @@ function ProductPage() {
         </div>
       </Section>
 
-      {isObms ? (
-        <ObmsShowcase product={p} />
-      ) : p.slug === "billing-software" ? (
-        <BillingShowcase product={p} />
-      ) : p.slug === "lms" ? (
-        <LmsShowcase product={p} />
-      ) : p.slug === "horus-ai" ? (
-        <Section className="!pt-0">
-          <div className="mx-auto max-w-4xl">
-            <HorusCard source="product_page" showExploreLink={true} />
-          </div>
-        </Section>
-      ) : null}
+      {p.slug !== "lms" && <ProductAtAGlance product={p} />}
+
+      <Suspense fallback={null}>
+        {isObms ? (
+          <ObmsShowcase product={p} />
+        ) : p.slug === "billing-software" ? (
+          <BillingShowcase product={p} />
+        ) : p.slug === "lms" ? (
+          <LmsShowcase product={p} />
+        ) : p.slug === "horus-ai" ? (
+          <Section className="!pt-0">
+            <div className="mx-auto max-w-4xl">
+              <HorusCard source="product_page" showExploreLink={true} />
+            </div>
+          </Section>
+        ) : null}
+      </Suspense>
 
       {productOisNotes[p.slug] ? (
         <OisConnection
@@ -387,5 +416,58 @@ function ProductPage() {
         ]}
       />
     </>
+  );
+}
+
+const ENGAGEMENT_STEPS = ["Discover", "Plan", "Launch", "Support"]
+  .map((name) => processStages.find((stage) => stage.name === name))
+  .filter((stage): stage is (typeof processStages)[number] => Boolean(stage));
+
+/** Who the product is for, what it solves and how an engagement runs (from existing site data). */
+function ProductAtAGlance({ product }: { product: (typeof products)[number] }) {
+  return (
+    <Section className="!pt-0" eyebrow="At a glance" title={`What ${product.name} does`}>
+      <dl className="grid gap-4 md:grid-cols-3">
+        {[
+          { term: "Who it is for", text: product.customer },
+          { term: "The problem", text: product.problem },
+          { term: "What you get", text: product.outcome },
+        ].map((item) => (
+          <div key={item.term} className="rounded-2xl border hairline bg-card p-6">
+            <dt className="text-eyebrow text-primary">{item.term}</dt>
+            <dd className="mt-3 leading-7 text-foreground">{item.text}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className="mt-12">
+        <h3 className="text-2xl font-semibold tracking-tight text-foreground">
+          How an engagement works
+        </h3>
+        <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {ENGAGEMENT_STEPS.map((stage, index) => (
+            <li key={stage.name} className="rounded-2xl border hairline p-5">
+              <span className="font-mono text-xs text-primary">0{index + 1}</span>
+              <p className="mt-2 font-semibold text-foreground">{stage.name}</p>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">{stage.detail}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button asChild size="lg" className="h-12 rounded-full px-6">
+            <Link
+              to="/contact"
+              onClick={() =>
+                trackEvent("product_enquiry", { product: product.slug, source: "glance" })
+              }
+            >
+              Request a walkthrough
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="h-12 rounded-full px-6">
+            <Link to="/book">Book a strategy call</Link>
+          </Button>
+        </div>
+      </div>
+    </Section>
   );
 }

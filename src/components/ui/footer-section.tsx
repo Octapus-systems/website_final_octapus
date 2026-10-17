@@ -5,9 +5,8 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Mail, MapPin, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Wordmark } from "@/components/site/Wordmark";
-import { site } from "@/lib/site";
+import { site } from "@/lib/site-config";
 import { AskAi } from "@/components/site/AskAi";
 import { trackEvent } from "@/lib/analytics";
 
@@ -160,11 +159,9 @@ export function Footerdemo() {
             ))}
           </div>
 
-          <TooltipProvider>
             <div className="flex flex-wrap gap-2">
 
-              <Tooltip>
-                <TooltipTrigger asChild>
+              <HoverTip label={site.emails.info}>
                   <a
                     href={`mailto:${site.emails.info}`}
                     onClick={() => trackEvent("email_click", { source: "footer" })}
@@ -173,11 +170,8 @@ export function Footerdemo() {
                   >
                     <Mail className="size-4" aria-hidden="true" />
                   </a>
-                </TooltipTrigger>
-                <TooltipContent>{site.emails.info}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
+              </HoverTip>
+              <HoverTip label={site.phones.general}>
                   <a
                     href={`tel:${site.phones.general.replace(/\s/g, "")}`}
                     onClick={() => trackEvent("call_click", { source: "footer" })}
@@ -186,12 +180,9 @@ export function Footerdemo() {
                   >
                     <Phone className="size-4" aria-hidden="true" />
                   </a>
-                </TooltipTrigger>
-                <TooltipContent>{site.phones.general}</TooltipContent>
-              </Tooltip>
+              </HoverTip>
               {site.socials.map((social) => (
-                <Tooltip key={social.name}>
-                  <TooltipTrigger asChild>
+                <HoverTip key={social.name} label={social.name}>
                     <a
                       href={social.href}
                       target="_blank"
@@ -206,12 +197,9 @@ export function Footerdemo() {
                     >
                       <SocialIcon name={social.name} />
                     </a>
-                  </TooltipTrigger>
-                  <TooltipContent>{social.name}</TooltipContent>
-                </Tooltip>
+                </HoverTip>
               ))}
             </div>
-          </TooltipProvider>
         </div>
 
         <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
@@ -224,5 +212,21 @@ export function Footerdemo() {
         </div>
       </div>
     </footer>
+  );
+}
+
+/** Lightweight CSS tooltip (shown on hover and keyboard focus). The links carry their own
+ * aria-labels, so the tip is decorative. Replaces Radix Tooltip to keep the bundle small. */
+function HoverTip({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <span className="group/tip relative inline-flex">
+      {children}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground opacity-0 transition duration-150 group-hover/tip:scale-100 group-hover/tip:opacity-100 group-focus-within/tip:scale-100 group-focus-within/tip:opacity-100"
+      >
+        {label}
+      </span>
+    </span>
   );
 }

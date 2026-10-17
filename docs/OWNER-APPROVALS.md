@@ -106,3 +106,65 @@ strengthen trust:
 - Local Lighthouse runs use an uncompressed Node server. Production serves Brotli-compressed assets (the main
   stylesheet is about 24 KB there), so local network numbers overstate production transfer size.
 - Mobile results are bimodal between runs, so compare medians across at least three runs.
+
+## 7. Phase 3 updates (added 2026-10-17)
+
+Full details are in `docs/PHASE-3-CHANGE-REPORT.md`.
+
+**Resolved in Phase 3:**
+- **Intro length (Phase 2 item 2).** Shortened from about 3.8 s to about 2.5 s with the same sequence. It now
+  plays only when a visit starts on the homepage, and any scroll, touch, click or key dismisses it.
+- **Google Tag Manager now starts after the page is ready.** It loads on the first interaction, or about 3
+  seconds after the page has loaded. Consent defaults are still set before anything loads. Trade-off:
+  a visitor who leaves within about 3 seconds without interacting is not recorded. Check this suits
+  your reporting.
+
+**Still open (owner action required):**
+1. **SMTP password rotation.** Still required. The old password remains in git history and must be treated
+   as compromised until the mailbox password is changed and `SMTP_PASS` is updated in Vercel and `.env`.
+2. **Dependency security update (nodemailer).** `npm audit` reports a high-severity advisory for nodemailer
+   ≤ 10.0.5 (used server-side by the contact form). The site's code does not use the affected
+   `resolveContent` call and only sends to fixed internal addresses, so exposure is low, but it should be
+   upgraded. It was not changed automatically because it is a major version (9 → 10) that rewrites
+   both `package-lock.json` and `bun.lock`, which Lovable's build depends on. Suggested: in Lovable or locally,
+   upgrade `nodemailer` to the latest 10.x, rebuild, and send one test enquiry. Two other advisories
+   (js-yaml, source-map-js) come from build tooling and can be fixed with `npm audit fix`.
+3. **Qualified claims to confirm.** "24/7" support in the Operate service text became "response times
+   agreed in each support plan", and "working software every two weeks" became "short, regular cycles". If
+   the original promises are accurate and contracted, they can be restored.
+4. **Service and product content.** Each service now lists "what you can expect" and the kinds of systems it
+   typically connects to. Each product page shows an "At a glance" block built from existing site data.
+   Please confirm the wording matches what Octapus delivers.
+5. **Lovable regeneration.** `src/start.ts` (Supabase middleware removed in Phase 2) and the new client
+   entry `src/client.tsx` with `vite.config.ts` (`client: { entry: "client" }`) are hand-written. Check them
+   after the next Lovable sync.
+6. Earlier items remain open: legal review (section 2), facts to confirm (section 3), testimonials, client
+   permissions and case-study evidence (section 4), Cal.com link (section 5), and GTM / Leadfeeder consent
+   gating (section 1).
+
+## 8. Phase 4 updates (added 2026-10-17)
+
+Full details are in `docs/PHASE-4-SECURITY-AUDIT.md`, `docs/PHASE-4-MOBILE-PERFORMANCE-REPORT.md` and
+`docs/PHASE-4-FINAL-WEBSITE-AUDIT.md`.
+
+**Release conditions (do these before deploying):**
+1. **Rotate the SMTP mailbox password** (SEC-01, still open), update `SMTP_PASS` in Vercel and `.env`,
+   delete the local `.vercel/output` folder (it holds an old build containing the old password), and
+   check the mailbox's sent-mail logs for misuse.
+2. **Upgrade nodemailer to 10.1.2** (SEC-02). It was verified compatible in isolation (0 advisories, same
+   API, attachments and header-injection protection work). Run `bun add nodemailer@^10.1.2` so both lockfiles
+   stay consistent, then preview-deploy and send one test enquiry. It is not applied in the repository because
+   Bun was not available to regenerate `bun.lock`.
+
+**Recommended soon:**
+3. Confirm the mail host's TLS certificate and remove `rejectUnauthorized: false` (SEC-03).
+4. In GTM: gate Leadfeeder and Meta on consent (SEC-05) and remove unused tags. GTM costs about 330 KB and
+   about 450 ms of main-thread time when it runs early.
+5. Add a report-only Content Security Policy once the GTM tag list is confirmed (SEC-04).
+6. Run `npm audit fix` and update the TanStack devtools / ESLint tooling (dev-only advisories, SEC-11).
+7. Confirm Supabase row-level security in the dashboard (SEC-12, not verifiable from code).
+8. Confirm Vercel sets `x-real-ip` (rate-limit keying, SEC-06). Consider Turnstile or a shared rate-limit
+   store.
+9. After deployment, check field Core Web Vitals (Search Console / PageSpeed Insights) after 28 days.
+
+All earlier items (legal pages, facts to confirm, testimonials, client permissions, Cal.com link) remain open.

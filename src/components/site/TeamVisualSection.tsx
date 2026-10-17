@@ -156,15 +156,21 @@ export function TeamVisualSection() {
           </aside>
         </div>
         <div ref={windowSceneRef} className={styles.sceneWindow}>
-          <img
-            ref={sceneRef}
-            className={styles.scene}
-            id="scene"
-            src="/team-scene.png"
-            width={2940}
-            height={1516}
-            alt="Ajay Peter, Jishad, Shabab and Sayid Nazim seated in four illuminated panels"
-          />
+          {/* AVIF (74 KB) with WebP fallback (101 KB); display:contents keeps the img positioned as before. */}
+          <picture style={{ display: "contents" }}>
+            <source type="image/avif" srcSet="/team-scene.avif" />
+            <img
+              ref={sceneRef}
+              className={styles.scene}
+              id="scene"
+              src="/team-scene.webp"
+              // Largest image on the page (LCP): fetch it first.
+              fetchPriority="high"
+              width={2940}
+              height={1516}
+              alt="Ajay Peter, Jishad, Shabab and Sayid Nazim seated in four illuminated panels"
+            />
+          </picture>
         </div>
         <article className={styles.mobileProfile} id="profile">
           <small id="category">{currentPerson.category}</small>

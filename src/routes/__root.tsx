@@ -1,15 +1,15 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
-  createRootRouteWithContext,
+  createRootRoute,
   useRouter,
   useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { LazyMotion } from "framer-motion";
 
 import appCss from "../styles.css?url";
 import { Nav } from "@/components/site/Nav";
@@ -17,8 +17,8 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { JsonLd } from "@/components/site/JsonLd";
-import { LoadingScreen } from "@/components/site/LoadingScreen";
-import { site } from "@/lib/site";
+import { LoadingScreen, markLoaded } from "@/components/site/LoadingScreen";
+import { site } from "@/lib/site-config";
 import { isProductionHost } from "@/lib/seo";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 
@@ -80,7 +80,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -116,8 +116,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/octapus-indigo-logo.svg", type: "image/svg+xml" },
       { rel: "icon", href: "/favicon-48.png", type: "image/png", sizes: "48x48" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
-      // Fonts are self-hosted (public/fonts) so no third-party font request blocks render or loads before consent.
-      { rel: "stylesheet", href: "/fonts/fonts.css" },
     ],
   }),
   shellComponent: RootShell,
@@ -146,14 +144,12 @@ function RootShell({ children }: { children: ReactNode }) {
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});try{var c=localStorage.getItem('octapus-consent');if(c==='granted'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}}catch(e){}`,
           }}
         />
-        {/* Google Tag Manager */}
+        {/* Google Tag Manager — started on the visitor's first interaction, or once the page has
+            loaded and gone idle (about 3 s later), so tag scripts don't compete with first render.
+            Events pushed to dataLayer before then are queued and processed when GTM starts. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5GNZ8V3S');`,
+            __html: `(function(w,d,l,i){w[l]=w[l]||[];var done=false,ev=['pointerdown','keydown','touchstart','scroll','wheel'],opt={passive:true};function load(){if(done)return;done=true;ev.forEach(function(e){w.removeEventListener(e,load,opt)});w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;d.head.appendChild(j);}ev.forEach(function(e){w.addEventListener(e,load,opt)});function idle(){setTimeout(function(){(w.requestIdleCallback||function(c){setTimeout(c,1)})(load,{timeout:2000})},3000)}if(d.readyState==='complete')idle();else w.addEventListener('load',idle);})(window,document,'dataLayer','GTM-5GNZ8V3S');`,
           }}
         />
         {/* End Google Tag Manager */}
@@ -182,8 +178,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   );
 }
 
+// framer-motion's animation features load once the page has finished loading and is idle, keeping the
+// animation engine out of the entry bundle and off the first-paint path.
+const afterLoad = () =>
+  new Promise<void>((resolve) => {
+    // After `load`, wait for an idle moment (max 2 s) so this chunk never competes with first paint.
+    const idle = () =>
+      window.requestIdleCallback
+        ? window.requestIdleCallback(() => resolve(), { timeout: 2000 })
+        : window.setTimeout(resolve, 200);
+    if (document.readyState === "complete") idle();
+    else window.addEventListener("load", idle, { once: true });
+  });
+const loadMotionFeatures = () =>
+  afterLoad()
+    .then(() => import("@/lib/motion-features"))
+    .then((mod) => mod.default);
+
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  // The intro is the homepage's brand moment: it only plays when a visit starts on "/".
+  // useState keeps the landing path fixed, so client-side navigation never triggers it.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [landedOnHome] = useState(() => pathname === "/");
+  useEffect(() => {
+    if (!landedOnHome) markLoaded();
+  }, [landedOnHome]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !isProductionHost(window.location.hostname)) {
@@ -217,7 +236,7 @@ function RootComponent() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <LazyMotion features={loadMotionFeatures}>
       <JsonLd
         data={[
           {
@@ -294,7 +313,7 @@ function RootComponent() {
       />
 
       <div className="flex min-h-dvh flex-col">
-        <LoadingScreen />
+        {landedOnHome && <LoadingScreen />}
         <SmoothScroll />
         <Nav />
         <main id="main" className="flex-1">
@@ -304,6 +323,6 @@ function RootComponent() {
       </div>
       <FloatingActions />
       <CookieConsent />
-    </QueryClientProvider>
+    </LazyMotion>
   );
 }

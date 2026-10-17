@@ -22,6 +22,10 @@ export interface ServicePageData {
   builds: Array<{ title: string; detail: string; icon: ServiceIcon }>;
   steps: Array<{ title: string; detail: string }>;
   situations: string[];
+  /** Types of benefit to expect (qualitative, no promised figures). */
+  outcomes: string[];
+  /** Kinds of systems this work typically connects to. */
+  connectsWith: string[];
   related: string[];
   keywords: string[];
 }
@@ -76,6 +80,17 @@ export const servicePages: ServicePageData[] = [
       "A field team needs a simpler tool",
       "A service needs secure mobile access",
     ],
+    outcomes: [
+      "Customers and staff complete key tasks from their phones",
+      "One app experience on Android and iPhone",
+      "Data that stays in step with your back-office systems",
+    ],
+    connectsWith: [
+      "Your existing APIs and databases",
+      "Payment gateways",
+      "Push notifications and messaging",
+      "Maps and location services",
+    ],
     related: ["custom-software", "web-platforms", "business-systems"],
     keywords: ["mobile app development", "Android app development", "iOS app development"],
   },
@@ -125,6 +140,17 @@ export const servicePages: ServicePageData[] = [
       "Several tools create repeated work",
       "A proven manual process needs a digital system",
     ],
+    outcomes: [
+      "Software that follows your process instead of forcing workarounds",
+      "Less re-keying of the same information",
+      "A system your team can extend as the business changes",
+    ],
+    connectsWith: [
+      "Accounting and ERP systems",
+      "CRMs",
+      "Spreadsheets and legacy databases",
+      "Email and WhatsApp notifications",
+    ],
     related: ["business-automation", "web-platforms", "technology-consulting"],
     keywords: ["custom software development", "business software", "digital platforms"],
   },
@@ -172,6 +198,17 @@ export const servicePages: ServicePageData[] = [
       "Departments work from different records",
       "Stock and finance do not stay aligned",
       "Leaders need one reliable operating view",
+    ],
+    outcomes: [
+      "Finance, stock, sales and HR working from the same records",
+      "Reports that no longer need manual reconciliation",
+      "Clear roles, approvals and audit trails",
+    ],
+    connectsWith: [
+      "Banking and payment gateways",
+      "E-commerce and POS systems",
+      "Payroll and HR tools",
+      "Existing spreadsheets during migration",
     ],
     related: ["business-systems", "business-automation", "technology-consulting"],
     keywords: ["ERP development", "custom ERP systems", "business management software"],
@@ -221,6 +258,17 @@ export const servicePages: ServicePageData[] = [
       "Teams copy the same information between tools",
       "Approvals depend on manual follow up",
       "Important exceptions are noticed too late",
+    ],
+    outcomes: [
+      "Repetitive steps handled automatically, with a person able to override",
+      "Fewer errors when information moves between tools",
+      "Time back for work that needs judgement",
+    ],
+    connectsWith: [
+      "ERP and CRM systems",
+      "Email and WhatsApp",
+      "Document storage",
+      "Forms and approval workflows",
     ],
     related: ["custom-software", "business-systems", "erp-systems"],
     keywords: ["business automation", "workflow automation", "system integration"],
@@ -274,6 +322,17 @@ export const servicePages: ServicePageData[] = [
       "Customer work crosses several departments",
       "Management needs a connected operating picture",
     ],
+    outcomes: [
+      "Customer, sales and operations data in one connected view",
+      "Workflows that match how your team actually works",
+      "Information that is easy to find and trust",
+    ],
+    connectsWith: [
+      "CRMs",
+      "ERP and accounting systems",
+      "Customer communication channels",
+      "Reporting dashboards",
+    ],
     related: ["erp-systems", "custom-software", "business-automation"],
     keywords: ["custom business systems", "CRM development", "operations software"],
   },
@@ -321,6 +380,17 @@ export const servicePages: ServicePageData[] = [
       "Customers need secure access to a service",
       "A spreadsheet process needs a shared platform",
       "An existing portal is difficult to use on mobile",
+    ],
+    outcomes: [
+      "A fast, accessible site or portal that is easy to update",
+      "Enquiries and orders that flow straight into your systems",
+      "A platform that can grow with new features",
+    ],
+    connectsWith: [
+      "CRMs and enquiry inboxes",
+      "Payment gateways",
+      "Content management",
+      "Analytics and search tools",
     ],
     related: ["mobile-apps", "custom-software", "technology-consulting"],
     keywords: [
@@ -375,6 +445,17 @@ export const servicePages: ServicePageData[] = [
       "Campaign content lacks consistency",
       "Creative work needs to connect with business goals",
     ],
+    outcomes: [
+      "A clearer, more consistent brand across every channel",
+      "Campaigns that connect to how enquiries are captured",
+      "Content your team can reuse",
+    ],
+    connectsWith: [
+      "Your website and landing pages",
+      "Social media channels",
+      "CRMs and lead forms",
+      "Analytics tools",
+    ],
     related: ["video-image-production", "web-platforms", "technology-consulting"],
     keywords: ["marketing services", "brand campaigns", "creative communication"],
   },
@@ -424,6 +505,17 @@ export const servicePages: ServicePageData[] = [
       "A campaign needs original visual material",
       "A business story is better demonstrated than described",
     ],
+    outcomes: [
+      "Visuals that explain your product or service quickly",
+      "Assets formatted for web, social and presentations",
+      "A consistent look across your content",
+    ],
+    connectsWith: [
+      "Your website",
+      "Social media channels",
+      "Product and sales materials",
+      "Advertising platforms",
+    ],
     related: ["marketing-creative", "web-platforms", "mobile-apps"],
     keywords: ["video production", "commercial photography", "creative production"],
   },
@@ -472,6 +564,17 @@ export const servicePages: ServicePageData[] = [
       "A major software decision needs evidence",
       "Existing systems no longer support the work",
       "A digital programme needs a practical sequence",
+    ],
+    outcomes: [
+      "A clear view of what to change before you commit budget",
+      "A practical roadmap with priorities and trade-offs",
+      "Decisions grounded in how your operation really works",
+    ],
+    connectsWith: [
+      "Your current software and data",
+      "Vendor and platform options",
+      "Integration and migration plans",
+      "Security and access requirements",
     ],
     related: ["custom-software", "erp-systems", "business-systems"],
     keywords: ["business technology consulting", "technology strategy", "system architecture"],

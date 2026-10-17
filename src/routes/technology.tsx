@@ -66,7 +66,7 @@ function TechnologyPage() {
           },
           {
             k: "Short cycles",
-            v: "Working software every two weeks with a definition of done agreed up front.",
+            v: "Working software in short, regular cycles, with a definition of done agreed up front.",
           },
           {
             k: "Operated after launch",

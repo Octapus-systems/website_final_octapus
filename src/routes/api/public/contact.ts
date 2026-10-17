@@ -6,11 +6,35 @@ import nodemailer from "nodemailer";
 const hits = new Map<string, number[]>();
 function rateLimit(ip: string, limit = 5, windowMs = 60_000) {
   const now = Date.now();
+  // Keep memory bounded on long-running servers: drop clients with no recent requests.
+  if (hits.size > 5_000) {
+    for (const [key, times] of hits) {
+      if (!times.some((t) => now - t < windowMs)) hits.delete(key);
+    }
+  }
   const arr = (hits.get(ip) || []).filter((t) => now - t < windowMs);
   arr.push(now);
   hits.set(ip, arr);
   return arr.length <= limit;
 }
+
+/** Largest accepted request body: 10 MB CV plus form overhead. */
+const MAX_BODY_BYTES = 12 * 1024 * 1024;
+
+/** File signatures for the accepted CV formats, so a renamed file can't pass as a PDF/DOC/DOCX. */
+function hasAllowedSignature(ext: string, bytes: Uint8Array) {
+  const starts = (sig: number[]) => sig.every((b, i) => bytes[i] === b);
+  if (ext === "pdf") return starts([0x25, 0x50, 0x44, 0x46]); // %PDF
+  if (ext === "doc") return starts([0xd0, 0xcf, 0x11, 0xe0]); // OLE2 compound file
+  if (ext === "docx") return starts([0x50, 0x4b, 0x03, 0x04]); // ZIP container
+  return false;
+}
+
+const json = (body: unknown, status = 200, extra: Record<string, string> = {}) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json", ...extra },
+  });
 
 interface UploadedFile {
   name: string;
@@ -32,11 +56,20 @@ function isFileLike(val: unknown): val is UploadedFile {
 export const Route = createFileRoute("/api/public/contact")({
   server: {
     handlers: {
+      // Only POST is supported; other methods get an explicit 405 instead of the page shell.
+      GET: () => json({ error: "Method not allowed" }, 405, { Allow: "POST" }),
       POST: async ({ request }) => {
+        // Prefer headers set by the hosting platform (Vercel sets x-real-ip / x-forwarded-for);
+        // cf-connecting-ip is only trustworthy behind Cloudflare, so it is the last resort.
         const ip =
-          request.headers.get("cf-connecting-ip") ||
+          request.headers.get("x-real-ip") ||
           request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          request.headers.get("cf-connecting-ip") ||
           "unknown";
+        const declaredLength = Number(request.headers.get("content-length") || 0);
+        if (declaredLength > MAX_BODY_BYTES) {
+          return json({ error: "Request too large" }, 413);
+        }
         if (!rateLimit(ip)) {
           return new Response(JSON.stringify({ error: "Too many requests" }), {
             status: 429,
@@ -117,6 +150,10 @@ export const Route = createFileRoute("/api/public/contact")({
               JSON.stringify({ error: "Only PDF, DOC, and DOCX files are allowed" }),
               { status: 400, headers: { "Content-Type": "application/json" } },
             );
+          }
+          const head = new Uint8Array((await uploadedCv.arrayBuffer()).slice(0, 8));
+          if (!hasAllowedSignature(ext, head)) {
+            return json({ error: "Only PDF, DOC, and DOCX files are allowed" }, 400);
           }
         }
 

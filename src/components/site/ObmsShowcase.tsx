@@ -15,7 +15,7 @@ import { Container } from "@/components/site/Section";
 import { RevealButton } from "@/components/site/RevealButton";
 import { obmsMetrics, type Product } from "@/lib/site";
 import { trackEvent } from "@/lib/analytics";
-import businessPhoto from "@/assets/obms-business.jpg";
+import businessPhoto from "@/assets/obms-business.webp";
 
 const moduleIcons = [
   { label: "Sales", icon: BarChart3, color: "#2563eb" },
@@ -141,8 +141,8 @@ export function ObmsShowcase({ product }: { product: Product }) {
                 src={businessPhoto}
                 alt="Business team reviewing connected ERP data together"
                 loading="lazy"
-                width={1280}
-                height={960}
+                width={800}
+                height={600}
                 className="h-48 w-full rounded-[1.25rem] object-cover md:h-56"
               />
               <div className="px-2 pb-1 pt-3">

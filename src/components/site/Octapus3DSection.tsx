@@ -85,6 +85,8 @@ export function Octapus3DSection() {
 
     const onMessage = (e: MessageEvent) => {
       if (e.source !== frame.contentWindow) return;
+      // Scene can't run (three.js blocked or no WebGL): release the page straight away.
+      if (e.data?.type === "octa3d-failed") markStoryDone();
       if (e.data?.type === "octa3d-ready") {
         frameReady = true;
         sendProgress();

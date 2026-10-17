@@ -173,6 +173,44 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
         </Container>
       </section>
 
+      <section aria-labelledby="outcomes-heading" className="bg-background py-20 sm:py-28">
+        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+          <div>
+            <p className="text-eyebrow text-primary">What you can expect</p>
+            <h2
+              id="outcomes-heading"
+              className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl"
+            >
+              The difference it makes.
+            </h2>
+            <ul className="mt-8 space-y-4">
+              {service.outcomes.map((item) => (
+                <li key={item} className="flex gap-4 leading-7 text-foreground">
+                  <Check className="mt-1 size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-2xl font-semibold text-foreground">Typically connects with</h3>
+            <p className="mt-3 leading-7 text-muted-foreground">
+              We confirm the exact systems and integration approach during discovery.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {service.connectsWith.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-full border border-border bg-card px-4 py-2 text-sm text-foreground"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
+
       <section aria-labelledby="related-heading" className="bg-background py-20 sm:py-28">
         <Container>
           <p className="text-eyebrow text-primary">Connected services</p>
@@ -219,6 +257,12 @@ export function ServicePageTemplate({ service }: { service: ServicePageData }) {
             className="mt-9 inline-flex min-h-12 items-center gap-3 rounded-full bg-foreground px-7 py-3 text-sm font-semibold text-background transition hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
           >
             Contact Octapus <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+          <Link
+            to="/book"
+            className="ml-3 mt-9 inline-flex min-h-12 items-center gap-3 rounded-full border border-border px-7 py-3 text-sm font-semibold text-foreground transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
+          >
+            Book a strategy call
           </Link>
         </Container>
       </section>

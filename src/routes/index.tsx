@@ -9,22 +9,13 @@ import { site, products, hiddenProductSlugs } from "@/lib/site";
 import { buildMeta, breadcrumbSchema, SITE_URL, absoluteUrl } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { DotPattern } from "@/components/ui/dot-pattern";
-import {
-  animate as motionAnimate,
-  motion,
-  useInView,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-} from "framer-motion";
+import { m as motion, useReducedMotion } from "framer-motion";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 import { HomeFaq } from "@/components/site/HomeFaq";
 import { SelectedWorkSection } from "@/components/site/SelectedWorkSection";
-
 import { OctapusAdvantageSection } from "@/components/site/OctapusAdvantageSection";
 import { BuildProcessSection } from "@/components/site/BuildProcessSection";
 import { WhatWeBuildSection } from "@/components/site/WhatWeBuildSection";
-import { RevealButton } from "@/components/site/RevealButton";
 import { servicePages } from "@/lib/service-pages";
 import { trackEvent } from "@/lib/analytics";
 
@@ -32,7 +23,7 @@ import productErpImg from "@/assets/product-erp.webp";
 import productCrmImg from "@/assets/product-crm.png";
 import productAiImg from "@/assets/product-ai.png";
 import heroLaptop from "@/assets/hero-laptop.webp";
-import obmsBusiness from "@/assets/obms-business.jpg";
+import obmsBusiness from "@/assets/obms-business.webp";
 import oisNetwork from "@/assets/ois-network.png";
 
 const FALLBACK_IMAGES = [
@@ -284,7 +275,6 @@ function Home() {
         initial={false}
         animate={storyDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        aria-hidden={!storyDone}
       >
         <WhatWeBuildSection />
       </motion.div>

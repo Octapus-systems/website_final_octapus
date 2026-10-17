@@ -11,6 +11,8 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // Custom client entry (src/client.tsx): hydrates after the first paint.
+    client: { entry: "client" },
   },
   nitro: {
     preset: process.env.VERCEL ? "vercel" : "node-server",

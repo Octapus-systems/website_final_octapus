@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Section } from "@/components/site/Section";
 import { ArrowRight, CheckCircle2, Zap, ShieldCheck, Cpu, Code2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";

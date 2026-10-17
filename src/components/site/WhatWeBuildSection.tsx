@@ -12,7 +12,7 @@ import {
   Workflow,
   type LucideIcon,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { m as motion, useReducedMotion } from "framer-motion";
 import { servicePages } from "@/lib/service-pages";
 import type { CSSProperties } from "react";
 

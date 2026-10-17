@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CalendarClock } from "lucide-react";
 import { RevealButton } from "@/components/site/RevealButton";
-import { site } from "@/lib/site";
+import { site } from "@/lib/site-config";
 import { trackEvent } from "@/lib/analytics";
 
 /** Hidden while the page is scrolling; pops back in, centered, once scrolling stops. */

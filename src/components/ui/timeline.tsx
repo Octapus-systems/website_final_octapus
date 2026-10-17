@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { m as motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Check, Clock, X } from "lucide-react";
 
 import { ScrollArea } from "@/components/ui/scroll-area";

@@ -2,6 +2,9 @@
 @source "../src";
 @import "tw-animate-css";
 @import "cal-sans/index.css";
+/* Bundled here (not separate <link>s) so first paint waits on one stylesheet, not three. */
+@import "lenis/dist/lenis.css";
+@import "./fonts.css";
 
 @custom-variant dark (&:is(.dark *));
 @custom-variant motion-reduce (@media (prefers-reduced-motion: reduce));

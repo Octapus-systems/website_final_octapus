@@ -1,13 +1,20 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { Link, useRouter, useNavigate } from "@tanstack/react-router";
 import { Menu, X, ChevronRight, ChevronDown, CalendarClock } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import { Wordmark } from "./Wordmark";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { RevealButton } from "@/components/site/RevealButton";
 import { trackEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
-import { products } from "@/lib/site";
+
+// Loaded on first open (or on intent: hover / focus / touch of the menu button).
+// The drawer only mounts after a click, so the server build never needs it; keeping the
+// dynamic import client-only also avoids a circular chunk split in the SSR bundle.
+type MobileMenuModule = typeof import("./MobileMenuSheet");
+const loadMobileMenu: () => Promise<MobileMenuModule> = import.meta.env.SSR
+  ? () => new Promise<MobileMenuModule>(() => {})
+  : () => import("./MobileMenuSheet");
+const MobileMenuSheet = lazy(loadMobileMenu);
 
 // ---------------------------------------------------------------------------
 // Types
@@ -29,8 +36,6 @@ type Category = {
 // Navigation data — only existing routes, no invented content
 // ---------------------------------------------------------------------------
 
-const PM = new Map(products.map((p) => [p.slug, p]));
-
 const COMPANY_ITEMS: SubItem[] = [
   { id: "about", label: "About", to: "/about" },
   { id: "team", label: "Team", to: "/team" },
@@ -42,11 +47,13 @@ const PRODUCTS_ITEMS: SubItem[] = [
   { id: "all-products", label: "All Products", to: "/products" },
   {
     id: "billing-software",
-    label: PM.get("billing-software")?.name ?? "Beep",
+    label: "Beep",
     to: "/products/billing-software",
   },
-  { id: "obms-erp", label: PM.get("obms-erp")?.name ?? "O.B.M.S ERP", to: "/products/obms-erp" },
-  { id: "lms", label: PM.get("lms")?.name ?? "LMS", to: "/products/lms" },
+  { id: "obms-erp", label: "O.B.M.S ERP", to: "/products/obms-erp" },
+  // Labels match the product names in lib/site.ts; kept literal so the full data module stays
+  // out of the shared bundle.
+  { id: "lms", label: "Learning Management System", to: "/products/lms" },
   { id: "ois", label: "OIS", to: "/ois" },
 ];
 
@@ -436,6 +443,8 @@ function usePanelScrollIdle(active: boolean, delay = 500) {
 export function Nav() {
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Stays true after the first open so the drawer can animate closed.
+  const [mobileMenuLoaded, setMobileMenuLoaded] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const isScrollIdle = usePanelScrollIdle(!!activeCategory);
@@ -650,46 +659,49 @@ export function Nav() {
 
           {/* Mobile: hamburger + Sheet */}
           <div className="flex lg:hidden items-center gap-1">
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetTrigger asChild>
-                <button
-                  type="button"
-                  id="mobile-menu-trigger"
-                  className="inline-flex size-11 items-center justify-center rounded-md text-foreground"
-                  aria-label={mobileOpen ? "Close menu" : "Open menu"}
-                  aria-expanded={mobileOpen}
-                >
-                  {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:w-[26rem] overflow-y-auto">
-                <SheetHeader className="text-left">
-                  <SheetTitle className="text-xl font-semibold tracking-tight">
-                    Navigation
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="mt-6 flex flex-col">
-                  {CATEGORIES.map((cat) => (
-                    <MobileCategory
-                      key={cat.id}
-                      category={cat}
-                      onNavigate={() => setMobileOpen(false)}
+            <button
+              type="button"
+              id="mobile-menu-trigger"
+              className="inline-flex size-11 items-center justify-center rounded-md text-foreground"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-haspopup="dialog"
+              onPointerEnter={loadMobileMenu}
+              onFocus={loadMobileMenu}
+              onTouchStart={loadMobileMenu}
+              onClick={() => {
+                setMobileMenuLoaded(true);
+                setMobileOpen((open) => !open);
+              }}
+            >
+              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+            {mobileMenuLoaded && (
+              <Suspense fallback={null}>
+                <MobileMenuSheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                  <div className="mt-6 flex flex-col">
+                    {CATEGORIES.map((cat) => (
+                      <MobileCategory
+                        key={cat.id}
+                        category={cat}
+                        onNavigate={() => setMobileOpen(false)}
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-6 pt-4 border-t hairline">
+                    <RevealButton
+                      to="/book"
+                      icon={CalendarClock}
+                      label="Book a Strategy Call"
+                      onClick={() => {
+                        trackEvent("strategy_call_click", { source: "mobile_nav" });
+                        setMobileOpen(false);
+                      }}
                     />
-                  ))}
-                </div>
-                <div className="mt-6 pt-4 border-t hairline">
-                  <RevealButton
-                    to="/book"
-                    icon={CalendarClock}
-                    label="Book a Strategy Call"
-                    onClick={() => {
-                      trackEvent("strategy_call_click", { source: "mobile_nav" });
-                      setMobileOpen(false);
-                    }}
-                  />
-                </div>
-              </SheetContent>
-            </Sheet>
+                  </div>
+                </MobileMenuSheet>
+              </Suspense>
+            )}
           </div>
         </div>
       </div>
