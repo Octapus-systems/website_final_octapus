@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useLoadingDone } from "@/components/site/LoadingScreen";
 
 const STORY_DONE_EVENT = "octa:story-done";
 const STORY_DONE_AT = 0.995;
 /** If the scene hasn't reported in by then (CDN blocked, slow device), stop waiting on it. */
 const READY_TIMEOUT_MS = 12000;
+/** Length of the hero's entrance animation after the intro screen (last letter ends ~1.4s). */
+const HERO_INTRO_MS = 1500;
 
 function markStoryDone() {
   const w = window as Window & { __octaStoryDone?: boolean };
@@ -33,39 +36,38 @@ export function useStoryDone() {
 export function Octapus3DSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
-  // The three.js scene is heavy, so it isn't part of the hero's first paint — but it must be
-  // ready by the time the visitor scrolls to it. Start it as soon as the page has loaded (it
-  // warms up behind the intro screen / hero), or earlier on first interaction or approach.
+  // The three.js scene is heavy: starting it (script parse, WebGL setup, shader compile) blocks
+  // the main thread for a few hundred ms, since a same-origin iframe shares it with this page.
+  // So it never starts while the "Build For Today" entrance is playing — it starts once that
+  // has finished and the browser is idle, or straight away when the visitor starts scrolling.
   const [frameSrc, setFrameSrc] = useState<string | undefined>(undefined);
+  const loadingDone = useLoadingDone();
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || frameSrc) return;
+    if (frameSrc) return;
     const start = () => setFrameSrc("/octapus-3d.html");
-    const events = ["scroll", "wheel", "touchstart", "pointerdown", "keydown"] as const;
+    const events = ["scroll", "wheel", "touchstart", "keydown"] as const;
     events.forEach((e) => window.addEventListener(e, start, { once: true, passive: true }));
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) start();
-      },
-      { rootMargin: "100% 0px" },
-    );
-    io.observe(section);
 
-    let idleTimer: number | undefined;
-    const startWhenIdle = () => {
-      idleTimer = window.setTimeout(start, 150);
-    };
-    if (document.readyState === "complete") startWhenIdle();
-    else window.addEventListener("load", startWhenIdle, { once: true });
+    let timer: number | undefined;
+    let idle: number | undefined;
+    if (loadingDone) {
+      timer = window.setTimeout(() => {
+        idle = window.requestIdleCallback
+          ? window.requestIdleCallback(start, { timeout: 1500 })
+          : window.setTimeout(start, 0);
+      }, HERO_INTRO_MS);
+    }
 
     return () => {
       events.forEach((e) => window.removeEventListener(e, start));
-      window.removeEventListener("load", startWhenIdle);
-      window.clearTimeout(idleTimer);
-      io.disconnect();
+      window.clearTimeout(timer);
+      if (idle !== undefined) {
+        if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+        else window.clearTimeout(idle);
+      }
     };
-  }, [frameSrc]);
+  }, [frameSrc, loadingDone]);
 
   useEffect(() => {
     const section = sectionRef.current;
