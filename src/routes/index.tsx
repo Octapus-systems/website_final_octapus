@@ -57,39 +57,55 @@ const closingCtaItemVariants = {
 };
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    ...buildMeta({
-      title: "Octapus — AI & Software Development Company in Dubai, UAE",
-      description:
-        "AI and software development company in Dubai and Ajman. Octapus builds custom software, AI automation, ERP and CRM systems, mobile apps and web platforms.",
-      path: "/",
-      ogType: "website",
-      keywords: [
-        "Octapus",
-        "AI company in UAE",
-        "AI company Dubai",
-        "IT company in UAE",
-        "software development company Dubai",
-        "software company UAE",
-        "AI automation UAE",
-        "AI agents UAE",
-        "custom software development",
-        "software development company",
-        "mobile app development",
-        "iOS app development",
-        "Android app development",
-        "ERP development",
-        "custom ERP systems",
-        "business automation",
-        "custom business systems",
-        "web application development",
-        "technology consulting",
-        "creative production",
-      ],
-    }),
-  }),
+  head: () =>
+    withHomeLinks(
+      buildMeta({
+        title: "Octapus — AI & Software Development Company in Dubai, UAE",
+        description:
+          "AI and software development company in Dubai and Ajman. Octapus builds custom software, AI automation, ERP and CRM systems, mobile apps and web platforms.",
+        path: "/",
+        ogType: "website",
+        keywords: [
+          "Octapus",
+          "AI company in UAE",
+          "AI company Dubai",
+          "IT company in UAE",
+          "software development company Dubai",
+          "software company UAE",
+          "AI automation UAE",
+          "AI agents UAE",
+          "custom software development",
+          "software development company",
+          "mobile app development",
+          "iOS app development",
+          "Android app development",
+          "ERP development",
+          "custom ERP systems",
+          "business automation",
+          "custom business systems",
+          "web application development",
+          "technology consulting",
+          "creative production",
+        ],
+      }),
+    ),
   component: Home,
 });
+
+/** Warm up what the home page needs right after first paint: the 3D scene's three.js (CDN). */
+function withHomeLinks(head: ReturnType<typeof buildMeta>) {
+  return {
+    ...head,
+    links: [
+      ...head.links,
+      {
+        rel: "preconnect",
+        href: "https://cdnjs.cloudflare.com",
+        crossOrigin: "anonymous",
+      } as unknown as Record<string, string>,
+    ],
+  };
+}
 
 function Home() {
   const navigate = useNavigate();

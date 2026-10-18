@@ -18,6 +18,37 @@ export function OctapusAdvantageSection() {
   const [isEngineerVideoHovered, setIsEngineerVideoHovered] = React.useState(false);
   const [isCard2InEyeLevel, setIsCard2InEyeLevel] = React.useState(false);
 
+  // Videos stay out of the first page load, but start buffering once the cards get close,
+  // so they're ready to play on hover / eye level instead of downloading from zero then.
+  const cardsRef = React.useRef<HTMLDivElement | null>(null);
+  const [shouldPreload, setShouldPreload] = React.useState(false);
+  // Fade a video in only once frames are actually playing (no blank card while buffering).
+  const [isVideo1Playing, setIsVideo1Playing] = React.useState(false);
+  const [isVideo2Playing, setIsVideo2Playing] = React.useState(false);
+
+  React.useEffect(() => {
+    const cards = cardsRef.current;
+    if (!cards || shouldPreload) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setShouldPreload(true);
+      },
+      { rootMargin: "1200px 0px" },
+    );
+    observer.observe(cards);
+    return () => observer.disconnect();
+  }, [shouldPreload]);
+
+  React.useEffect(() => {
+    if (!shouldPreload) return;
+    // Some browsers (Safari) don't start fetching just because `preload` changed.
+    [videoRef.current, engineerVideoRef.current].forEach((video) => {
+      if (video && video.readyState === 0 && video.networkState !== video.NETWORK_LOADING) {
+        video.load();
+      }
+    });
+  }, [shouldPreload]);
+
   React.useEffect(() => {
     const checkMobile = () => {
       const mobileQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
@@ -158,7 +189,7 @@ export function OctapusAdvantageSection() {
         </motion.div>
 
         {/* ── Image 2 Style Dual Feature Cards Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {/* Card 1: Speed & Generation */}
           <motion.div
             ref={card1Ref}
@@ -173,14 +204,16 @@ export function OctapusAdvantageSection() {
             {/* Background Video Element (Plays on hover or when at eye level) */}
             <video
               ref={videoRef}
-              src="/AI_building_software_rapidly_1080p_202608291401.mp4"
+              src="/videos/ai-build-faster.mp4"
               muted
               playsInline
               loop
-              preload="none"
+              preload={shouldPreload ? "auto" : "none"}
+              onPlaying={() => setIsVideo1Playing(true)}
+              onPause={() => setIsVideo1Playing(false)}
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
-                isCard1Active ? "opacity-100" : "opacity-0",
+                isCard1Active && isVideo1Playing ? "opacity-100" : "opacity-0",
               )}
             />
 
@@ -302,14 +335,16 @@ export function OctapusAdvantageSection() {
             {/* Background Video Element (Plays on hover or when at eye level) */}
             <video
               ref={engineerVideoRef}
-              src="/Engineer_reviewing_code_at_works_202608291419.mp4"
+              src="/videos/engineers-make-it-right.mp4"
               muted
               playsInline
               loop
-              preload="none"
+              preload={shouldPreload ? "auto" : "none"}
+              onPlaying={() => setIsVideo2Playing(true)}
+              onPause={() => setIsVideo2Playing(false)}
               className={cn(
                 "absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-500 z-0",
-                isCard2Active ? "opacity-100" : "opacity-0",
+                isCard2Active && isVideo2Playing ? "opacity-100" : "opacity-0",
               )}
             />
 

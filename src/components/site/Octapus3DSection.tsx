@@ -33,8 +33,9 @@ export function useStoryDone() {
 export function Octapus3DSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
-  // The three.js scene is heavy; load it on the visitor's first interaction or when the
-  // section scrolls into view, so it doesn't compete with the hero on first paint.
+  // The three.js scene is heavy, so it isn't part of the hero's first paint — but it must be
+  // ready by the time the visitor scrolls to it. Start it as soon as the page has loaded (it
+  // warms up behind the intro screen / hero), or earlier on first interaction or approach.
   const [frameSrc, setFrameSrc] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -43,12 +44,25 @@ export function Octapus3DSection() {
     const start = () => setFrameSrc("/octapus-3d.html");
     const events = ["scroll", "wheel", "touchstart", "pointerdown", "keydown"] as const;
     events.forEach((e) => window.addEventListener(e, start, { once: true, passive: true }));
-    const io = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) start();
-    });
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) start();
+      },
+      { rootMargin: "100% 0px" },
+    );
     io.observe(section);
+
+    let idleTimer: number | undefined;
+    const startWhenIdle = () => {
+      idleTimer = window.setTimeout(start, 150);
+    };
+    if (document.readyState === "complete") startWhenIdle();
+    else window.addEventListener("load", startWhenIdle, { once: true });
+
     return () => {
       events.forEach((e) => window.removeEventListener(e, start));
+      window.removeEventListener("load", startWhenIdle);
+      window.clearTimeout(idleTimer);
       io.disconnect();
     };
   }, [frameSrc]);
