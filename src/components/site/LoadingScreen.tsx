@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Search } from "lucide-react";
 
-const MAX_WAIT_MS = 3500;
+/** Shown at least this long so it reads as a deliberate splash, not a flicker. */
+const MIN_SHOW_MS = 500;
+/** Never hold the page longer than this, even if assets are still loading. */
+const MAX_WAIT_MS = 2500;
 
 const LOADED_EVENT = "octa:loaded";
 
@@ -32,9 +34,6 @@ export function useLoadingDone() {
   return done;
 }
 
-const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-const jitter = (ms: number) => ms + Math.random() * ms * 0.6;
-
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /** Intro already played this session, or the page is embedded (nav previews). */
@@ -61,13 +60,6 @@ export function LoadingScreen() {
     markLoaded();
   }, []);
 
-  const [typed, setTyped] = useState("");
-  const [boxGone, setBoxGone] = useState(false);
-  const [showOut, setShowOut] = useState(false);
-  const [cursorIn, setCursorIn] = useState(false);
-  const [pressed, setPressed] = useState(false);
-  const textRef = useRef("");
-
   const completeLoading = useCallback(() => {
     try {
       sessionStorage.setItem("octapus_intro_seen", "1");
@@ -77,65 +69,22 @@ export function LoadingScreen() {
     setIsVisible(false);
   }, []);
 
+  // Hide once the page has loaded (after a short minimum), or at MAX_WAIT_MS at the latest.
   useEffect(() => {
     if (!isVisible || skippedRef.current) return;
-    let cancelled = false;
-
-    const set = (s: string) => {
-      textRef.current = s;
-      setTyped(s);
+    const startedAt = performance.now();
+    let minTimer: number | undefined;
+    const onLoad = () => {
+      const remaining = Math.max(0, MIN_SHOW_MS - (performance.now() - startedAt));
+      minTimer = window.setTimeout(completeLoading, remaining);
     };
-    const type = async (s: string) => {
-      for (const ch of s) {
-        if (cancelled) return;
-        set(textRef.current + ch);
-        await sleep(jitter(7));
-      }
-    };
-    const del = async (n: number) => {
-      for (let i = 0; i < n; i++) {
-        if (cancelled) return;
-        set(textRef.current.slice(0, -1));
-        await sleep(jitter(4));
-      }
-    };
-
-    const play = async () => {
-      // Reduced motion: no typed sequence, so don't hold the page for one.
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        completeLoading();
-        return;
-      }
-
-      await sleep(80);
-      await type("Hey, I need a CRM");
-      await sleep(80);
-      await del(5);
-      await type("n ERP");
-      await sleep(80);
-      await del(6);
-      await type(" to automate my whole business");
-      await sleep(150);
-      if (cancelled) return;
-      setCursorIn(true);
-      await sleep(300);
-      if (cancelled) return;
-      setPressed(true);
-      await sleep(90);
-      setPressed(false);
-      await sleep(60);
-      if (cancelled) return;
-      setCursorIn(false);
-      setBoxGone(true);
-      await sleep(150);
-      setShowOut(true);
-      await sleep(650);
-      if (!cancelled) completeLoading();
-    };
-
-    void play();
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad, { once: true });
+    const maxTimer = window.setTimeout(completeLoading, MAX_WAIT_MS);
     return () => {
-      cancelled = true;
+      window.removeEventListener("load", onLoad);
+      window.clearTimeout(minTimer);
+      window.clearTimeout(maxTimer);
     };
   }, [isVisible, completeLoading]);
 
@@ -145,12 +94,6 @@ export function LoadingScreen() {
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
     return () => window.scrollTo(0, 0);
-  }, [isVisible]);
-
-  useEffect(() => {
-    if (!isVisible || skippedRef.current) return;
-    const timeout = window.setTimeout(() => setIsVisible(false), MAX_WAIT_MS);
-    return () => window.clearTimeout(timeout);
   }, [isVisible]);
 
   // Keyboard skip. The overlay holds no focusable controls, so it never traps focus.
@@ -190,84 +133,27 @@ export function LoadingScreen() {
   return (
     <div
       data-loading-screen=""
-      // Decorative intro: screen readers go straight to the page content.
+      // Decorative splash: screen readers go straight to the page content.
       aria-hidden="true"
       onClick={completeLoading}
-      className={`fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden bg-background px-6 py-12 text-foreground transition-opacity duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`fixed inset-0 z-[99999] flex items-center justify-center bg-background transition-opacity duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
         isVisible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
-      <div className="mx-auto w-full max-w-[880px] text-center">
-        <div className="relative flex min-h-[340px] flex-col items-center justify-center">
-          <div
-            className={`flex w-full flex-col items-center gap-7 transition-all duration-500 ${
-              boxGone ? "pointer-events-none -translate-y-2.5 scale-95 opacity-0" : "opacity-100"
-            }`}
-          >
-            {/* Search bar */}
-            <div className="flex h-14 w-full max-w-[640px] items-center gap-3 rounded-full border border-border bg-background px-5 shadow-[0_1px_6px_rgba(32,33,36,.18)] sm:h-[58px] sm:px-6">
-              <Search className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-              <div className="flex min-w-0 flex-1 justify-start overflow-hidden whitespace-nowrap text-left text-base text-foreground sm:text-lg">
-                <span className="min-w-0 truncate [direction:rtl] text-left">
-                  <bdi>{typed}</bdi>
-                </span>
-                <span className="ml-[2px] inline-block h-[1.2em] w-0.5 shrink-0 animate-[caret-blink_1s_steps(1)_infinite] bg-primary" />
-              </div>
-            </div>
-
-            {/* Search button + animated cursor */}
-            <div className="relative">
-              <span
-                className={`inline-flex h-10 items-center rounded-md border px-6 text-sm font-medium transition-all duration-150 ${
-                  pressed
-                    ? "scale-95 border-border bg-muted text-foreground shadow-inner"
-                    : "border-transparent bg-muted/70 text-foreground/80"
-                }`}
-              >
-                Search
-              </span>
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className={`pointer-events-none absolute left-1/2 top-1/2 size-6 drop-shadow-md transition-all ease-out ${
-                  cursorIn
-                    ? "translate-x-1 translate-y-0 opacity-100 duration-[800ms]"
-                    : "translate-x-[140px] translate-y-[90px] opacity-0 duration-300"
-                } ${pressed ? "scale-90" : "scale-100"}`}
-              >
-                <path
-                  d="M4 2.5v17.2l4.6-4.4 2.9 6.6 2.6-1.1-2.9-6.5h6.3z"
-                  fill="#fff"
-                  stroke="#111"
-                  strokeWidth="1.4"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-
-          <div
-            className={`absolute inset-x-0 transition-[opacity,transform] duration-700 ${
-              showOut
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-3.5 opacity-0"
-            }`}
-          >
-            <div
-              className={`m-0 font-display font-bold leading-[1.02] tracking-[-0.045em] text-balance text-foreground text-[clamp(38px,9vw,80px)]`}
-            >
-              We build <span className="text-primary">all of it.</span>
-            </div>
-            <p
-              className={`mx-auto mt-4 max-w-[640px] leading-[1.55] text-muted-foreground text-[clamp(15px,3.3vw,20px)]`}
-            >
-              CRM. ERP. Automation. Leads. Website. Marketing. One accountable team, one integrated
-              system.
-            </p>
-          </div>
+      <div className="flex flex-col items-center gap-6">
+        <img
+          src="/octapus-indigo-logo.svg"
+          alt=""
+          width={150}
+          height={50}
+          className="h-10 w-auto md:h-12"
+          style={{ objectFit: "contain" }}
+        />
+        <div className="h-[3px] w-40 overflow-hidden rounded-full bg-muted">
+          <div className="h-full w-1/3 rounded-full bg-primary animate-[octa-load_1.1s_ease-in-out_infinite] motion-reduce:animate-none" />
         </div>
       </div>
-      <style>{`@keyframes caret-blink{50%{opacity:0}}`}</style>
+      <style>{`@keyframes octa-load{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}`}</style>
     </div>
   );
 }

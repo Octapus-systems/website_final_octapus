@@ -25,7 +25,7 @@ export const site = {
   },
   addresses: [
     { city: "Dubai", line: "Business Village, Dubai, UAE" },
-    { city: "Ajman", line: "Amper Gem Tower, Khalifa Street, Ajman, UAE" },
+    { city: "Ajman", line: "Amber Gem Tower, Khalifa Street, Ajman, UAE" },
   ],
   whatsapp: "971508621612",
   /** Official social profiles — shown in the footer and linked in structured data (sameAs). */

@@ -36,7 +36,7 @@ on the site, because each item needs business facts, credentials, legal review o
 | Claim / data | Where | Question |
 | --- | --- | --- |
 | Technical email is `code@octapus.info` (not `.ae`). Support-type enquiries are also routed there. | `src/lib/site.ts` (`emails.tech`), `src/lib/contact-schema.ts` | Is `octapus.info` an active domain you own? The Team page lists `code@octapus.ae`. |
-| Shabab and Jishad share `+971 50 266 0388`; the support line is `+971 50 292 0388`; sales is `+971 50 266 1088`. | `src/lib/site.ts` | Please confirm each number is correct. |
+| Shabab and Jishad share `+971 50 997 9359`; the support line is `+971 50 292 0388`; sales is `+971 50 266 1088`. | `src/lib/site.ts` | Please confirm each number is correct. |
 | "24/7 monitoring/support" | Operate service text, FAQ data | Is 24/7 support actually contracted and staffed? |
 | "Working software every two weeks" | `/technology` | Is this standard on every engagement? |
 | "Reply within one business day" | Contact success message, Studios form, Book page | Confirm it is a commitment you can keep. |
