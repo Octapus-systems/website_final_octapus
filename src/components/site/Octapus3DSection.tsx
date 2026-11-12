@@ -36,6 +36,7 @@ export function useStoryDone() {
 export function Octapus3DSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   // The three.js scene is heavy: starting it (script parse, WebGL setup, shader compile) blocks
   // the main thread for a few hundred ms, since a same-origin iframe shares it with this page.
   // So it never starts while the "Build For Today" entrance is playing — it starts once that
@@ -46,17 +47,24 @@ export function Octapus3DSection() {
   useEffect(() => {
     if (frameSrc) return;
     const start = () => setFrameSrc("/octapus-3d.html");
-    const events = ["scroll", "wheel", "touchstart", "keydown"] as const;
+    // Touch: starting on the first touch put the scene's whole setup in the middle of the
+    // visitor's first scroll. Start it right after load instead, so it's ready (it stays hidden
+    // until fully warmed up) before the section is reached.
+    const isTouch = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const events = isTouch ? [] : (["scroll", "wheel", "touchstart", "keydown"] as const);
     events.forEach((e) => window.addEventListener(e, start, { once: true, passive: true }));
 
     let timer: number | undefined;
     let idle: number | undefined;
     if (loadingDone) {
-      timer = window.setTimeout(() => {
-        idle = window.requestIdleCallback
-          ? window.requestIdleCallback(start, { timeout: 1500 })
-          : window.setTimeout(start, 0);
-      }, HERO_INTRO_MS);
+      timer = window.setTimeout(
+        () => {
+          idle = window.requestIdleCallback
+            ? window.requestIdleCallback(start, { timeout: 1500 })
+            : window.setTimeout(start, 0);
+        },
+        isTouch ? 0 : HERO_INTRO_MS,
+      );
     }
 
     return () => {
@@ -72,7 +80,11 @@ export function Octapus3DSection() {
   useEffect(() => {
     const section = sectionRef.current;
     const frame = frameRef.current;
-    if (!section || !frame || !frameSrc) return;
+    const sticky = stickyRef.current;
+    if (!section || !frame || !sticky || !frameSrc) return;
+
+    // Touch devices (phones/tablets) take a lighter path; mouse/trackpad behaviour is unchanged.
+    const isTouch = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     // Scroll is only held for the story once the scene has proven it is running.
     let frameReady = false;
@@ -83,15 +95,30 @@ export function Octapus3DSection() {
     const post = (data: Record<string, number | boolean>) =>
       frame.contentWindow?.postMessage({ type: "octa3d", ...data }, window.location.origin);
 
-    const sendProgress = () => {
+    const sendProgressNow = () => {
       const rect = section.getBoundingClientRect();
-      const range = rect.height - window.innerHeight;
+      // On mobile, innerHeight changes as the address bar shows/hides (mostly when scrolling up),
+      // which made progress jump. The sticky stage is 100lvh there, so its height stays fixed.
+      const viewH = isTouch ? sticky.offsetHeight : window.innerHeight;
+      const range = rect.height - viewH;
       const p = range > 0 ? Math.min(1, Math.max(0, -rect.top / range)) : 0;
       const active = rect.top < window.innerHeight && rect.bottom > 0;
       // Visitor already reached the next section before the scene loaded: don't leave it hidden.
       if (!frameReady && rect.bottom < window.innerHeight) markStoryDone();
       post({ p, active });
     };
+
+    // On touch, coalesce scroll/resize bursts into one layout read + postMessage per frame.
+    let raf = 0;
+    const sendProgress = isTouch
+      ? () => {
+          if (raf) return;
+          raf = window.requestAnimationFrame(() => {
+            raf = 0;
+            sendProgressNow();
+          });
+        }
+      : sendProgressNow;
 
     const onPointer = (e: PointerEvent) => {
       post({ x: (e.clientX / window.innerWidth) * 2 - 1, y: (e.clientY / window.innerHeight) * 2 - 1 });
@@ -118,7 +145,11 @@ export function Octapus3DSection() {
       if (!frameReady) return;
       if ((window as Window & { __octaStoryDone?: boolean }).__octaStoryDone) return;
       const end = section.offsetTop + section.offsetHeight - window.innerHeight;
-      if (window.scrollY > end + 2) window.scrollTo(0, end);
+      if (window.scrollY <= end + 2) return;
+      // Touch: a programmatic scrollTo during a fling fights the native momentum and makes the page
+      // visibly jump back. Let the visitor through and reveal the next section instead.
+      if (isTouch) markStoryDone();
+      else window.scrollTo(0, end);
     };
 
     // Keyboard users tabbing to content below must never be pulled back (no focus trap).
@@ -133,13 +164,15 @@ export function Octapus3DSection() {
     window.addEventListener("scroll", holdAtEnd, { passive: true });
     window.addEventListener("scroll", sendProgress, { passive: true });
     window.addEventListener("resize", sendProgress);
-    window.addEventListener("pointermove", onPointer, { passive: true });
+    // Hover tilt needs a mouse; on touch it only fired raycasts in the scene mid-scroll.
+    if (!isTouch) window.addEventListener("pointermove", onPointer, { passive: true });
     window.addEventListener("message", onMessage);
     section.addEventListener("click", onTap);
     frame.addEventListener("load", sendProgress);
     sendProgress();
 
     return () => {
+      window.cancelAnimationFrame(raf);
       window.clearTimeout(readyTimeout);
       document.removeEventListener("focusin", onFocusIn);
       window.removeEventListener("scroll", holdAtEnd);
@@ -154,7 +187,12 @@ export function Octapus3DSection() {
 
   return (
     <section ref={sectionRef} data-scroll-story aria-label="Everything connected" className="relative h-[520vh] cursor-pointer bg-background">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      {/* Touch: fixed-height (lvh) stage on its own compositor layer, so address-bar show/hide
+          neither resizes it nor repaints it while scrolling. */}
+      <div
+        ref={stickyRef}
+        className="sticky top-0 h-screen w-full overflow-hidden [@media(hover:none),(pointer:coarse)]:h-lvh [@media(hover:none),(pointer:coarse)]:[transform:translateZ(0)] [@media(hover:none),(pointer:coarse)]:will-change-transform [@media(hover:none),(pointer:coarse)]:[contain:layout_paint]"
+      >
         <iframe
           ref={frameRef}
           src={frameSrc}

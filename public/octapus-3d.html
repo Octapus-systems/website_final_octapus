@@ -96,8 +96,13 @@ const canvas=document.getElementById("c");
 // Touch / small screens: cap resolution at 1.5x and skip MSAA on high-DPI panels (fill-rate bound).
 const lowPower=matchMedia("(pointer: coarse)").matches||innerWidth<768;
 const renderer=new THREE.WebGLRenderer({canvas,antialias:!(lowPower&&(devicePixelRatio||1)>=2),alpha:true,powerPreference:lowPower?"low-power":"high-performance"});
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,lowPower?1.5:2));renderer.outputEncoding=THREE.sRGBEncoding;renderer.setClearColor(0,0);
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,lowPower?1.5:2));
+// Touch: keep the canvas hidden until every texture is uploaded and every shader compiled (see warmUp),
+// so nothing pops in or stalls while the visitor is scrolling. Icon textures are 256px there, not 512.
+const TS=lowPower?256:512;let warm=!lowPower,pendingTex=1; // 1 = setup token, released once every texture is registered
+if(lowPower){canvas.style.opacity="0";canvas.style.transition="opacity .5s ease"}
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.setClearColor(0,0);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=lowPower?THREE.PCFShadowMap:THREE.PCFSoftShadowMap;
 const maxA=renderer.capabilities.getMaxAnisotropy();
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(FOV,1,10,9000);
 let baseDist=1500;
@@ -107,13 +112,14 @@ addEventListener("resize",resize);resize();
 
 scene.add(new THREE.HemisphereLight(0xeaf3ff,0xf4ede2,.75));
 const key=new THREE.DirectionalLight(0xfff0d8,1.35);key.position.set(-520,760,980);key.castShadow=true;
-key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-1300,right:1300,top:1300,bottom:-1300,near:200,far:3600});
+key.shadow.mapSize.set(lowPower?1024:2048,lowPower?1024:2048);Object.assign(key.shadow.camera,{left:-1300,right:1300,top:1300,bottom:-1300,near:200,far:3600});
 key.shadow.bias=-.0004;key.shadow.normalBias=1.6;key.shadow.radius=5;scene.add(key);
 const rimL=new THREE.DirectionalLight(0xdfe9ff,.45);rimL.position.set(700,-300,-500);scene.add(rimL);
 {const pm=new THREE.PMREMGenerator(renderer),es=new THREE.Scene();es.background=new THREE.Color(.82,.84,.88);
  const sb=(w,h,x,y,z,r,g,b)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(r,g,b),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);es.add(m)};
  sb(70,45,-50,60,60,7,6.6,5.8);sb(30,60,75,10,40,2.2,2.6,3.2);sb(90,12,0,90,0,4,4.1,4.3);sb(60,30,0,-20,-80,2.2,2.2,2.4);
  scene.environment=pm.fromScene(es,.04).texture;pm.dispose()}
+function texDone(){if(--pendingTex<=0&&typeof warmUp==="function"&&!warm)requestAnimationFrame(()=>warmUp())}
 function radTex(stops){const c=document.createElement("canvas");c.width=c.height=128;const g=c.getContext("2d");
  const gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(([o,col])=>gr.addColorStop(o,col));g.fillStyle=gr;g.fillRect(0,0,128,128);
  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t}
@@ -147,18 +153,20 @@ function buildLogo(){const k=logoImg.naturalWidth/1080,c=document.createElement(
  g.fillStyle="#fff";g.fillRect(0,0,1560,450);g.drawImage(logoImg,150*k,190*k,780*k,225*k,0,0,1560,450);
  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=maxA;
  const m=new THREE.Mesh(new THREE.PlaneGeometry(132,38),new THREE.MeshBasicMaterial({map:t}));m.position.z=18.6;hub.add(m)}
-logoImg.complete&&logoImg.naturalWidth?buildLogo():logoImg.addEventListener("load",buildLogo);
+pendingTex++;const logoDone=()=>{buildLogo();texDone()};
+logoImg.complete&&logoImg.naturalWidth?logoDone():logoImg.addEventListener("load",logoDone);logoImg.addEventListener("error",texDone);
 
 // textures
 const probe=document.getElementById("probe");
 const defsStr=new XMLSerializer().serializeToString(document.querySelector("#src defs"));
 function iconTex(id,cb){const u=document.createElementNS(NS,"use");u.setAttribute("href","#"+id);probe.appendChild(u);const b=u.getBBox();probe.removeChild(u);
  const d=Math.hypot(b.width,b.height,.001),s=.88*72/d*1.0;
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-36 -36 72 72" width="512" height="512"><style>.t{font-family:Arial,Helvetica,sans-serif;font-weight:700}</style>${defsStr}<g transform="scale(${s}) translate(${-(b.x+b.width/2)} ${-(b.y+b.height/2)})"><use href="#${id}"/></g></svg>`;
- const img=new Image();img.onload=()=>{const c=document.createElement("canvas");c.width=c.height=512;const g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,512,512);g.drawImage(img,0,0,512,512);
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-36 -36 72 72" width="${TS}" height="${TS}"><style>.t{font-family:Arial,Helvetica,sans-serif;font-weight:700}</style>${defsStr}<g transform="scale(${s}) translate(${-(b.x+b.width/2)} ${-(b.y+b.height/2)})"><use href="#${id}"/></g></svg>`;
+ const img=new Image();img.onerror=texDone;img.onload=()=>{const c=document.createElement("canvas");c.width=c.height=TS;const g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,TS,TS);g.drawImage(img,0,0,TS,TS);
   const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=maxA;cb(t)};
  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)}
-function pngTex(src,cb){const im=new Image();im.onload=()=>{const t=new THREE.Texture(im);t.encoding=THREE.sRGBEncoding;t.anisotropy=maxA;t.needsUpdate=true;cb(t)};im.src=src}
+function pngTex(src,cb){const im=new Image();im.onerror=texDone;im.onload=()=>{if(lowPower&&im.naturalWidth>TS){const c=document.createElement("canvas");c.width=c.height=TS;c.getContext("2d").drawImage(im,0,0,TS,TS);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=maxA;cb(t);return}
+  const t=new THREE.Texture(im);t.encoding=THREE.sRGBEncoding;t.anisotropy=maxA;t.needsUpdate=true;cb(t)};im.src=src}
 
 // nodes
 const bodyMat=new THREE.MeshPhysicalMaterial({color:0xf3efe7,roughness:.35,metalness:.08,clearcoat:1,clearcoatRoughness:.12,envMapIntensity:.9});
@@ -171,7 +179,7 @@ function makeNode(item,ringIdx,j,idx){const rg=RINGS[ringIdx],R=rg.c,T=R*.42,g=n
  const fm=new THREE.MeshBasicMaterial({color:0xffffff});
  const face=new THREE.Mesh(new THREE.CircleGeometry(R*.95,64),fm);face.position.z=T/2+.7;face.userData.idx=idx;face.receiveShadow=true;g.add(face);bodies.push(face);
  const back=new THREE.Mesh(new THREE.CircleGeometry(R*.95,64),new THREE.MeshBasicMaterial({color:0xf3effc}));back.position.z=-T/2-.7;back.rotation.y=Math.PI;g.add(back);
- const setT=t=>{fm.map=t;fm.needsUpdate=true};item.src?pngTex(item.src,setT):iconTex(item.id,setT);
+ pendingTex++;const setT=t=>{fm.map=t;fm.needsUpdate=true;texDone()};item.src?pngTex(item.src,setT):iconTex(item.id,setT);
  g.visible=false;world.add(g);
  // scatter data (unit coords, spread out with simple rejection)
  let ux,uy;for(let a=0;a<40;a++){ux=R1()*2-1;uy=R1()*2-1;if(ux*ux+uy*uy<.07)continue;if(nodes.every(o=>Math.hypot(o.ux-ux,(o.uy-uy)*1.2)>.15))break}
@@ -191,7 +199,8 @@ addEventListener("message",e=>{const d=e.data;if(!d||d.type!=="octa3d")return;
  if(typeof d.p==="number")target=clamp(d.p);
  if(typeof d.x==="number"){tpx=d.x;tpy=d.y;nd.set(tpx,-tpy);ray.setFromCamera(nd,camera);const h=ray.intersectObjects(bodies,false)[0];hover=h?h.object.userData.idx:-1}
  if(d.spin)spinTo+=360});
-if(window.parent!==window)window.parent.postMessage({type:"octa3d-ready"},"*");
+const sendReady=()=>{if(window.parent!==window)window.parent.postMessage({type:"octa3d-ready"},"*")};
+if(warm)sendReady();
 addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();if(!e.repeat)spinTo+=360}});
 
 const KF=[[0,-.25,.12,1.55,0,0,0,0,32],[.12,.12,.1,1.25,0,0,0,0,30],[.3,.35,.14,.62,0,0,40,.02,25],[.46,-.6,.3,.76,-70,45,20,-.05,30],[.62,.4,-.2,.58,50,-35,34,.06,24],[.78,-.3,.55,.9,0,0,0,0,30],[.9,.2,.75,1.12,0,0,0,-.03,32],[1,.4,.22,1.3,0,0,0,-.07,34]];
@@ -241,11 +250,20 @@ function render(p,intro,tm){
  world.rotation.x=lerp(-.1,TILT,ease(intro));world.rotation.y=.05*Math.sin(tm*.35)*k;
 }
 let t0=performance.now();
+// Touch only: once all textures are in, upload them and compile every shader in one hidden frame,
+// then fade the canvas in and start the intro. Doing this up front means no GPU uploads, shader
+// compiles or pop-in later, mid-scroll.
+function warmUp(){if(warm)return;warm=true;
+ const culled=[];scene.traverse(o=>{if(o.frustumCulled){o.frustumCulled=false;culled.push(o)}});
+ render(1,1,0);updateCam(1,1,0);renderer.compile(scene,camera);renderer.render(scene,camera);
+ culled.forEach(o=>o.frustumCulled=true);
+ t0=performance.now();canvas.style.opacity="1";sendReady()}
+if(lowPower){texDone();setTimeout(warmUp,8000)}
 function loop(now){const tm=(now-t0)/1000,intro=reduce?1:clamp(tm/1.8);
  cur+=(target-cur)*.12;spin+=(spinTo-spin)*.045;px+=(tpx-px)*.06;py+=(tpy-py)*.06;
  for(let i=0;i<N;i++)hv[i]+=((hover===i?1:0)-hv[i])*.18;
  if(window.parent!==window&&Math.abs(cur-(loop.sent??-1))>.002){loop.sent=cur;window.parent.postMessage({type:"octa3d-progress",p:cur},"*")}
- if(active){render(cur,intro,tm);updateCam(cur,intro,tm);renderer.render(scene,camera)}requestAnimationFrame(loop)}
+ if(active&&warm){render(cur,intro,tm);updateCam(cur,intro,tm);renderer.render(scene,camera)}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 }
 </script>

@@ -88,12 +88,11 @@ export function LoadingScreen() {
     };
   }, [isVisible, completeLoading]);
 
-  // Every full load / refresh starts at the hero, not a restored scroll position
+  // Every full load / refresh starts at the hero, not a restored scroll position. No scrollTo here:
+  // this runs after hydration, by which time a visitor may already be scrolling (it yanked them).
   useEffect(() => {
     if (!isVisible || skippedRef.current) return;
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-    window.scrollTo(0, 0);
-    return () => window.scrollTo(0, 0);
   }, [isVisible]);
 
   // Keyboard skip. The overlay holds no focusable controls, so it never traps focus.

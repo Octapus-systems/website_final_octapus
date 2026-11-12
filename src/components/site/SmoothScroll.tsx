@@ -84,7 +84,14 @@ export function SmoothScroll() {
   }
 
   // When navigating to a new page, reset scroll to top immediately so pages don't open at previous scroll depth / footer
+  const firstRenderRef = useRef(true);
   useEffect(() => {
+    // The first page load already starts at the top. Scrolling there again once the app has
+    // hydrated (seconds in, on a slow phone) yanked visitors who had already started scrolling.
+    const isFirst = firstRenderRef.current;
+    firstRenderRef.current = false;
+    if (isFirst && !location.hash) return;
+
     const scrollToTarget = () => {
       if (location.hash) {
         const targetId = location.hash.replace(/^#/, "");
@@ -114,7 +121,8 @@ export function SmoothScroll() {
   // Hook into router onRendered lifecycle event as well for complete consistency
   useEffect(() => {
     return router.subscribe("onRendered", (event) => {
-      if (event.toLocation.hash) return;
+      // No fromLocation = the initial render, not a navigation (see the effect above).
+      if (!event.fromLocation || event.toLocation.hash) return;
       if (lenisRef.current) {
         lenisRef.current.scrollTo(0, { immediate: true });
         lenisRef.current.resize();
