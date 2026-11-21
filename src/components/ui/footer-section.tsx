@@ -9,6 +9,7 @@ import { Wordmark } from "@/components/site/Wordmark";
 import { site } from "@/lib/site-config";
 import { AskAi } from "@/components/site/AskAi";
 import { trackEvent } from "@/lib/analytics";
+import { PayLaterFooterLink } from "@/components/site/PayLaterFooterLink";
 
 const SOCIAL_PATHS: Record<string, string> = {
   WhatsApp:
@@ -47,6 +48,7 @@ const footerLinks = [
       { to: "/products", text: "Products" },
       { to: "/engineering", text: "Engineering" },
       { to: "/studios", text: "Studios" },
+      { to: "/pay-later", text: "Pay Later" },
     ],
   },
   {
@@ -127,6 +129,9 @@ export function Footerdemo() {
                 <ul className="space-y-3">
                   {column.links.map((link) => (
                     <li key={link.text}>
+                      {link.to === "/pay-later" ? (
+                        <PayLaterFooterLink className="group inline-flex items-center gap-1.5 text-sm text-white/68 transition-colors hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+                      ) : (
                       <Link
                         to={link.to}
                         className="group inline-flex items-center gap-1.5 text-sm text-white/68 transition-colors hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -137,6 +142,7 @@ export function Footerdemo() {
                           aria-hidden="true"
                         />
                       </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

@@ -21,6 +21,7 @@ import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as OisRouteImport } from './routes/ois'
+import { Route as PayLaterRouteImport } from './routes/pay-later'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
@@ -97,6 +98,11 @@ const McpRoute = McpRouteImport.update({
 const OisRoute = OisRouteImport.update({
   id: '/ois',
   path: '/ois',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PayLaterRoute = PayLaterRouteImport.update({
+  id: '/pay-later',
+  path: '/pay-later',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/marketing': typeof MarketingRoute
   '/mcp': typeof McpRoute
   '/ois': typeof OisRoute
+  '/pay-later': typeof PayLaterRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
@@ -229,6 +236,7 @@ export interface FileRoutesByTo {
   '/marketing': typeof MarketingRoute
   '/mcp': typeof McpRoute
   '/ois': typeof OisRoute
+  '/pay-later': typeof PayLaterRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap': typeof SitemapRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/marketing': typeof MarketingRoute
   '/mcp': typeof McpRoute
   '/ois': typeof OisRoute
+  '/pay-later': typeof PayLaterRoute
   '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/mcp'
     | '/ois'
+    | '/pay-later'
     | '/privacy'
     | '/products'
     | '/robots.txt'
@@ -323,6 +333,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/mcp'
     | '/ois'
+    | '/pay-later'
     | '/privacy'
     | '/robots.txt'
     | '/sitemap'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/mcp'
     | '/ois'
+    | '/pay-later'
     | '/privacy'
     | '/products'
     | '/robots.txt'
@@ -384,6 +396,7 @@ export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRoute
   McpRoute: typeof McpRoute
   OisRoute: typeof OisRoute
+  PayLaterRoute: typeof PayLaterRoute
   PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -483,6 +496,13 @@ declare module '@tanstack/react-router' {
       path: '/ois'
       fullPath: '/ois'
       preLoaderRoute: typeof OisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pay-later': {
+      id: '/pay-later'
+      path: '/pay-later'
+      fullPath: '/pay-later'
+      preLoaderRoute: typeof PayLaterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -648,6 +668,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRoute,
   McpRoute: McpRoute,
   OisRoute: OisRoute,
+  PayLaterRoute: PayLaterRoute,
   PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,

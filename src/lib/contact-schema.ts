@@ -48,7 +48,7 @@ export function routeEnquiryTo(type: EnquiryType): string {
     case "career":
       return "hr@octapus.ae";
     case "support":
-      return "code@octapus.info";
+      return "code@octapus.ae";
     case "product_enquiry":
     case "custom_software":
     case "erp_crm":

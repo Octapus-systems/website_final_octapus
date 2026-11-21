@@ -14,6 +14,7 @@ const staticRoutes = [
   { to: "/careers", label: "Careers" },
   { to: "/contact", label: "Contact" },
   { to: "/book", label: "Book a Strategy Call" },
+  { to: "/pay-later", label: "Pay Later" },
   { to: "/mcp", label: "MCP" },
   { to: "/privacy", label: "Privacy" },
   { to: "/terms", label: "Terms" },

@@ -16,7 +16,7 @@ export const site = {
     sales: "sales@octapus.ae",
     info: "info@octapus.ae",
     hr: "hr@octapus.ae",
-    tech: "code@octapus.info",
+    tech: "code@octapus.ae",
   },
   phones: {
     general: "+971 50 862 1612",

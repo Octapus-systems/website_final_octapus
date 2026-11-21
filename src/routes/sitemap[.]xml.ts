@@ -22,6 +22,7 @@ const staticPaths = [
   "/careers",
   "/contact",
   "/book",
+  "/pay-later",
   "/privacy",
   // "/terms" is left out while it is a noindexed placeholder — add it back once published.
 ];
@@ -43,6 +44,7 @@ const lastmod: Record<string, string> = {
   "/careers": "2026-10-01",
   "/contact": "2026-10-01",
   "/book": "2026-10-10",
+  "/pay-later": "2026-11-21",
   "/privacy": "2026-08-24",
   "/terms": "2026-08-24",
   "/products/*": "2026-10-03",
