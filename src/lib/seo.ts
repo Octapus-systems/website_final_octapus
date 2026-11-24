@@ -78,8 +78,8 @@ export function absoluteUrl(path: string) {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** 1200×630 share image. Social platforms don't render SVG, so this is a PNG. */
-export const DEFAULT_OG_IMAGE = "/og-image.png";
+/** 1200×630 share image: logo mark centred on white, so square crops (WhatsApp, iMessage) still show the full logo. Social platforms don't render SVG, so this is a PNG. */
+export const DEFAULT_OG_IMAGE = "/og-logo.png";
 
 /** Social platforms only accept raster images for og:image (no SVG, no video). */
 export function isShareableImage(src?: string): src is string {
